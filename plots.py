@@ -86,7 +86,7 @@ def plot_transition():
         linewidth = 3 if abs(sigma - critical) < 0.01 else 2
 
         ax.loglog(ranks[idx], sorted_w[idx],
-                 linestyle=linestyle, linewidth=linewidth, alpha=0.95, color=colors[i],
+                 linestyle=linestyle, linewidth=linewidth, alpha=1, color=colors[i],
                  label=f'σ={sigma:.1f} (β={beta:.2f}) {regime_label}')
 
         # Calculate statistics at various wealth thresholds
@@ -126,8 +126,8 @@ def plot_transition():
         })
 
     # Add reference lines
-    ax.axhline(1e6, color='gray', linestyle=':', alpha=0.4, linewidth=1, label='$1M')
-    ax.axhline(1e9, color='green', linestyle=':', alpha=0.5, linewidth=2, label='$1B')
+    ax.axhline(1e6, color='gray', linestyle=':', alpha=1, linewidth=1, label='$1M')
+    ax.axhline(1e9, color='green', linestyle=':', alpha=1, linewidth=2, label='$1B')
 
     # Add Pareto reference
     ranks_ref = np.logspace(0, 7, 100)
@@ -170,9 +170,9 @@ def plot_single_regime_comparison():
     critical = np.sqrt(2 * np.pi)
 
     # Subcritical: σ = 2.0
-    print("Running subcritical simulation (σ = 2.0)...")
+    print("Running subcritical simulation (σ = 1.0)...")
     np.random.seed(42)
-    wealth_sub = simulate_atm_model(sigma=2.0, n=5_000_000)
+    wealth_sub = simulate_atm_model(sigma=1.0, n=5_000_000)
     living_sub = wealth_sub[wealth_sub > 0]
 
     # Supercritical: σ = 3.0
@@ -183,7 +183,7 @@ def plot_single_regime_comparison():
 
     # Plot 1: Histograms
     bins = np.logspace(2, 12, 100)
-    ax1.hist(living_sub, bins=bins, alpha=0.6, label='Subcritical σ=2.0', color='blue', density=True)
+    ax1.hist(living_sub, bins=bins, alpha=0.6, label='Subcritical σ=1.0', color='blue', density=True)
     ax1.hist(living_super, bins=bins, alpha=0.6, label='Supercritical σ=3.0', color='red', density=True)
     ax1.set_xscale('log')
     ax1.set_yscale('log')
@@ -202,7 +202,7 @@ def plot_single_regime_comparison():
     ranks_super = np.arange(1, len(sorted_super) + 1)
     idx_super = np.unique(np.logspace(0, np.log10(len(ranks_super)-1), 1000).astype(int))
 
-    ax2.loglog(ranks_sub[idx_sub], sorted_sub[idx_sub], 'b.', markersize=2, alpha=0.5, label='Subcritical σ=2.0')
+    ax2.loglog(ranks_sub[idx_sub], sorted_sub[idx_sub], 'b.', markersize=2, alpha=0.5, label='Subcritical σ=1.0')
     ax2.loglog(ranks_super[idx_super], sorted_super[idx_super], 'r.', markersize=2, alpha=0.5, label='Supercritical σ=3.0')
 
     # Add Pareto reference line

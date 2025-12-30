@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Critical Volatility Threshold for Log-Normal to Power-Law Transition</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="paper-style.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Critical Volatility Threshold for Log-Normal to
+Power-Law Transition</h1>
+<p class="subtitle">Iterated Options Model</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#critical-volatility-threshold-for-log-normal-to-power-law-transition-iterated-options-model"
+id="toc-critical-volatility-threshold-for-log-normal-to-power-law-transition-iterated-options-model"><span
+class="toc-section-number">1</span> Critical Volatility Threshold for
+Log-Normal to Power-Law Transition: Iterated Options Model</a>
+<ul>
+<li><a href="#abstract" id="toc-abstract"><span
+class="toc-section-number">1.1</span> Abstract</a></li>
+<li><a href="#preface" id="toc-preface"><span
+class="toc-section-number">1.2</span> Preface</a></li>
+<li><a href="#introduction-and-motivation"
+id="toc-introduction-and-motivation"><span
+class="toc-section-number">1.3</span> 1. Introduction and
+Motivation</a></li>
+<li><a href="#the-black-scholes-setup"
+id="toc-the-black-scholes-setup"><span
+class="toc-section-number">1.4</span> 2. The Black-Scholes
+Setup</a></li>
+<li><a href="#iterated-options-the-mathematical-structure"
+id="toc-iterated-options-the-mathematical-structure"><span
+class="toc-section-number">1.5</span> 3. Iterated Options: The
+Mathematical Structure</a></li>
+<li><a href="#the-recentered-atm-case"
+id="toc-the-recentered-atm-case"><span
+class="toc-section-number">1.6</span> 4. The Recentered (ATM)
+Case</a></li>
+<li><a href="#convergence-and-the-critical-threshold"
+id="toc-convergence-and-the-critical-threshold"><span
+class="toc-section-number">1.7</span> 5. Convergence and the Critical
+Threshold</a></li>
+<li><a href="#divergence-and-power-law-beyond-the-critical-threshold"
+id="toc-divergence-and-power-law-beyond-the-critical-threshold"><span
+class="toc-section-number">1.8</span> 6. Divergence and Power-Law Beyond
+the Critical Threshold</a></li>
+<li><a href="#numerical-simulations"
+id="toc-numerical-simulations"><span
+class="toc-section-number">1.9</span> 7. Numerical Simulations</a></li>
+<li><a href="#interpretation-and-market-implications"
+id="toc-interpretation-and-market-implications"><span
+class="toc-section-number">1.10</span> 8. Interpretation and Market
+Implications</a></li>
+<li><a href="#conclusion" id="toc-conclusion"><span
+class="toc-section-number">1.11</span> 9. Conclusion</a></li>
+<li><a href="#appendix-notation-summary"
+id="toc-appendix-notation-summary"><span
+class="toc-section-number">1.12</span> Appendix: Notation
+Summary</a></li>
+<li><a href="#references" id="toc-references"><span
+class="toc-section-number">1.13</span> References</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1"
+id="critical-volatility-threshold-for-log-normal-to-power-law-transition-iterated-options-model"><span
+class="header-section-number">1</span> Critical Volatility Threshold for
+Log-Normal to Power-Law Transition: Iterated Options Model</h1>
+<h2 data-number="1.1" id="abstract"><span
+class="header-section-number">1.1</span> Abstract</h2>
+<p>Random walk models with log-normal outcomes fit local market
+observations remarkably well. Yet interconnected, recursive structures -
+layered derivatives, leveraged positions, iterative funding rounds -
+periodically produce power-law distributed events. We show that the
+transition from log-normal to power-law dynamics requires only three
+conditions: randomness in the underlying process, rectification of
+payouts, and iterative feed-forward of expected values. Using an
+infinite option-on-option chain as an illustrative model, we derive a
+critical volatility threshold at <span class="math inline">\(\sigma^* =
+\sqrt{2\pi} \approx 250.66\%\)</span> that separates convergent from
+divergent regimes. The result suggests that fat tails may be an emergent
+property of iterative log-normal processes rather than an exogenous
+feature.</p>
+<hr />
+<h2 data-number="1.2" id="preface"><span
+class="header-section-number">1.2</span> Preface</h2>
+<p>Financial systems are built on rectified payoffs. An investment in a
+high-risk project returns either something or nothing - you cannot lose
+more than you put in. An option pays <span class="math inline">\(\max(S
+- K, 0)\)</span>. Even limited liability is a form of rectification.</p>
+<p>These rectified structures often feed into one another. A successful
+project enables others built on top of it. A successful trade becomes
+the capital for the next trade. Derivative products reference other
+derivative products. It would be useful to know how such iterations
+behave - whether they remain stable or exhibit qualitatively different
+dynamics.</p>
+<p>To answer this, we analyze the limiting case: an infinite chain of
+options, each written on the expected payout of the one before. The
+result depends on three conditions - randomness in the underlying
+process, rectification of payouts, and feed-forward of expected values.
+These are sufficient to produce a critical threshold at <span
+class="math inline">\(\sigma^* = \sqrt{2\pi} \approx 250.66\%\)</span>.
+Below this, cumulative optionality remains bounded. Above it, the system
+diverges and begins exhibiting power-law dynamics.</p>
+<p>We also identify a self-similar regime at exactly the critical
+threshold, where each iteration reproduces the statistical structure of
+the previous one.</p>
+<p>The conditions are minimal: randomness, bounded downside, and
+iteration. These are not exotic assumptions, suggesting the mechanism
+may apply broadly to dynamic systems with compounding behavior.</p>
+<p>As for the infinite derivative tower itself: to our knowledge, no one
+has built one. This is probably wise. But should financial engineering
+continue its march toward increasingly layered products, at least the
+location of the cliff is now known.</p>
+<hr />
+<h2 data-number="1.3" id="introduction-and-motivation"><span
+class="header-section-number">1.3</span> 1. Introduction and
+Motivation</h2>
+<p>The Black-Scholes framework provides a foundational model for pricing
+European options. Under risk-neutral valuation, the price of a call
+option reflects the expected value of its payoff <span
+class="math inline">\(\max(S_T - K, 0)\)</span>, discounted
+appropriately. This “rectification” - the maximum of a potentially
+negative quantity and zero - is the essential nonlinearity that gives
+options their asymmetric payoff structure.</p>
+<p>A natural question arises: what happens when we write an option on an
+option? And then an option on that? In principle, one could construct an
+arbitrarily deep tower of such instruments, each layer deriving its
+value from the expected payout of the layer below.</p>
+<p>This paper analyzes the mathematical structure of such iterated
+rectified expectations. We find that:</p>
+<ol type="1">
+<li><p>The system exhibits a phase transition at a critical volatility
+of <span class="math inline">\(\sigma^* = \sqrt{2\pi} \approx
+250.66\%\)</span> annualized. This assumes the perfect case, where
+pricing has no errors and volatility doesn’t amplify between derivative
+layers but stays perfectly correlated to asset price at a constant
+ratio. Real systems, if built, will diverge much faster.</p></li>
+<li><p>Below criticality (<span class="math inline">\(\sigma &lt;
+\sigma^*\)</span>), the total value of an infinite option chain
+converges to a finite sum, meaning optionality is “bounded” no matter
+how many layers are added.</p></li>
+<li><p>Above criticality (<span class="math inline">\(\sigma &gt;
+\sigma^*\)</span>), the chain diverges - the cumulative value of
+optionality exceeds the underlying asset itself. This is not merely a
+mathematical curiosity; it implies that in extreme volatility regimes,
+the optionality can dominate the fundamental value of the product. This
+leads to amplification of expected payout at each consecutive step,
+making the expected payouts follow power-law dynamics.</p></li>
+<li><p>At criticality (<span class="math inline">\(\sigma =
+\sigma^*\)</span>), the system becomes self-similar, with each iteration
+reproducing the statistical structure of the previous one.</p></li>
+</ol>
+<p>These findings have implications for understanding volatility regimes
+during market stress, the pricing of compound options, and the
+theoretical limits of derivative layering.</p>
+<hr />
+<h2 data-number="1.4" id="the-black-scholes-setup"><span
+class="header-section-number">1.4</span> 2. The Black-Scholes Setup</h2>
+<h3 data-number="1.4.1" id="standard-framework"><span
+class="header-section-number">1.4.1</span> 2.1 Standard Framework</h3>
+<p>Under the Black-Scholes model, the underlying asset follows geometric
+Brownian motion:</p>
+<p><span class="math display">\[dS_t = \mu S_t \, dt + \sigma S_t \,
+dW_t\]</span></p>
+<p>The Black-Scholes formula for a European call option is:</p>
+<p><span class="math display">\[C(S_t, t) = N(d_+) S_t - N(d_-) K
+e^{-r(T-t)}\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[d_+ =
+\frac{1}{\sigma\sqrt{T-t}}\left[\ln\left(\frac{S_t}{K}\right) + \left(r
++ \frac{\sigma^2}{2}\right)(T-t)\right]\]</span></p>
+<p><span class="math display">\[d_- = d_+ -
+\sigma\sqrt{T-t}\]</span></p>
+<p>and <span class="math inline">\(N(\cdot)\)</span> is the standard
+normal CDF.</p>
+<h3 data-number="1.4.2" id="atm-special-case"><span
+class="header-section-number">1.4.2</span> 2.2 ATM Special Case</h3>
+<p>For an at-the-money option where <span class="math inline">\(S_t =
+K\)</span>, we have <span class="math inline">\(\ln(S_t/K) = 0\)</span>,
+so:</p>
+<p><span class="math display">\[d_+ = \frac{r +
+\sigma^2/2}{\sigma}\sqrt{T-t}\]</span></p>
+<p><span class="math display">\[d_- = \frac{r -
+\sigma^2/2}{\sigma}\sqrt{T-t}\]</span></p>
+<p>In the <span class="math inline">\(r \ll \sigma\)</span> limit (which
+holds for high-volatility regimes where <span
+class="math inline">\(\sigma &gt; 100\%\)</span> and <span
+class="math inline">\(r \approx 5\%\)</span>):</p>
+<p><span class="math display">\[d_+ \approx
+\frac{\sigma^2/2}{\sigma}\sqrt{T-t} =
+\frac{\sigma}{2}\sqrt{T-t}\]</span></p>
+<p><span class="math display">\[d_- \approx
+\frac{-\sigma^2/2}{\sigma}\sqrt{T-t} =
+-\frac{\sigma}{2}\sqrt{T-t}\]</span></p>
+<p>Since <span class="math inline">\(d_- \approx -d_+\)</span>, we have
+<span class="math inline">\(N(d_-) = N(-d_+) = 1 - N(d_+)\)</span>, and
+the option price simplifies to:</p>
+<p><span class="math display">\[C = K\left[N(d_+) - N(d_-)\right] =
+K\left[2N\left(\frac{\sigma\sqrt{T-t}}{2}\right) - 1\right]\]</span></p>
+<p>The ATM option price reduces to a single Gaussian CDF minus a
+constant. Let us analyze its behavior.</p>
+<h3 data-number="1.4.3" id="the-gaussian-structure"><span
+class="header-section-number">1.4.3</span> 2.3 The Gaussian
+Structure</h3>
+<p>The Gaussian distribution appears explicitly in Black-Scholes through
+<span class="math inline">\(N(d_+)\)</span> and <span
+class="math inline">\(N(d_-)\)</span>, and simplifies to a single
+Gaussian CDF under the high-volatility ATM assumption. We observe that
+the option payoff <span class="math inline">\(\max(S_T - K, 0)\)</span>
+cannot be negative by definition - the option structure rectifies the
+underlying returns at zero.</p>
+<p>The expected value of a rectified Gaussian is the mathematical core
+of option pricing. We now analyze the general case of <span
+class="math inline">\(\mathbb{E}[\max(X, 0)]\)</span> for <span
+class="math inline">\(X \sim \mathcal{N}(\mu, \sigma)\)</span>.</p>
+<h3 data-number="1.4.4" id="rectified-gaussian-expectations"><span
+class="header-section-number">1.4.4</span> 2.4 Rectified Gaussian
+Expectations</h3>
+<p>Let <span class="math inline">\(Y = \max(X, 0)\)</span> where <span
+class="math inline">\(X \sim \mathcal{N}(\mu, \sigma)\)</span>. We seek
+<span class="math inline">\(\mathbb{E}[Y]\)</span>.</p>
+<p>The expectation splits into two regions:</p>
+<p><span class="math display">\[\mathbb{E}[Y] = \mathbb{E}[X \cdot
+\mathbf{1}_{X &gt; 0}] = \int_0^{\infty} x \cdot
+\frac{1}{\sigma\sqrt{2\pi}} e^{-(x-\mu)^2/2\sigma^2} dx\]</span></p>
+<p>Substituting <span class="math inline">\(u = (x -
+\mu)/\sigma\)</span>:</p>
+<p><span class="math display">\[\mathbb{E}[Y] =
+\int_{-\mu/\sigma}^{\infty} (\mu + \sigma u) \cdot \frac{1}{\sqrt{2\pi}}
+e^{-u^2/2} du\]</span></p>
+<p>This separates into:</p>
+<p><span class="math display">\[\mathbb{E}[Y] = \mu
+\int_{-\mu/\sigma}^{\infty} \phi(u) \, du + \sigma
+\int_{-\mu/\sigma}^{\infty} u \cdot \phi(u) \, du\]</span></p>
+<p>The first integral is <span class="math inline">\(\mu \cdot
+\Phi(\mu/\sigma)\)</span>. For the second, note that <span
+class="math inline">\(u \cdot \phi(u) = -\phi&#39;(u)\)</span>, so:</p>
+<p><span class="math display">\[\int_{-\mu/\sigma}^{\infty} u \cdot
+\phi(u) \, du = \left[-\phi(u)\right]_{-\mu/\sigma}^{\infty} =
+\phi(\mu/\sigma)\]</span></p>
+<p>Therefore:</p>
+<p><span class="math display">\[\mathbb{E}[Y] = \mu
+\Phi\left(\frac{\mu}{\sigma}\right) + \sigma
+\phi\left(\frac{\mu}{\sigma}\right)\]</span></p>
+<p>where <span class="math inline">\(\Phi(\cdot)\)</span> is the
+standard normal CDF and <span class="math inline">\(\phi(\cdot)\)</span>
+is the standard normal PDF.</p>
+<h3 data-number="1.4.5" id="the-function-gz"><span
+class="header-section-number">1.4.5</span> 2.5 The Function g(z)</h3>
+<p>Normalizing by <span class="math inline">\(\sigma\)</span> and
+letting <span class="math inline">\(z = \mu/\sigma\)</span>:</p>
+<p><span class="math display">\[\frac{\mathbb{E}[Y]}{\sigma} = z\Phi(z)
++ \phi(z)\]</span></p>
+<p>Expanding using the integral forms of <span
+class="math inline">\(\Phi\)</span> and <span
+class="math inline">\(\phi\)</span>:</p>
+<p><span class="math display">\[\frac{\mathbb{E}[Y]}{\sigma} =
+\frac{1}{\sqrt{2\pi}}\left( z \int_{-\infty}^{z} e^{-t^2/2} dt +
+e^{-z^2/2} \right)\]</span></p>
+<p>We define:</p>
+<p><span class="math display">\[g(z) = z \int_{-\infty}^{z} e^{-t^2/2}
+dt + e^{-z^2/2}\]</span></p>
+<p>so that the expected value of the rectified Gaussian becomes:</p>
+<p><span class="math display">\[\mathbb{E}[Y] =
+\frac{\sigma}{\sqrt{2\pi}} g(z)\]</span></p>
+<p>This form will be essential for analyzing iterations.</p>
+<hr />
+<h2 data-number="1.5"
+id="iterated-options-the-mathematical-structure"><span
+class="header-section-number">1.5</span> 3. Iterated Options: The
+Mathematical Structure</h2>
+<h3 data-number="1.5.1" id="the-iteration-scheme"><span
+class="header-section-number">1.5.1</span> 3.1 The Iteration Scheme</h3>
+<p>Consider a chain of options where each option is written on the
+expected payout of the previous one. In a simplified model of such
+chain, we would be putting a new derivative instrument with the price of
+expected payout of the previous one, and calculate new parameters. Since
+the strike price from previous option would be just a constant
+multiplier, we can focus on analyzing the rectified Gaussian behavior as
+a simplified model.</p>
+<p>Let <span class="math inline">\(\mu_n\)</span> denote the expected
+value at stage <span class="math inline">\(n\)</span>, and suppose each
+stage has volatility <span class="math inline">\(\sigma_n\)</span>.</p>
+<p>From Section 2.5, the expected value of the rectified Gaussian at
+stage <span class="math inline">\(n\)</span> is:</p>
+<p><span class="math display">\[\mathbb{E}_n[Y] =
+\frac{\sigma_n}{\sqrt{2\pi}} g(z_n)\]</span></p>
+<p>where <span class="math inline">\(z_n = \mu_n/\sigma_n\)</span>.</p>
+<p>If we let the output of one rectification become the mean of the next
+(i.e., <span class="math inline">\(\mu_{n+1} =
+\mathbb{E}_n[Y]\)</span>), we obtain:</p>
+<p><span class="math display">\[\mu_{n+1} = \frac{\sigma_n}{\sqrt{2\pi}}
+g(z_n)\]</span></p>
+<h3 data-number="1.5.2" id="general-recursion"><span
+class="header-section-number">1.5.2</span> 3.2 General Recursion</h3>
+<p>From Section 2.5:</p>
+<p><span class="math display">\[\mathbb{E}_1[Y] =
+\frac{\sigma_1}{\sqrt{2\pi}} g(z_1)\]</span></p>
+<p>Let the output become the mean of the next stage: <span
+class="math inline">\(\mu_2 = \mathbb{E}_1[Y]\)</span>.</p>
+<p>The next price is:</p>
+<p><span class="math display">\[z_2 = \frac{\mu_2}{\sigma_2} =
+\frac{\sigma_1}{\sigma_2} \cdot \frac{1}{\sqrt{2\pi}}
+g(z_1)\]</span></p>
+<p>Let <span class="math inline">\(r = \sigma_1/\sigma_2\)</span> and
+<span class="math inline">\(w = g(z_1)\)</span>. Then:</p>
+<p><span class="math display">\[z_2 = \frac{r}{\sqrt{2\pi}}
+w\]</span></p>
+<p>The next expectation:</p>
+<p><span class="math display">\[\mathbb{E}_2[Y] =
+\frac{\sigma_2}{\sqrt{2\pi}} g(z_2)\]</span></p>
+<p>More generally, letting <span class="math inline">\(w_n =
+g(z_n)\)</span> and <span class="math inline">\(\alpha =
+\frac{r}{\sqrt{2\pi}}\)</span>:</p>
+<p><span class="math display">\[w_{n+1} = g(\alpha \cdot
+w_n)\]</span></p>
+<p>Explicitly:</p>
+<p><span class="math display">\[w_{n+1} = \alpha w_n
+\int_{-\infty}^{\alpha w_n} e^{-t^2/2} \, dt + e^{-\alpha^2
+w_n^2/2}\]</span></p>
+<p>This is a nonlinear recursion whose behavior depends critically on
+<span class="math inline">\(\alpha\)</span>.</p>
+<h3 data-number="1.5.3" id="the-self-similar-case"><span
+class="header-section-number">1.5.3</span> 3.3 The Self-Similar
+Case</h3>
+<p>When <span class="math inline">\(\alpha = 1\)</span> (equivalently,
+<span class="math inline">\(r = \sqrt{2\pi}\)</span>, i.e., <span
+class="math inline">\(\sigma_1 = \sigma_2 \sqrt{2\pi}\)</span>), the
+recursion simplifies to:</p>
+<p><span class="math display">\[w_{n+1} = g(w_n)\]</span></p>
+<p>This is pure iteration of <span class="math inline">\(g\)</span> -
+the process becomes self-similar. The ratio:</p>
+<p><span class="math display">\[\frac{w_n}{w_{n+1}} =
+\frac{w_n}{g(w_n)}\]</span></p>
+<p>suggests that the sequence will have its own convergence/divergence
+behavior depending on <span class="math inline">\(w_n\)</span> (or
+equivalently <span class="math inline">\(\alpha\)</span>). The parameter
+<span class="math inline">\(\alpha\)</span> controls how the recursion
+scales, determining whether iterated expectations grow, shrink, or
+stabilize.</p>
+<hr />
+<h2 data-number="1.6" id="the-recentered-atm-case"><span
+class="header-section-number">1.6</span> 4. The Recentered (ATM)
+Case</h2>
+<h3 data-number="1.6.1" id="introducing-the-shift"><span
+class="header-section-number">1.6.1</span> 4.1 Introducing the
+Shift</h3>
+<p>In practice, options are often struck at-the-money (ATM), where the
+strike equals the current expected value. We model this by introducing a
+shift parameter <span class="math inline">\(s_n\)</span> that recenters
+the distribution at each step:</p>
+<p><span class="math display">\[z_n^s = \frac{\mu_n - s_n}{\sigma_n} =
+z_n - \frac{s_n}{\sigma_n}\]</span></p>
+<p>Setting <span class="math inline">\(s_n = \mu_n\)</span> (the ATM
+condition) forces <span class="math inline">\(z_n^s = 0\)</span> at
+every iteration.</p>
+<p>The intuition for this shift is the following: each new option is
+written ATM at inception, with strike equal to the current underlying
+price (which is the expected value from the previous stage). The
+underlying then fluctuates around this strike with its own volatility
+over the holding period. Since the strike equals the mean, the
+payoff-relevant distribution is centered at zero.</p>
+<h3 data-number="1.6.2" id="evaluation-at-zero"><span
+class="header-section-number">1.6.2</span> 4.2 Evaluation at Zero</h3>
+<p>Since <span class="math inline">\(g(0) = 0 + e^{0} = 1\)</span>, the
+shifted expectation simplifies dramatically:</p>
+<p><span class="math display">\[\mathbb{E}_n^s[Y] =
+\frac{\sigma_n}{\sqrt{2\pi}}\]</span></p>
+<p>This is the well-known result that an ATM option’s expected payout
+(before discounting and without market price multiplier) is proportional
+to volatility. It connects directly to the well-known practitioner’s
+approximation:</p>
+<p><span class="math display">\[C \approx \frac{S \cdot
+\sigma\sqrt{T}}{\sqrt{2\pi}} \approx 0.4 \cdot S \cdot
+\sigma\sqrt{T}\]</span></p>
+<h3 data-number="1.6.3" id="the-geometric-regime"><span
+class="header-section-number">1.6.3</span> 4.3 The Geometric Regime</h3>
+<p>In financial contexts, we frequently assume that volatility is a
+percentage related to the price - a stock with higher price has
+proportionally higher absolute volatility. We use a similar definition
+which scales with expected values.</p>
+<p>Assuming constant percentage volatility <span
+class="math inline">\(\sigma_n = \sigma \cdot \mu_n\)</span> (volatility
+scales with the underlying):</p>
+<p><span class="math display">\[\mu_{n+1} = \frac{\sigma \cdot
+\mu_n}{\sqrt{2\pi}} = \beta \cdot \mu_n\]</span></p>
+<p>where <span class="math inline">\(\beta =
+\sigma/\sqrt{2\pi}\)</span>.</p>
+<p>This yields the closed form:</p>
+<p><span class="math display">\[\mu_n = \mu_1 \cdot
+\beta^{n-1}\]</span></p>
+<p>The expected value at each stage forms a geometric sequence.</p>
+<hr />
+<h2 data-number="1.7" id="convergence-and-the-critical-threshold"><span
+class="header-section-number">1.7</span> 5. Convergence and the Critical
+Threshold</h2>
+<h3 data-number="1.7.1" id="sum-of-the-infinite-chain"><span
+class="header-section-number">1.7.1</span> 5.1 Sum of the Infinite
+Chain</h3>
+<p>The total expected value across an infinite chain of ATM options
+is:</p>
+<p><span class="math display">\[\sum_{n=1}^{\infty} \mu_n = \mu_1
+\sum_{n=0}^{\infty} \beta^n = \frac{\mu_1}{1-\beta}\]</span></p>
+<p>This converges if and only if <span class="math inline">\(\beta &lt;
+1\)</span>.</p>
+<h3 data-number="1.7.2" id="the-critical-volatility"><span
+class="header-section-number">1.7.2</span> 5.2 The Critical
+Volatility</h3>
+<p>The convergence condition <span class="math inline">\(\beta &lt;
+1\)</span> translates to:</p>
+<p><span class="math display">\[\frac{\sigma}{\sqrt{2\pi}} &lt; 1
+\implies \sigma &lt; \sqrt{2\pi} \approx 2.5066\]</span></p>
+<p>In percentage terms, the critical volatility is <span
+class="math inline">\(\sigma^* \approx 250.66\%\)</span> annualized.</p>
+<h3 data-number="1.7.3" id="closed-form-for-the-sum"><span
+class="header-section-number">1.7.3</span> 5.3 Closed Form for the
+Sum</h3>
+<p>When <span class="math inline">\(\sigma &lt;
+\sqrt{2\pi}\)</span>:</p>
+<p><span class="math display">\[\sum_{n=1}^{\infty} \mu_n = \frac{\mu_1
+\sqrt{2\pi}}{\sqrt{2\pi} - \sigma}\]</span></p>
+<hr />
+<h2 data-number="1.8"
+id="divergence-and-power-law-beyond-the-critical-threshold"><span
+class="header-section-number">1.8</span> 6. Divergence and Power-Law
+Beyond the Critical Threshold</h2>
+<h3 data-number="1.8.1"
+id="exponential-growth-in-the-supercritical-regime"><span
+class="header-section-number">1.8.1</span> 6.1 Exponential Growth in the
+Supercritical Regime</h3>
+<p>When <span class="math inline">\(\sigma &gt; \sqrt{2\pi}\)</span>, we
+have <span class="math inline">\(\beta = \sigma/\sqrt{2\pi} &gt;
+1\)</span>, and the expected values grow exponentially:</p>
+<p><span class="math display">\[\mu_n = \mu_1 \cdot
+\beta^{n-1}\]</span></p>
+<p>Each iteration amplifies the previous expected value. The total sum
+diverges - there is no finite bound on cumulative optionality.</p>
+<h3 data-number="1.8.2"
+id="survival-condition-and-power-law-emergence"><span
+class="header-section-number">1.8.2</span> 6.2 Survival Condition and
+Power-Law Emergence</h3>
+<p>On the real market, participants do not receive the expected value -
+they receive a realized draw from the distribution. The ability of
+players to continue playing depends on their outcomes and risk
+tolerance.</p>
+<p>Let us assume there exists a risk threshold <span
+class="math inline">\(R\)</span> for each participant: after losing more
+than <span class="math inline">\(R\)</span>, they stop playing
+(bankruptcy, margin call, fund redemption, etc.). At each stage <span
+class="math inline">\(n\)</span>, the realized value <span
+class="math inline">\(X_n\)</span> is drawn from <span
+class="math inline">\(\mathcal{N}(\mu_n, \sigma_n)\)</span>. The
+participant survives to the next round if:</p>
+<p><span class="math display">\[X_n &gt; \mu_n - R\]</span></p>
+<p>For simplicity, express <span class="math inline">\(R\)</span> in
+units of standard deviation: <span class="math inline">\(R = k \cdot
+\sigma_n\)</span> for some constant <span
+class="math inline">\(k\)</span>. The survival probability at each stage
+is:</p>
+<p><span class="math display">\[p = P(X_n &gt; \mu_n - k\sigma_n) =
+\Phi(k)\]</span></p>
+<p>where <span class="math inline">\(\Phi\)</span> is the standard
+normal CDF. For example, <span class="math inline">\(k = 1\)</span>
+gives <span class="math inline">\(p \approx 0.84\)</span>; <span
+class="math inline">\(k = 2\)</span> gives <span class="math inline">\(p
+\approx 0.98\)</span>. Note that <span class="math inline">\(k\)</span>
+can be negative, imposing a “minimum gains” condition rather than loss
+tolerance: <span class="math inline">\(k = -0.43\)</span> gives <span
+class="math inline">\(p \approx 0.33\)</span>, meaning participants must
+achieve returns above the 33rd percentile to continue.</p>
+<p>The probability of surviving <span class="math inline">\(n\)</span>
+consecutive stages is:</p>
+<p><span class="math display">\[P(\text{survive } n \text{ stages}) =
+p^n = \Phi(k)^n\]</span></p>
+<p>The number of surviving processes decays exponentially, but in the
+supercritical regime, the value of each survivor grows exponentially (by
+factor <span class="math inline">\(\beta^n\)</span>). This combination
+produces power-law distributed outcomes.</p>
+<h3 data-number="1.8.3"
+id="the-v-distribution-critical-volatility-distribution"><span
+class="header-section-number">1.8.3</span> 6.3 The V* Distribution
+(Critical Volatility Distribution)</h3>
+<p>If <span class="math inline">\(N\)</span> independent processes
+start, after <span class="math inline">\(n\)</span> iterations
+approximately <span class="math inline">\(N \cdot p^n\)</span> survive,
+each with value proportional to <span
+class="math inline">\(\beta^n\)</span>.</p>
+<p>Setting <span class="math inline">\(v = \beta^n\)</span> (the value),
+we have <span class="math inline">\(n = \log(v)/\log(\beta)\)</span>,
+so:</p>
+<p><span class="math display">\[\text{Number with value} &gt; v \propto
+p^{n} = p^{\log(v)/\log(\beta)} = v^{\log(p)/\log(\beta)}\]</span></p>
+<p>This is a power-law with exponent:</p>
+<p><span class="math display">\[\alpha = -\frac{\log(p)}{\log(\beta)} =
+-\frac{\log(p)}{\log(\sigma/\sqrt{2\pi})}\]</span></p>
+<p>Since <span class="math inline">\(p &lt; 1\)</span> (survival is not
+guaranteed) and <span class="math inline">\(\beta &gt; 1\)</span>
+(supercritical), we have <span class="math inline">\(\alpha &gt;
+0\)</span>: a proper power-law tail.</p>
+<p>Unpacking <span class="math inline">\(p^n\)</span> fully, we obtain
+the V* Distribution:</p>
+<p><span class="math display">\[P(V &gt; v) \propto \Phi(k)^{\frac{\log
+v}{\log(\sigma/\sqrt{2\pi})}}\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(\Phi(k) =
+\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{k} e^{-t^2/2} \, dt\)</span> is the
+survival probability per stage</li>
+<li><span class="math inline">\(k = R/\sigma_n\)</span> is the risk
+tolerance in standard deviations</li>
+<li><span class="math inline">\(\sigma\)</span> is the volatility
+parameter</li>
+<li><span class="math inline">\(\sqrt{2\pi}\)</span> is the critical
+threshold (<span class="math inline">\(\sigma^*\)</span> or <span
+class="math inline">\(V^*\)</span>)</li>
+</ul>
+<h3 data-number="1.8.4" id="implications"><span
+class="header-section-number">1.8.4</span> 6.4 Implications</h3>
+<p>The power-law exponent depends on both:</p>
+<ul>
+<li>The survival probability <span class="math inline">\(p\)</span> (how
+selective each iteration is, or how much risk participants can
+tolerate)</li>
+<li>The growth factor <span class="math inline">\(\beta\)</span> (how
+much survivors amplify)</li>
+</ul>
+<p>Near criticality (<span class="math inline">\(\beta \approx
+1\)</span>), even modest selection pressure produces heavy tails. Deep
+in the supercritical regime (<span class="math inline">\(\beta \gg
+1\)</span>), the distribution becomes increasingly extreme - a few
+massive winners, many losers.</p>
+<p>This mechanism requires no exotic assumptions: just iterated
+rectification of a Gaussian process with feed-forward of expected
+values. The fat tails emerge from the mathematics itself.</p>
+<hr />
+<h2 data-number="1.9" id="numerical-simulations"><span
+class="header-section-number">1.9</span> 7. Numerical Simulations</h2>
+<p>To validate the theoretical predictions, we simulate a simplified ATM
+model where participants repeatedly bet their entire wealth on an
+at-the-money option with payoff <span class="math inline">\(\max(X,
+0)\)</span> where <span class="math inline">\(X \sim \mathcal{N}(0,
+\sigma w)\)</span>.</p>
+<h3 data-number="1.9.1" id="simulation-setup"><span
+class="header-section-number">1.9.1</span> 7.1 Simulation Setup</h3>
+<p>We simulate <span class="math inline">\(N = 10{,}000{,}000\)</span>
+participants over <span class="math inline">\(T = 15\)</span> periods,
+each starting with wealth <span class="math inline">\(w_0 =
+\$20{,}000\)</span>. At each period, participants in the high-risk game
+receive payoff <span class="math inline">\(\max(X, 0)\)</span> where
+<span class="math inline">\(X \sim \mathcal{N}(0, \sigma w)\)</span>.
+Participants drop out and switch to a safe alternative (10% volatility)
+if their payoff falls below <span class="math inline">\(2.5
+\times\)</span> their current wealth - representing the requirement that
+returns must justify continued risk-taking.</p>
+<p>The model tests volatilities ranging from <span
+class="math inline">\(\sigma = 0.1\)</span> (10%) to <span
+class="math inline">\(\sigma = 4.0\)</span> (400%), spanning the
+critical threshold at <span class="math inline">\(\sigma^* = \sqrt{2\pi}
+\approx 2.507\)</span> (251%).</p>
+<h3 data-number="1.9.2" id="results"><span
+class="header-section-number">1.9.2</span> 7.2 Results</h3>
+<p>Figure 1 shows the rank-wealth distribution (Zipf plot) across all
+volatility regimes on a log-log scale. The transition from curved
+(log-normal) to linear (power-law) behavior is clearly visible as
+volatility crosses the critical threshold. Figure 2 compares the wealth
+distributions in subcritical and supercritical regimes, showing both
+histogram and complementary cumulative distribution function (CCDF)
+representations. Table 1 presents detailed statistics for each
+volatility level.</p>
+<figure>
+<img src="atm_transition.png"
+alt="Phase transition in rank-wealth distribution across volatility regimes. Each colored line represents a different volatility level from \sigma=0.1 (blue) to \sigma=4.0 (red). The critical threshold at \sigma^* \approx 2.507 (thick orange line) marks the transition from log-normal to power-law behavior. Above criticality, the lines become straighter on the log-log plot, indicating power-law tails." />
+<figcaption aria-hidden="true">Phase transition in rank-wealth
+distribution across volatility regimes. Each colored line represents a
+different volatility level from <span
+class="math inline">\(\sigma\)</span>=0.1 (blue) to <span
+class="math inline">\(\sigma\)</span>=4.0 (red). The critical threshold
+at <span class="math inline">\(\sigma^*\)</span> <span
+class="math inline">\(\approx\)</span> 2.507 (thick orange line) marks
+the transition from log-normal to power-law behavior. Above criticality,
+the lines become straighter on the log-log plot, indicating power-law
+tails.</figcaption>
+</figure>
+<figure>
+<img src="regime_comparison.png"
+alt="Comparison of subcritical (\sigma=2.0, blue) vs supercritical (\sigma=3.0, red) wealth distributions. Left: Probability density on log-log scale. Right: Complementary CDF (P(V&gt;v)) showing power-law behavior (straight line) in the supercritical regime." />
+<figcaption aria-hidden="true">Comparison of subcritical (<span
+class="math inline">\(\sigma\)</span>=2.0, blue) vs supercritical (<span
+class="math inline">\(\sigma\)</span>=3.0, red) wealth distributions.
+Left: Probability density on log-log scale. Right: Complementary CDF
+(P(V&gt;v)) showing power-law behavior (straight line) in the
+supercritical regime.</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 10%" />
+<col style="width: 8%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr>
+<th><span class="math inline">\(\sigma\)</span></th>
+<th><span class="math inline">\(\beta\)</span></th>
+<th>Bankrupt</th>
+<th>Heavy Loss</th>
+<th>$2k-20k</th>
+<th>&gt;$20k</th>
+<th>&gt;$50k</th>
+<th>&gt;$100k</th>
+<th>&gt;$1M</th>
+<th>&gt;$10M</th>
+<th>&gt;$100M</th>
+<th>&gt;$1B</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.10</td>
+<td>0.04</td>
+<td>5,229,613</td>
+<td>3,313,805</td>
+<td>1,456,562</td>
+<td>20</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><span class="math inline">\(\infty\)</span></td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>0.20</td>
+<td>5,045,879</td>
+<td>862,558</td>
+<td>3,759,334</td>
+<td>332,229</td>
+<td>4,878</td>
+<td>20</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><span class="math inline">\(\infty\)</span></td>
+</tr>
+<tr>
+<td>1.00</td>
+<td>0.40</td>
+<td>5,054,141</td>
+<td>436,565</td>
+<td>3,093,118</td>
+<td>1,416,176</td>
+<td>134,222</td>
+<td>4,702</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><span class="math inline">\(\infty\)</span></td>
+</tr>
+<tr>
+<td>1.50</td>
+<td>0.60</td>
+<td>5,267,191</td>
+<td>295,832</td>
+<td>2,421,761</td>
+<td>2,015,216</td>
+<td>360,722</td>
+<td>53,688</td>
+<td>134</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><span class="math inline">\(\infty\)</span></td>
+</tr>
+<tr>
+<td>2.00</td>
+<td>0.80</td>
+<td>5,603,627</td>
+<td>225,395</td>
+<td>1,960,344</td>
+<td>2,210,634</td>
+<td>562,968</td>
+<td>158,609</td>
+<td>2,672</td>
+<td>34</td>
+<td>1</td>
+<td>0</td>
+<td>78.6</td>
+</tr>
+<tr>
+<td>2.51</td>
+<td>1.00</td>
+<td>5,957,643</td>
+<td>181,984</td>
+<td>1,632,383</td>
+<td>2,227,990</td>
+<td>707,131</td>
+<td>275,089</td>
+<td>12,076</td>
+<td>553</td>
+<td>17</td>
+<td>1</td>
+<td>21.8</td>
+</tr>
+<tr>
+<td>3.00</td>
+<td>1.20</td>
+<td>6,277,439</td>
+<td>153,424</td>
+<td>1,398,570</td>
+<td>2,170,567</td>
+<td>794,856</td>
+<td>371,871</td>
+<td>28,760</td>
+<td>2,234</td>
+<td>175</td>
+<td>8</td>
+<td>12.9</td>
+</tr>
+<tr>
+<td>3.50</td>
+<td>1.40</td>
+<td>6,564,826</td>
+<td>132,271</td>
+<td>1,217,426</td>
+<td>2,085,477</td>
+<td>845,480</td>
+<td>444,779</td>
+<td>50,506</td>
+<td>5,647</td>
+<td>674</td>
+<td>54</td>
+<td>8.9</td>
+</tr>
+<tr>
+<td>4.00</td>
+<td>1.60</td>
+<td>6,818,493</td>
+<td>116,154</td>
+<td>1,075,393</td>
+<td>1,989,960</td>
+<td>870,073</td>
+<td>497,072</td>
+<td>73,912</td>
+<td>10,648</td>
+<td>1,602</td>
+<td>224</td>
+<td>6.9</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 1:</strong> Simulation results showing wealth
+distribution across volatility regimes. “Bankrupt” = wealth &lt; $100,
+“Heavy Loss” = $100-$2,000, “Ratio” = count($1M+) / count($10M+).</p>
+<h3 data-number="1.9.3" id="key-observations"><span
+class="header-section-number">1.9.3</span> 7.3 Key Observations</h3>
+<p><strong>The Low-Volatility Trap.</strong> At <span
+class="math inline">\(\sigma = 0.1\)</span>, where <span
+class="math inline">\(\beta = 0.04\)</span>, an astonishing 85% of
+participants are either bankrupt or suffer heavy losses. This occurs
+because the expected payoff per period is only <span
+class="math inline">\(0.04w\)</span> - a 96% loss rate per iteration.
+Low volatility provides insufficient upside to compensate for the
+inherent bankruptcy risk of the ATM structure. Zero millionaires emerge
+from 10 million participants.</p>
+<p><strong>Critical Transition.</strong> At <span
+class="math inline">\(\sigma = 2.507 \approx \sigma^*\)</span>, we
+observe <span class="math inline">\(\beta = 1.00\)</span> - the
+break-even point where expected payoff equals current wealth. The ratio
+of millionaires to decamillionaires drops sharply to 21.8, indicating
+the emergence of heavy tails. The first billionaire appears in the
+simulation.</p>
+<p><strong>Supercritical Power-Law.</strong> For <span
+class="math inline">\(\sigma &gt; \sigma^*\)</span>, the ratio
+stabilizes (21.8 → 12.9 → 8.9 → 6.9), the hallmark of power-law behavior
+where the proportion between consecutive magnitude classes becomes
+constant. At <span class="math inline">\(\sigma = 4.0\)</span>, despite
+70% bankruptcy or heavy loss, 224 billionaires emerge - a clear
+demonstration of the few-massive-winners, many-losers distribution
+characteristic of power laws.</p>
+<p><strong>Practical Implication.</strong> The simulation demonstrates
+that all-or-nothing (ATM-style) strategies are catastrophically
+destructive below the critical threshold. If bankruptcy risk is
+unavoidable, one requires <span class="math inline">\(\sigma &gt;
+\sqrt{2\pi}\)</span> to generate compensating upside. This explains why
+venture capital (high volatility, high stakes) exhibits power-law
+returns while conservative leveraged strategies (lower volatility,
+binary outcomes) often lead to ruin without corresponding tail
+gains.</p>
+<hr />
+<h2 data-number="1.10" id="interpretation-and-market-implications"><span
+class="header-section-number">1.10</span> 8. Interpretation and Market
+Implications</h2>
+<h3 data-number="1.10.1" id="three-regimes"><span
+class="header-section-number">1.10.1</span> 8.1 Three Regimes</h3>
+<p>The parameter <span class="math inline">\(\sigma\)</span> relative to
+<span class="math inline">\(\sqrt{2\pi}\)</span> defines three distinct
+regimes:</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 37%" />
+<col style="width: 34%" />
+</colgroup>
+<thead>
+<tr>
+<th>Regime</th>
+<th>Condition</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subcritical</strong></td>
+<td><span class="math inline">\(\sigma &lt; \sqrt{2\pi} \approx
+250.66\%\)</span></td>
+<td>Convergent: Each payoff expected value is lower than previous and
+the total payoff is bounded. Produces log-normal distribution of
+outcomes.</td>
+</tr>
+<tr>
+<td><strong>Critical</strong></td>
+<td><span class="math inline">\(\sigma \approx \sqrt{2\pi}\)</span></td>
+<td>Self-similar: Each layer reproduces the previous. Power-law behavior
+begins emerging as we approach from either direction.</td>
+</tr>
+<tr>
+<td><strong>Supercritical</strong></td>
+<td><span class="math inline">\(\sigma &gt; \sqrt{2\pi}\)</span></td>
+<td>Divergent: Each payoff expected value is higher than previous and
+the total payoff goes to infinity. Produces power-law distribution of
+outcomes.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.10.2" id="volatility-of-options-on-options"><span
+class="header-section-number">1.10.2</span> 8.2 Volatility of Options on
+Options</h3>
+<p>An important real-world consideration: the volatility of an option’s
+value is generally <em>higher</em> than the volatility of the
+underlying. This is due to the convexity (gamma) of the option payoff.
+For a compound option (option on an option), this effect compounds.</p>
+<p>If we denote the volatility of the <span
+class="math inline">\(n\)</span>-th layer as <span
+class="math inline">\(\sigma_n\)</span>, empirically we observe:</p>
+<p><span class="math display">\[\sigma_n &gt; \sigma_{n-1}\]</span></p>
+<p>This means that in practice, iterated option structures tend to
+<em>accelerate</em> toward the supercritical regime. The
+constant-percentage-volatility assumption in our geometric regime is
+thus conservative; real compound structures may diverge faster than our
+model predicts.</p>
+<h3 data-number="1.10.3" id="time-to-criticality"><span
+class="header-section-number">1.10.3</span> 8.3 Time to Criticality</h3>
+<p>In Black-Scholes, the relevant volatility parameter is <span
+class="math inline">\(\sigma\sqrt{T}\)</span>, where <span
+class="math inline">\(\sigma\)</span> is the annualized volatility and
+<span class="math inline">\(T\)</span> is time to expiration in years.
+The critical threshold <span class="math inline">\(\sigma\sqrt{T} =
+\sqrt{2\pi}\)</span> can be rewritten as:</p>
+<p><span class="math display">\[T^* = \frac{2\pi}{\sigma^2}\]</span></p>
+<p>This gives the time horizon at which a given annualized volatility
+reaches criticality:</p>
+<table>
+<thead>
+<tr>
+<th>Annualized Vol <span class="math inline">\(\sigma\)</span></th>
+<th>Time to Criticality <span class="math inline">\(T^*\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10%</td>
+<td>628 years</td>
+</tr>
+<tr>
+<td>20%</td>
+<td>157 years</td>
+</tr>
+<tr>
+<td>50%</td>
+<td>25 years</td>
+</tr>
+<tr>
+<td>100%</td>
+<td>6.3 years</td>
+</tr>
+<tr>
+<td>150%</td>
+<td>2.8 years</td>
+</tr>
+<tr>
+<td>200%</td>
+<td>1.6 years</td>
+</tr>
+<tr>
+<td>250%</td>
+<td>1.0 year</td>
+</tr>
+<tr>
+<td>300%</td>
+<td>8.4 months</td>
+</tr>
+<tr>
+<td>400%</td>
+<td>4.7 months</td>
+</tr>
+<tr>
+<td>500%</td>
+<td>3.0 months</td>
+</tr>
+<tr>
+<td>800%</td>
+<td>1.2 months</td>
+</tr>
+</tbody>
+</table>
+<p>For typical equity volatilities (15-30%), criticality is centuries
+away - irrelevant for any practical instrument. But during crisis
+periods when implied volatility spikes to 100%+, the critical horizon
+shrinks to single-digit years. For meme stocks and distressed names
+exhibiting 400-800% implied volatility, <strong>criticality occurs
+within months</strong>.</p>
+<p>This means a 3-month ATM option on a 500% vol underlying is already
+at the critical regime - its expected payoff structure exhibits the
+self-similar properties described in Section 3.3. A 6-month option on
+the same underlying is supercritical.</p>
+<p><strong>An interesting observation:</strong> The 200-250% volatility
+range, with its 1-1.6 year critical horizon, closely matches the
+expected valuation volatility and funding round timing of venture-backed
+startups. Early-stage startups exhibit annual valuation volatility in
+the 150-250% range, with funding rounds occurring every 12-24 months.
+This places startup equity precisely in the critical regime - perhaps
+not coincidentally, venture capital returns are famously power-law
+distributed rather than log-normally distributed. The framework
+developed here suggests this may be a natural consequence of iterated
+optionality operating near the critical threshold - the consecutive
+high-volatility bets start to accumulate in power-law mode, with
+successful funding stages representing the next iteration of
+“option”.</p>
+<h3 data-number="1.10.4" id="connection-to-real-instruments"><span
+class="header-section-number">1.10.4</span> 8.4 Connection to Real
+Instruments</h3>
+<p>Several existing instruments exhibit related dynamics:</p>
+<ul>
+<li><strong>Compound options</strong> (options on options): Used in
+corporate finance for staged investments and in FX markets.</li>
+<li><strong>Volatility derivatives</strong>: VIX options are options on
+a volatility index, which is itself derived from option prices - a form
+of second-order optionality.</li>
+<li><strong>Leveraged ETFs</strong>: Daily rebalancing creates
+path-dependent compounding effects related to iterated
+expectations.</li>
+<li><strong>Convertible bonds with call provisions</strong>: Multiple
+embedded options create layered optionality.</li>
+</ul>
+<hr />
+<h2 data-number="1.11" id="conclusion"><span
+class="header-section-number">1.11</span> 9. Conclusion</h2>
+<p>We have analyzed the behavior of iterated rectified Gaussian
+expectations, illustrated by the theoretical construct of an infinite
+chain of options-on-options. Our main findings:</p>
+<ol type="1">
+<li><p>A critical volatility threshold exists at <span
+class="math inline">\(\sigma^* = \sqrt{2\pi} \approx 250.66\%\)</span>.
+Below this threshold, the cumulative value of an infinite option chain
+converges; above it, the chain diverges. This is the upper bound of
+stability under the idealized assumption of the system being maximally
+stable.</p></li>
+<li><p>The supercritical regime implies that optionality can exceed
+underlying value. This is practically relevant during market stress
+events when implied volatilities spike above 250%.</p></li>
+<li><p>Real compound structures tend toward supercriticality because
+option volatility exceeds underlying volatility due to convexity
+effects. Real-world volatility amplification, leverage, or imperfect
+pricing would result in a lower critical bound.</p></li>
+</ol>
+<p>The threshold <span class="math inline">\(\sigma^* =
+\sqrt{2\pi}\)</span> emerges purely from the geometry of Gaussian
+rectification - a non-obvious boundary that separates fundamentally
+different economic regimes. Whether anyone should actually construct an
+infinite derivative tower remains, we maintain, inadvisable. But at
+least we now know where it would break.</p>
+<p>One might wonder if this model could help in predicting instability
+in less exotic cases. Could black swans, fat tails, unexpected VC
+returns, and volatility smiles have been predicted by feeding the random
+walk back into itself and checking if it converges?</p>
+<p><strong>A final observation:</strong> While literal towers of
+derivatives-on-derivatives are rare, our mathematical framework requires
+a much weaker assumption - merely that expected returns propagate
+through some iterative structure. Many common financial arrangements
+satisfy this condition without being explicit derivative chains: loans
+and credit facilities (where the borrower’s ability to repay depends on
+asset values), margin accounts and leveraged positions (where
+maintenance requirements create recursive dependencies), and tightly
+coupled instrument prices (where one instrument’s value serves as
+collateral or reference for another). The interaction of these
+structures during stress events - when correlations spike and
+volatilities exceed normal ranges - may exhibit dynamics similar to
+those analyzed here, even without any formal options being written.</p>
+<p>Furthermore, the framework does not require that all layers of the
+derivative structure exist simultaneously. Consecutive dependent
+instruments unfolding over time - where each stage’s payout becomes the
+underlying for the next - satisfy the same mathematical recursion. The
+critical threshold we identify may thus be relevant not just for exotic
+derivatives, but for understanding systemic behavior in leveraged,
+interconnected financial systems evolving through time.</p>
+<hr />
+<h2 data-number="1.12" id="appendix-notation-summary"><span
+class="header-section-number">1.12</span> Appendix: Notation
+Summary</h2>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(\Phi(z)\)</span></td>
+<td>Standard normal CDF</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\phi(z)\)</span></td>
+<td>Standard normal PDF</td>
+</tr>
+<tr>
+<td><span class="math inline">\(g(z)\)</span></td>
+<td><span class="math inline">\(z \int_{-\infty}^{z} e^{-t^2/2} dt +
+e^{-z^2/2}\)</span>, unnormalized expected rectified value</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\mu_n\)</span></td>
+<td>Mean at stage <span class="math inline">\(n\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(\sigma_n\)</span></td>
+<td>Volatility at iteration <span class="math inline">\(n\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(\beta\)</span></td>
+<td><span class="math inline">\(\sigma/\sqrt{2\pi}\)</span>, geometric
+ratio</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\sigma^*\)</span></td>
+<td><span class="math inline">\(\sqrt{2\pi} \approx 2.5066 \approx
+250.66\%\)</span>, critical volatility</td>
+</tr>
+<tr>
+<td><span class="math inline">\(k\)</span></td>
+<td>Risk tolerance in standard deviations</td>
+</tr>
+<tr>
+<td><span class="math inline">\(p\)</span></td>
+<td>Survival probability per stage, <span
+class="math inline">\(\Phi(k)\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(\alpha\)</span></td>
+<td>Power-law exponent, <span
+class="math inline">\(-\log(p)/\log(\beta)\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(V^*\)</span></td>
+<td>V* Distribution: <span class="math inline">\(P(V &gt; v) \propto
+\Phi(k)^{\frac{\log v}{\log(\sigma/\sqrt{2\pi})}}\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.13" id="references"><span
+class="header-section-number">1.13</span> References</h2>
+<p>Black, F., &amp; Scholes, M. (1973). The pricing of options and
+corporate liabilities. <em>Journal of Political Economy</em>, 81(3),
+637-654.</p>
+<p>Geske, R. (1979). The valuation of compound options. <em>Journal of
+Financial Economics</em>, 7(1), 63-81.</p>
+<p>Merton, R. C. (1973). Theory of rational option pricing. <em>Bell
+Journal of Economics and Management Science</em>, 4(1), 141-183.</p>
+</body>
+</html>
