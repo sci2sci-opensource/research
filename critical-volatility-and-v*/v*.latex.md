@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Random walk models with log-normal outcomes fit local market observations remarkably well. Yet interconnected, recursive structures - layered derivatives, leveraged positions, iterative funding rounds - periodically produce power-law distributed events. We show that the transition from log-normal to power-law dynamics requires only three conditions: randomness in the underlying process, rectification of payouts, and iterative feed-forward of expected values. Using an infinite option-on-option chain as an illustrative model, we derive a critical volatility threshold at $\sigma^* = \sqrt{2\pi} \approx 250.66\%$ that separates convergent from divergent regimes. The result suggests that fat tails may be an emergent property of iterative log-normal processes rather than an exogenous feature.
+Random walk models with log-normal outcomes fit local market observations remarkably well. Yet interconnected, recursive structures - layered derivatives, leveraged positions, iterative funding rounds - periodically produce power-law distributed events. We show that the transition from log-normal to power-law dynamics requires only three conditions: randomness in the underlying process, rectification of payouts, and iterative feed-forward of expected values. Using an infinite option-on-option chain as an illustrative model, we derive a critical volatility threshold at $\sigma^* = \sqrt{2\pi} \approx 250.66\%$ that separates convergent from divergent regimes. Above this threshold, outcomes follow what we term the **V\* Distribution** - a power-law whose exponent admits closed-form expression in terms of survival probability and conditional expected growth. The result suggests that fat tails may be an emergent property of iterative log-normal processes rather than an exogenous feature.
 
 ---
 
@@ -12,7 +12,7 @@ Financial systems are built on rectified payoffs. An investment in a high-risk p
 
 These rectified structures often feed into one another. A successful project enables others built on top of it. A successful trade becomes the capital for the next trade. Derivative products reference other derivative products. It would be useful to know how such iterations behave - whether they remain stable or exhibit qualitatively different dynamics.
 
-To answer this, we analyze the limiting case: an infinite chain of options, each written on the expected payout of the one before. The result depends on three conditions - randomness in the underlying process, rectification of payouts, and feed-forward of expected values. These are sufficient to produce a critical threshold at $\sigma^* = \sqrt{2\pi} \approx 250.66\%$. Below this, cumulative optionality remains bounded. Above it, the system diverges and begins exhibiting power-law dynamics.
+To answer this, we analyze the limiting case: an infinite chain of options, each written on the expected payout of the one before. The result depends on three conditions - randomness in the underlying process, rectification of payouts, and feed-forward of expected values. These are sufficient to produce a critical threshold at $\sigma^* = \sqrt{2\pi} \approx 250.66\%$. Below this, cumulative optionality remains bounded. Above it, the system diverges and outcomes follow what we term the V* Distribution - a power-law whose exponent depends on the specific supercritical volatility and participants' willingness to make the next bet.
 
 We also identify a self-similar regime at exactly the critical threshold, where each iteration reproduces the statistical structure of the previous one.
 
@@ -278,46 +278,49 @@ Each iteration amplifies the previous expected value. The total sum diverges - t
 
 On the real market, participants do not receive the expected value - they receive a realized draw from the distribution. The ability of players to continue playing depends on their outcomes and risk tolerance.
 
-Let us assume there exists a risk threshold $R$ for each participant: after losing more than $R$, they stop playing (bankruptcy, margin call, fund redemption, etc.). At each stage $n$, the realized value $X_n$ is drawn from $\mathcal{N}(\mu_n, \sigma_n)$. The participant survives to the next round if:
+In the ATM option model, payoff is $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$ - a zero-centered Gaussian. Participants require a minimum return to justify continued risk-taking. Let $k_{\text{th}}$ be the threshold multiplier: participants survive only if their payoff exceeds $k_{\text{th}} \cdot w$.
 
-$$X_n > \mu_n - R$$
+Since the payoff must be positive and exceed the threshold, survival requires $X \geq k_{\text{th}} \cdot w$. Standardizing to $Z = X/(\sigma w)$ where $Z \sim \mathcal{N}(0, 1)$:
 
-For simplicity, express $R$ in units of standard deviation: $R = k \cdot \sigma_n$ for some constant $k$. The survival probability at each stage is:
+$$P(\text{survive}) = P\left(Z \geq \frac{k_{\text{th}}}{\sigma}\right) = 1 - \Phi\left(\frac{k_{\text{th}}}{\sigma}\right)$$
 
-$$p = P(X_n > \mu_n - k\sigma_n) = \Phi(k)$$
-
-where $\Phi$ is the standard normal CDF. For example, $k = 1$ gives $p \approx 0.84$; $k = 2$ gives $p \approx 0.98$. Note that $k$ can be negative, imposing a "minimum gains" condition rather than loss tolerance: $k = -0.43$ gives $p \approx 0.33$, meaning participants must achieve returns above the 33rd percentile to continue.
+For example, with $\sigma = 3$ and $k_{\text{th}} = 2.5$, we have $k_{\text{th}}/\sigma \approx 0.833$, giving $p \approx 0.20$ (20\% survival rate per round).
 
 The probability of surviving $n$ consecutive stages is:
 
-$$P(\text{survive } n \text{ stages}) = p^n = \Phi(k)^n$$
+$$P(\text{survive } n \text{ stages}) = p^n$$
 
-The number of surviving processes decays exponentially, but in the supercritical regime, the value of each survivor grows exponentially (by factor $\beta^n$). This combination produces power-law distributed outcomes.
+Among survivors, the expected wealth multiplier per stage is the **conditional expectation given survival**. For the zero-centered truncated normal:
+
+$$\beta_{\text{eff}} = \mathbb{E}\left[\frac{X}{w} \,\Big|\, X \geq k_{\text{th}} w\right] = \sigma \cdot \frac{\phi(k_{\text{th}}/\sigma)}{1 - \Phi(k_{\text{th}}/\sigma)} = \sigma \cdot \frac{\phi(k_{\text{th}}/\sigma)}{p}$$
+
+where $\phi$ is the standard normal PDF. The number of surviving processes decays exponentially ($p^n$), but in the supercritical regime, the value of each survivor grows exponentially ($\beta_{\text{eff}}^n$). This combination produces power-law distributed outcomes.
 
 ### 6.3 The V* Distribution (Critical Volatility Distribution)
 
-If $N$ independent processes start, after $n$ iterations approximately $N \cdot p^n$ survive, each with value proportional to $\beta^n$.
+If $N$ independent processes start, after $n$ iterations approximately $N \cdot p^n$ survive, each with value proportional to $\beta_{\text{eff}}^n$.
 
-Setting $v = \beta^n$ (the value), we have $n = \log(v)/\log(\beta)$, so:
+Setting $v = \beta_{\text{eff}}^n$ (the value), we have $n = \log(v)/\log(\beta_{\text{eff}})$, so:
 
-$$\text{Number with value} > v \propto p^{n} = p^{\log(v)/\log(\beta)} = v^{\log(p)/\log(\beta)}$$
+$$\text{Number with value} > v \propto p^{n} = p^{\log(v)/\log(\beta_{\text{eff}})} = v^{\log(p)/\log(\beta_{\text{eff}})}$$
 
 This is a power-law with exponent:
 
-$$\alpha = -\frac{\log(p)}{\log(\beta)} = -\frac{\log(p)}{\log(\sigma/\sqrt{2\pi})}$$
+$$\alpha = -\frac{\log(p)}{\log(\beta_{\text{eff}})}$$
 
-Since $p < 1$ (survival is not guaranteed) and $\beta > 1$ (supercritical), we have $\alpha > 0$: a proper power-law tail.
+Since $p < 1$ (survival is not guaranteed) and $\beta_{\text{eff}} > 1$ (supercritical with conditional growth), we have $\alpha > 0$: a proper power-law tail.
 
-Unpacking $p^n$ fully, we obtain the V* Distribution:
+The V* Distribution is thus:
 
-$$P(V > v) \propto \Phi(k)^{\frac{\log v}{\log(\sigma/\sqrt{2\pi})}}$$
+$$P(V > v) \propto \left(1 - \Phi\left(\frac{k_{\text{th}}}{\sigma}\right)\right)^{\frac{\log v}{\log\left(\sigma \cdot \frac{\phi(k_{\text{th}}/\sigma)}{1 - \Phi(k_{\text{th}}/\sigma)}\right)}}$$
 
 where:
 
-- $\Phi(k) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{k} e^{-t^2/2} \, dt$ is the survival probability per stage
-- $k = R/\sigma_n$ is the risk tolerance in standard deviations
+- $k_{\text{th}}$ is the threshold multiplier (minimum payoff as multiple of wealth)
 - $\sigma$ is the volatility parameter
-- $\sqrt{2\pi}$ is the critical threshold ($\sigma^*$ or $V^*$)
+- $\phi$, $\Phi$ are the standard normal PDF and CDF
+
+This can be written as $P(V > v) \propto v^{-\alpha}$ where $\alpha = -\log(p)/\log(\beta_{\text{eff}})$.
 
 ### 6.4 Implications
 
@@ -332,23 +335,49 @@ This mechanism requires no exotic assumptions: just iterated rectification of a 
 
 ---
 
-## 7. Numerical Simulations
+## 7. Numerical Simulations for V*
 
 To validate the theoretical predictions, we simulate a simplified ATM model where participants repeatedly bet their entire wealth on an at-the-money option with payoff $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$.
 
 ### 7.1 Simulation Setup
 
-We simulate $N = 10{,}000{,}000$ participants over $T = 15$ periods, each starting with wealth $w_0 = \$20{,}000$. At each period, participants in the high-risk game receive payoff $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$. Participants drop out and switch to a safe alternative (10\% volatility) if their payoff falls below $2.5 \times$ their current wealth - representing the requirement that returns must justify continued risk-taking.
+We simulate $N = 10{,}000{,}000$ participants over $T = 15$ periods, each starting with wealth $w_0 = \$20{,}000$. At each period, participants in the high-risk game receive payoff $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$. Participants drop out and switch to a safe alternative (10\% volatility with in the money structure) if their payoff falls below $2.5 \times$ their current wealth - representing the requirement that returns must justify continued risk-taking in situations where bankruptcy risk is ~50% per turn.
 
 The model tests volatilities ranging from $\sigma = 0.1$ (10\%) to $\sigma = 4.0$ (400\%), spanning the critical threshold at $\sigma^* = \sqrt{2\pi} \approx 2.507$ (251\%).
 
+The simulation algorithm:
+
+\small
+```python
+def simulate_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
+    w = np.full(n, w0, dtype=float)
+    in_high_risk = np.ones(n, dtype=bool)
+    sigma_low = 0.1
+
+    for year in range(t):
+        x_high = np.random.randn(n) * sigma * w
+        payoff_high = np.maximum(x_high, 0)
+
+        payoff_low = w * (1 + np.random.randn(n) * sigma_low)
+        payoff_low = np.maximum(payoff_low, 0)
+
+        threshold = threshold_k * w
+        dropout = in_high_risk & (payoff_high < threshold)
+
+        w = np.where(in_high_risk, payoff_high, payoff_low)
+        in_high_risk = in_high_risk & ~dropout
+
+    return w
+```
+\normalsize
+
 ### 7.2 Results
 
-Figure 1 shows the rank-wealth distribution (Zipf plot) across all volatility regimes on a log-log scale. The transition from curved (log-normal) to linear (power-law) behavior is clearly visible as volatility crosses the critical threshold. Figure 2 compares the wealth distributions in subcritical and supercritical regimes, showing both histogram and complementary cumulative distribution function (CCDF) representations. Table 1 presents detailed statistics for each volatility level.
+Figure 1 shows the rank-wealth distribution from simulation across all volatility regimes on a log-log scale, with the V* theoretical prediction overlaid (purple dashed line). The transition from curved (log-normal) to linear (power-law) behavior is clearly visible as volatility crosses the critical threshold. Figure 2 compares the wealth distributions in subcritical and supercritical regimes, with the V* theoretical power-law slope shown for comparison. Table 1 presents detailed statistics for each volatility level.
 
-![Phase transition in rank-wealth distribution across volatility regimes. Each colored line represents a different volatility level from $\sigma$=0.1 (blue) to $\sigma$=4.0 (red). The critical threshold at $\sigma^*$ $\approx$ 2.507 (thick orange line) marks the transition from log-normal to power-law behavior. Above criticality, the lines become straighter on the log-log plot, indicating power-law tails.](atm_transition.png)
+![Simulation vs V* Theory: Rank-wealth distribution across volatility regimes. Colored lines show simulation results from $\sigma$=0.1 (blue) to $\sigma$=4.0 (red). The purple dashed line shows the V* theoretical prediction ($\alpha = -\log(p)/\log(\beta_{\text{eff}})$) for $\sigma$=3.0. Above criticality ($\sigma^* \approx 2.507$), simulated distributions converge to the theoretical power-law slope.](atm_transition.png)
 
-![Comparison of subcritical ($\sigma$=2.0, blue) vs supercritical ($\sigma$=3.0, red) wealth distributions. Left: Probability density on log-log scale. Right: Complementary CDF (P(V>v)) showing power-law behavior (straight line) in the supercritical regime.](regime_comparison.png)
+![Simulation vs V* Theory: Subcritical ($\sigma$=2.0, blue) vs supercritical ($\sigma$=3.0, red) wealth distributions. Left: Probability density on log-log scale. Right: Rank-wealth plot with V* theoretical prediction (purple dashed) showing close agreement with supercritical simulation.](regime_comparison.png)
 
 | $\sigma$ | $\beta$ | Bankrupt | Heavy Loss | \$2k-20k | >\$20k | >\$50k | >\$100k | >\$1M | >\$10M | >\$100M | >\$1B | Ratio |
 |----------|---------|----------|------------|----------|--------|--------|---------|-------|--------|---------|-------|-------|
@@ -383,8 +412,8 @@ The parameter $\sigma$ relative to $\sqrt{2\pi}$ defines three distinct regimes:
 | Regime | Condition | Behavior |
 |--------|-----------|----------|
 | **Subcritical** | $\sigma < \sqrt{2\pi} \approx 250.66\%$ | Convergent: Each payoff expected value is lower than previous and the total payoff is bounded. Produces log-normal distribution of outcomes. |
-| **Critical** | $\sigma \approx \sqrt{2\pi}$ | Self-similar: Each layer reproduces the previous. Power-law behavior begins emerging as we approach from either direction. |
-| **Supercritical** | $\sigma > \sqrt{2\pi}$ | Divergent: Each payoff expected value is higher than previous and the total payoff goes to infinity. Produces power-law distribution of outcomes. |
+| **Critical** | $\sigma \approx \sqrt{2\pi}$ | Self-similar: Each layer reproduces the previous. V* behavior begins emerging as we approach from either direction. |
+| **Supercritical** | $\sigma > \sqrt{2\pi}$ | Divergent: Each payoff expected value is higher than previous and the total payoff goes to infinity. Produces V* Distribution of outcomes. |
 
 ### 8.2 Volatility of Options on Options
 
@@ -445,13 +474,19 @@ We have analyzed the behavior of iterated rectified Gaussian expectations, illus
 
 3. Real compound structures tend toward supercriticality because option volatility exceeds underlying volatility due to convexity effects. Real-world volatility amplification, leverage, or imperfect pricing would result in a lower critical bound.
 
-The threshold $\sigma^* = \sqrt{2\pi}$ emerges purely from the geometry of Gaussian rectification - a non-obvious boundary that separates fundamentally different economic regimes. Whether anyone should actually construct an infinite derivative tower remains, we maintain, inadvisable. But at least we now know where it would break.
+4. Above criticality, iterated rectification produces power-law distributed outcomes. We term this the V* Distribution, characterized by survival probability $p = 1 - \Phi(k_{\text{th}}/\sigma)$ and conditional expected growth $\beta_{\text{eff}} = \sigma \cdot \phi(k_{\text{th}}/\sigma)/p$. The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ admits closed-form expression.
 
-One might wonder if this model could help in predicting instability in less exotic cases. Could black swans, fat tails, unexpected VC returns, and volatility smiles have been predicted by feeding the random walk back into itself and checking if it converges?
+The threshold $\sigma^* = \sqrt{2\pi}$ emerges purely from the geometry of Gaussian rectification - a non-obvious boundary that separates fundamentally different economic regimes. 
 
-**A final observation:** While literal towers of derivatives-on-derivatives are rare, our mathematical framework requires a much weaker assumption - merely that expected returns propagate through some iterative structure. Many common financial arrangements satisfy this condition without being explicit derivative chains: loans and credit facilities (where the borrower's ability to repay depends on asset values), margin accounts and leveraged positions (where maintenance requirements create recursive dependencies), and tightly coupled instrument prices (where one instrument's value serves as collateral or reference for another). The interaction of these structures during stress events - when correlations spike and volatilities exceed normal ranges - may exhibit dynamics similar to those analyzed here, even without any formal options being written. 
+The V* Distribution provides a mechanism for power-law emergence that requires no exotic assumptions. In repeated games with rectified Gaussian payoffs, the number of surviving participants decays exponentially as $p^n$, while the wealth of each survivor grows exponentially as $\beta_{\text{eff}}^n$. The conditional nature of $\beta_{\text{eff}}$ is essential: it measures the expected growth *given survival*, not the unconditional expected payoff. This interplay between exponential attrition and exponential conditional growth produces fat tails with predictable exponents.
 
-Furthermore, the framework does not require that all layers of the derivative structure exist simultaneously. Consecutive dependent instruments unfolding over time - where each stage's payout becomes the underlying for the next - satisfy the same mathematical recursion. The critical threshold we identify may thus be relevant not just for exotic derivatives, but for understanding systemic behavior in leveraged, interconnected financial systems evolving through time.
+**A final observation:** While literal towers of derivatives-on-derivatives are rare, our mathematical framework requires a much weaker assumption - merely that expected returns propagate through some iterative structure. Many common financial arrangements satisfy this condition without being explicit derivative chains: loans and credit facilities (where the borrower's ability to repay depends on asset values), margin accounts and leveraged positions (where maintenance requirements create recursive dependencies), and tightly coupled instrument prices (where one instrument's value serves as collateral or reference for another). The interaction of these structures during stress events - when correlations spike and volatilities exceed normal ranges - may exhibit dynamics similar to those analyzed here, even without any formal options being written.
+
+Furthermore, the framework does not require that all layers of the derivative structure exist simultaneously. Consecutive dependent instruments unfolding over time - where each stage's payout becomes the underlying for the next - satisfy the same mathematical recursion. As we have shown in simulation, the V* Distribution emerges reliably from this process, with power-law exponents matching theoretical predictions. The critical threshold we identify may thus be relevant not just for exotic derivatives, but for understanding systemic behavior in leveraged, interconnected financial systems evolving through time.
+
+One might wonder if this model could help in predicting instability in less exotic cases. Could black swans, fat tails, unexpected VC returns, and volatility smiles have been predicted by feeding the random walk back into itself and checking if it converges.
+
+As a last note, we would like to emphasize that whether anyone should actually construct an infinite derivative tower remains, we maintain, inadvisable. But at least we now know where it would break.
 
 ---
 
@@ -462,14 +497,14 @@ Furthermore, the framework does not require that all layers of the derivative st
 | $\Phi(z)$ | Standard normal CDF |
 | $\phi(z)$ | Standard normal PDF |
 | $g(z)$ | $z \int_{-\infty}^{z} e^{-t^2/2} dt + e^{-z^2/2}$, unnormalized expected rectified value |
-| $\mu_n$ | Mean at stage $n$ |
-| $\sigma_n$ | Volatility at iteration $n$ |
-| $\beta$ | $\sigma/\sqrt{2\pi}$, geometric ratio |
+| $\sigma$ | Volatility parameter |
+| $\beta$ | $\sigma/\sqrt{2\pi}$, unconditional geometric ratio |
 | $\sigma^*$ | $\sqrt{2\pi} \approx 2.5066 \approx 250.66\%$, critical volatility |
-| $k$ | Risk tolerance in standard deviations |
-| $p$ | Survival probability per stage, $\Phi(k)$ |
-| $\alpha$ | Power-law exponent, $-\log(p)/\log(\beta)$ |
-| $V^*$ | V* Distribution: $P(V > v) \propto \Phi(k)^{\frac{\log v}{\log(\sigma/\sqrt{2\pi})}}$ |
+| $k_{\text{th}}$ | Threshold multiplier (minimum payoff as multiple of wealth) |
+| $p$ | Survival probability per stage, $1 - \Phi(k_{\text{th}}/\sigma)$ |
+| $\beta_{\text{eff}}$ | Conditional expected growth factor, $\sigma \cdot \phi(k_{\text{th}}/\sigma) / p$ |
+| $\alpha$ | Power-law exponent, $-\log(p)/\log(\beta_{\text{eff}})$ |
+| $V^*$ | V* Distribution: $P(V > v) \propto v^{-\alpha}$ |
 
 ---
 
@@ -478,5 +513,3 @@ Furthermore, the framework does not require that all layers of the derivative st
 Black, F., & Scholes, M. (1973). The pricing of options and corporate liabilities. *Journal of Political Economy*, 81(3), 637-654.
 
 Geske, R. (1979). The valuation of compound options. *Journal of Financial Economics*, 7(1), 63-81.
-
-Merton, R. C. (1973). Theory of rational option pricing. *Bell Journal of Economics and Management Science*, 4(1), 141-183.

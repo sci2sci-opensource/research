@@ -1,11 +1,12 @@
 
 \usepackage{longtable}
-\usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{lscape}
 \usepackage{etoolbox}
 \usepackage{float}
-\AtBeginEnvironment{longtable}{\tiny\setlength{\tabcolsep}{2pt}}
+\usepackage{array}
+\usepackage{booktabs}
+\AtBeginEnvironment{longtable}{\tiny\setlength{\tabcolsep}{2pt}\renewcommand{\arraystretch}{2.5}}
 \setlength{\LTpre}{1em}
 \setlength{\LTpost}{1em}
 \providecommand{\tightlist}{%

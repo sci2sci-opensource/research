@@ -102,12 +102,13 @@ def compile_single_column(input_file='v*.latex.md', output_file='v*-paper-single
     # Create LaTeX header for better table and list handling
     latex_header = r"""
 \usepackage{longtable}
-\usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{lscape}
 \usepackage{etoolbox}
 \usepackage{float}
-\AtBeginEnvironment{longtable}{\tiny\setlength{\tabcolsep}{2pt}}
+\usepackage{array}
+\usepackage{booktabs}
+\AtBeginEnvironment{longtable}{\tiny\setlength{\tabcolsep}{2pt}\renewcommand{\arraystretch}{2.5}}
 \setlength{\LTpre}{1em}
 \setlength{\LTpost}{1em}
 \providecommand{\tightlist}{%
@@ -133,12 +134,14 @@ def compile_single_column(input_file='v*.latex.md', output_file='v*-paper-single
         '-o', output_file,
         '--pdf-engine=pdflatex',
         '--lua-filter=pagebreak-filter.lua',
+        '--lua-filter=bold-headers-filter.lua',
         '--toc',
         '--toc-depth=2',
         '-V', 'geometry:margin=1in',
         '-V', 'fontsize=11pt',
         '-V', 'documentclass=article',
         '-V', 'pagestyle=plain',
+        '-V', 'tables=yes',
         '-H', 'latex-header.tex',
         '--variable', 'classoption=openany',
         '--metadata', 'title=Critical Volatility Threshold for Log-Normal to Power-Law Transition',

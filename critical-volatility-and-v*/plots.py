@@ -6,6 +6,46 @@ Demonstrates the phase transition at σ* = √(2π) ≈ 2.507
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
+from scipy.stats import norm
+
+
+def vstar_theory(sigma, threshold_k):
+    """
+    Calculate V* distribution theoretical predictions.
+
+    Args:
+        sigma: Volatility parameter
+        threshold_k: Dropout threshold - need payoff >= threshold_k * w to survive
+
+    Returns:
+        dict with beta, p, alpha, and other theoretical values
+    """
+    critical = np.sqrt(2 * np.pi)
+    # Convert threshold to standard deviations: need X >= threshold_k*w where X ~ N(0, sigma*w)
+    # Standardizing: Z >= threshold_k/sigma where Z ~ N(0,1)
+    k = threshold_k / sigma
+    # Survival probability: P(Z >= k) = 1 - Φ(k)
+    p = 1 - norm.cdf(k)
+
+    # Conditional expected growth: E[X/w | X >= threshold_k*w] where X ~ N(0, sigma*w)
+    # = sigma * E[Z | Z >= k] where Z ~ N(0,1)
+    # = sigma * phi(k) / (1 - Phi(k))
+    phi_k = norm.pdf(k)  # φ(k)
+    beta_effective = sigma * phi_k / p  # E[payoff/w | survived]
+
+    # Power-law exponent
+    alpha = -np.log(p) / np.log(beta_effective)
+
+    return {
+        'sigma': sigma,
+        'threshold_k': threshold_k,
+        'k': k,
+        'critical': critical,
+        'beta_unconditional': sigma / critical,
+        'beta_effective': beta_effective,
+        'p': p,
+        'alpha': alpha
+    }
 
 
 def simulate_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
@@ -129,6 +169,13 @@ def plot_transition():
     ax.axhline(1e6, color='gray', linestyle=':', alpha=1, linewidth=1, label='$1M')
     ax.axhline(1e9, color='green', linestyle=':', alpha=1, linewidth=2, label='$1B')
 
+    # Add V* theoretical line for sigma=3, threshold_k=2.5
+    theory = vstar_theory(sigma=3.0, threshold_k=2.5)
+    ranks_vstar = np.logspace(0, 6, 100)
+    wealth_vstar = 1e10 / (ranks_vstar ** (1/theory['alpha']))
+    ax.loglog(ranks_vstar, wealth_vstar, 'purple', linestyle='--', linewidth=3, alpha=0.8,
+             label=f'V* Theory σ=3.0 (k={theory["k"]:.2f}, α={theory["alpha"]:.2f})')
+
     # Add Pareto reference
     ranks_ref = np.logspace(0, 7, 100)
     alpha_p = 1.5
@@ -205,6 +252,13 @@ def plot_single_regime_comparison():
     ax2.loglog(ranks_sub[idx_sub], sorted_sub[idx_sub], 'b.', markersize=2, alpha=0.5, label='Subcritical σ=1.0')
     ax2.loglog(ranks_super[idx_super], sorted_super[idx_super], 'r.', markersize=2, alpha=0.5, label='Supercritical σ=3.0')
 
+    # Add V* theoretical line for sigma=3, threshold_k=2.5
+    theory = vstar_theory(sigma=3.0, threshold_k=2.5)
+    ranks_vstar = np.logspace(0, 6, 100)
+    wealth_vstar = 1e10 / (ranks_vstar ** (1/theory['alpha']))
+    ax2.loglog(ranks_vstar, wealth_vstar, 'purple', linestyle='--', linewidth=3, alpha=0.8,
+             label=f'V* Theory σ=3.0 (k={theory["k"]:.2f}, α={theory["alpha"]:.2f})')
+
     # Add Pareto reference line
     ranks_ref = np.logspace(0, 7, 100)
     alpha_p = 1.5
@@ -233,6 +287,20 @@ def main():
     print("Below σ*: Log-normal distribution (convergent)")
     print("Above σ*: Power-law distribution (divergent)")
     print("="*70)
+
+    # Print theoretical predictions first
+    print("\n" + "="*90)
+    print("V* THEORETICAL PREDICTIONS (threshold_k = 2.5)")
+    print("="*90)
+    print(f"{'σ':>6} {'k (std)':>10} {'p':>10} {'β_eff':>10} {'α':>10}")
+    print("-" * 90)
+
+    test_sigmas = [2.507, 3.0, 3.5, 4.0]
+    for sig in test_sigmas:
+        theory = vstar_theory(sig, threshold_k=2.5)
+        print(f"{sig:>6.2f} {theory['k']:>10.3f} {theory['p']:>10.4f} {theory['beta_effective']:>10.4f} {theory['alpha']:>10.4f}")
+
+    print("="*90 + "\n")
 
     # Main transition plot
     plot_transition()

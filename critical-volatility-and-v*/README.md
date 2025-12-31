@@ -54,21 +54,10 @@ The paper demonstrates a critical volatility threshold at **σ* = √(2π) ≈ 2
 - **At σ***: Self-similar, critical transition
 - **Above σ***: Power-law outcomes, divergent behavior
 
-## Simulation Results Summary
-
-From 10M participants over 15 periods starting with $20k:
-
-| σ | β | Bankruptcies | Billionaires | Regime |
-|---|---|--------------|--------------|--------|
-| 0.1 | 0.04 | 5.2M | 0 | Subcritical (destruction) |
-| 2.507 | 1.00 | 6.0M | 1 | Critical (transition) |
-| 4.0 | 1.60 | 6.8M | 224 | Supercritical (power-law) |
-
-**Key insight**: Low-volatility ATM strategies are catastrophic. If bankruptcy risk exists, you need σ > √(2π) for compensating upside.
-
 ## License
 
-MIT
+- Paper: CC-BY 4.0 (cite as: Kremnev, V. (2025). Critical Volatility Threshold for Log-Normal to Power-Law Transition)
+- Code: Apache 2.0 as stated in LICENSE
 
 ## Citation
 
