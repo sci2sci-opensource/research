@@ -508,6 +508,12 @@ As a last note, we would like to emphasize that whether anyone should actually c
 
 ---
 
+## Code Availability
+
+Simulation code and supplementary materials are available at: [github.com/sci2sci-opensource/research](https://github.com/sci2sci-opensource/research/tree/master/critical-volatility-and-v*)
+
+---
+
 ## References
 
 Black, F., & Scholes, M. (1973). The pricing of options and corporate liabilities. *Journal of Political Economy*, 81(3), 637-654.
