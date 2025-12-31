@@ -484,7 +484,7 @@ The V* Distribution provides a mechanism for power-law emergence that requires n
 
 Furthermore, the framework does not require that all layers of the derivative structure exist simultaneously. Consecutive dependent instruments unfolding over time - where each stage's payout becomes the underlying for the next - satisfy the same mathematical recursion. As we have shown in simulation, the V* Distribution emerges reliably from this process, with power-law exponents matching theoretical predictions. The critical threshold we identify may thus be relevant not just for exotic derivatives, but for understanding systemic behavior in leveraged, interconnected financial systems evolving through time.
 
-One might wonder if this model could help in predicting instability in less exotic cases. Could black swans, fat tails, unexpected VC returns, and volatility smiles have been predicted by feeding the random walk back into itself and checking if it converges.
+One might wonder if this model could help in predicting instability in less exotic cases. Could black swans, fat tails, unexpected VC returns, and volatility smiles have been predicted by feeding the random walk back into itself and checking if it converges?
 
 As a last note, we would like to emphasize that whether anyone should actually construct an infinite derivative tower remains, we maintain, inadvisable. But at least we now know where it would break.
 
