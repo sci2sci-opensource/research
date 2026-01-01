@@ -344,9 +344,9 @@ This can be written as $P(V > v) \propto v^{-\alpha}$ where $\alpha = -\log(p)/\
 
 The survival condition in Section 6.2 requires $X \geq k_{\text{th}} \cdot w$, where $X$ is the underlying return (before rectification) and $k_{\text{th}}$ is the threshold multiplier. While the payoff remains $\max(X, 0)$, the survival condition is evaluated on $X$ itself.
 
-For $k_{\text{th}} > 0$, participants require positive returns above a threshold—a natural constraint for investors seeking real gains. For $k_{\text{th}} = 0$, participants continue if $X > 0$; the option paid something.
+For $k_{\text{th}} > 0$, participants require positive returns above a threshold - a natural constraint for investors seeking real gains. For $k_{\text{th}} = 0$, participants continue if $X > 0$; the option paid something.
 
-Mathematically, nothing prevents $k_{\text{th}} < 0$. This models a different game: participants accept losses to their wealth to continue playing. If $X = -0.5w$, the option pays zero, but a participant with $k_{\text{th}} = -1$ survives—they absorb the loss from reserves and enter the next round.
+Mathematically, nothing prevents $k_{\text{th}} < 0$. This models a different game: participants accept losses to their wealth to continue playing. If $X = -0.5w$, the option pays zero, but a participant with $k_{\text{th}} = -1$ survives - they absorb the loss from reserves and enter the next round.
 
 This is no longer option-like behavior. With negative thresholds, participants have linear exposure to losses up to $|k_{\text{th}}| \cdot w$. We call this regime **At The Value (ATV)**: participants commit to continue through adverse outcomes, accepting wealth destruction for the chance to remain in the game.
 
@@ -390,7 +390,7 @@ It is important to distinguish two phenomena that the framework reveals.
 - The number of surviving participants decays as $p^n$
 - The value of each survivor grows as $\beta_{\text{eff}}^n$
 
-The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ is well-defined only when both $p < 1$ (selection occurs) and $\beta_{\text{eff}} > 1$ (conditional growth exceeds unity). Without selection ($p = 1$), there is no distribution of outcomes—all participants follow the same trajectory.
+The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ is well-defined only when both $p < 1$ (selection occurs) and $\beta_{\text{eff}} > 1$ (conditional growth exceeds unity). Without selection ($p = 1$), there is no distribution of outcomes - all participants follow the same trajectory.
 
 These phenomena are related but distinct:
 - Divergence concerns the total expected value of the system
@@ -445,16 +445,16 @@ The framework yields four characteristic constants:
 
 The ratio $\sigma^*/\sigma^*_{\text{th}} = 2$ reflects the doubling of conditional growth when the survival filter excludes negative outcomes. The constant $z^*$, defined by $1 - \Phi(z^*) = e^{-z^{*2}/2}$, is the standardized selection parameter at which power-law behavior first emerges when volatility reaches the divergence threshold; $k^*_{\text{th}}$ expresses this in the units of the phase diagram.
 
-These constants arise from the geometry of Gaussian rectification—the interplay of tail probability, local density, and the normalization factor $\sqrt{2\pi}$.
+These constants arise from the geometry of Gaussian rectification - the interplay of tail probability, local density, and the normalization factor $\sqrt{2\pi}$.
 
 
 ### 6.9 Implications
 
-The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ depends on both survival probability and conditional growth. Near criticality ($\beta_{\text{eff}} \approx 1$), even modest selection pressure produces heavy tails. Deep in the supercritical regime ($\beta_{\text{eff}} \gg 1$), the distribution becomes increasingly extreme—a few massive winners among many losers.
+The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ depends on both survival probability and conditional growth. Near criticality ($\beta_{\text{eff}} \approx 1$), even modest selection pressure produces heavy tails. Deep in the supercritical regime ($\beta_{\text{eff}} \gg 1$), the distribution becomes increasingly extreme - a few massive winners among many losers.
 
 The phase diagrams reveal that V* dynamics are accessible across a wide range of volatilities, provided selection is appropriately tuned. Systems with moderate volatility ($\sigma \approx 100-200\%$) can exhibit power-law behavior if participants impose sufficient selectivity on continuation. Systems with extreme volatility can exhibit power-law behavior even with weak selection.
 
-This mechanism requires no exotic assumptions: iterated rectification of a Gaussian process with selective continuation based on outcomes. The fat tails emerge from the mathematics itself—specifically, from the tension between exponential attrition and exponential conditional growth that selection creates.
+This mechanism requires no exotic assumptions: iterated rectification of a Gaussian process with selective continuation based on outcomes. The fat tails emerge from the mathematics itself - specifically, from the tension between exponential attrition and exponential conditional growth that selection creates.
 
 ---
 
