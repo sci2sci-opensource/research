@@ -272,7 +272,7 @@ def main():
         sys.exit(1)
 
     # Check figures exist
-    figures = ['atm_transition.png', 'regime_comparison.png']
+    figures = ['atv_transition.png', 'regime_comparison.png', 'phase_components.png', 'phase_transition.png']
     missing = [f for f in figures if not Path(f).exists()]
     if missing:
         print(f"\n⚠ Warning: Missing figures: {missing}")

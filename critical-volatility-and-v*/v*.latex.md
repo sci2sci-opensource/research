@@ -340,24 +340,109 @@ where:
 
 This can be written as $P(V > v) \propto v^{-\alpha}$ where $\alpha = -\log(p)/\log(\beta_{\text{eff}})$.
 
-### 6.4 Implications
+### 6.4 Phase Space Characterization
 
-The V* Distribution exists in the two-dimensional parameter space of $(\sigma, k_{\text{th}})$. For the conditional case with survival threshold, the critical volatility required for power-law behavior can be significantly lower than $\sigma^* = \sqrt{2\pi}$. The condition becomes $\beta_{\text{eff}} > 1$: when conditional growth exceeds unity, V* dynamics emerge regardless of whether $\sigma$ exceeds the unconditional threshold.
+The V* Distribution exists in a two-dimensional parameter space $(\sigma, k_{\text{th}})$. Figure 1 shows this space with the critical boundary $\beta_{\text{eff}} = 1$ separating two regimes:
 
-The power-law exponent depends on both:
+- **Subcritical region** (upper-left, blue): $\beta_{\text{eff}} < 1$. Conditional growth does not compensate for attrition. Outcomes are log-normally distributed.
 
-- The survival probability $p$ (how selective each iteration is, or how much risk participants can tolerate)
-- The conditional growth factor $\beta_{\text{eff}}$ (how much survivors amplify, given they survived)
+- **Supercritical region** (lower-right, red/orange): $\beta_{\text{eff}} > 1$. Conditional growth exceeds attrition. Outcomes follow the V* Distribution with power-law tails.
 
-Near criticality ($\beta_{\text{eff}} \approx 1$), even modest selection pressure produces heavy tails. Deep in the supercritical regime ($\beta_{\text{eff}} \gg 1$), the distribution becomes increasingly extreme - a few massive winners, many losers.
+![V* Phase Transition in $(\sigma, k_{\text{th}})$ space. Color indicates conditional growth factor $\beta_{\text{eff}}$. The critical boundary (solid curve) where $\beta_{\text{eff}} = 1$ separates subcritical (log-normal) from supercritical (V* power-law) regimes. Vertical lines mark $\sigma_{\text{th}}^{*} = \sqrt{\pi/2}$ and $\sigma^* = \sqrt{2\pi}$.](phase_transition.png)
 
-This mechanism requires no exotic assumptions: just iterated rectification of a Gaussian process with selective continuation. The fat tails emerge from the mathematics itself.
+Figure 2 decomposes the phase space into its constituent quantities. The left panel shows survival probability $p = 1 - \Phi(k_{\text{th}}/\sigma)$, which decreases as the threshold becomes more selective (higher $k_{\text{th}}$) or volatility decreases (lower $\sigma$). The right panel shows the power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ in the supercritical region, with lower $\alpha$ indicating heavier tails.
+
+![Phase space components. Left: Survival probability $p$ per iteration. Right: V* power-law exponent $\alpha$ in the supercritical region. Lower $\alpha$ corresponds to heavier tails and more extreme wealth concentration.](phase_components.png)
+
+The shape of the critical boundary reflects a fundamental tradeoff. High volatility generates large values among survivors; high selection pressure concentrates growth among fewer participants. Both mechanisms can produce $\beta_{\text{eff}} > 1$:
+
+- At low $\sigma$, strong selection (high $k_{\text{th}}$) is required to achieve supercriticality
+- At high $\sigma$, weaker selection (lower $k_{\text{th}}$) suffices because volatility alone drives growth
+
+The boundary curves through the parameter space accordingly, extending into the risk-tolerant region ($k_{\text{th}} < 0$) at sufficiently high volatility.
+
+
+### 6.5 Divergence versus Power-Law: The Role of Selection
+
+It is important to distinguish two phenomena that the framework reveals.
+
+**Divergence of expected values** occurs when $\beta = \sigma/\sqrt{2\pi} > 1$, i.e., when $\sigma > \sqrt{2\pi}$. In this regime, the expected value at each iteration exceeds the previous: $\mu_{n+1} = \beta \cdot \mu_n$. The sum of an infinite chain diverges. This is the result derived in Section 5 for the unconditional ATM case.
+
+**Power-law distribution** requires selection. The V* Distribution emerges from the combination of two exponential processes:
+- The number of surviving participants decays as $p^n$
+- The value of each survivor grows as $\beta_{\text{eff}}^n$
+
+The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ is well-defined only when both $p < 1$ (selection occurs) and $\beta_{\text{eff}} > 1$ (conditional growth exceeds unity). Without selection ($p = 1$), there is no distribution of outcomes—all participants follow the same trajectory.
+
+These phenomena are related but distinct:
+- Divergence concerns the total expected value of the system
+- Power-law concerns the shape of the outcome distribution under selection
+
+The critical volatility $\sigma^* = \sqrt{2\pi}$ marks where expected values begin to diverge. But power-law behavior can emerge at any volatility, provided selection is strong enough to achieve $\beta_{\text{eff}} > 1$. Conversely, even above $\sigma^*$, insufficient selection can fail to produce power-law tails if the survival pool is too large.
+
+
+### 6.6 The Critical Intersection Point
+
+The phase diagram reveals where these two thresholds intersect: the point at which the unconditional divergence threshold $\sigma = \sqrt{2\pi}$ meets the critical boundary $\beta_{\text{eff}} = 1$.
+
+At $\sigma = \sqrt{2\pi}$, how much selection is required to produce power-law behavior?
+
+Setting $\beta_{\text{eff}} = 1$:
+
+$$\sigma \cdot \frac{\phi(z)}{1 - \Phi(z)} = 1 \quad \Rightarrow \quad \sigma = \frac{1 - \Phi(z)}{\phi(z)} = M(z)$$
+
+where $M(z)$ is the Mills ratio and $z = k_{\text{th}}/\sigma$. Substituting $\sigma = \sqrt{2\pi}$:
+
+$$M(z^*) = \sqrt{2\pi}$$
+
+With $\phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^2/2}$, this simplifies to:
+
+$$1 - \Phi(z^*) = e^{-z^{*2}/2}$$
+
+The solution is $z^* \approx 0.7286$, corresponding to $k_{\text{th}}^* = -z^* \sqrt{2\pi} \approx -1.83$.
+
+**Interpretation.** At $\sigma = \sqrt{2\pi}$, the system exhibits:
+
+| Selection | Regime | Behavior |
+|-----------|--------|----------|
+| $k_{\text{th}} > -1.83$ | $\beta_{\text{eff}} > 1$ | Power-law (V*) |
+| $k_{\text{th}} = -1.83$ | $\beta_{\text{eff}} = 1$ | Critical |
+| $k_{\text{th}} < -1.83$ | $\beta_{\text{eff}} < 1$ | Log-normal |
+
+At the unconditional divergence threshold, expected values grow without bound. Yet this divergence alone does not guarantee power-law outcomes. If selection pressure is too weak ($k_{\text{th}} < -1.83$), the survival pool includes too many participants, diluting conditional growth below unity. The distribution remains log-normal despite divergent expectations.
+
+The constant $z^*$ thus marks the minimum selection pressure required to convert divergent growth into power-law distribution at $\sigma = \sqrt{2\pi}$. Above this point, selection concentrates growth sufficiently for V* dynamics to emerge. Below it, dilution dominates.
+
+
+### 6.7 Four Constants of Gaussian Rectification
+
+The framework yields four characteristic constants:
+
+| Constant | Value | Interpretation |
+|----------|-------|----------------|
+| $\sigma^*$ | $\sqrt{2\pi} \approx 2.507$ | Divergence threshold: expected values unbounded |
+| $\sigma^*_{\text{th}}$ | $\sqrt{\pi/2} \approx 1.253$ | Power-law threshold at $k_{\text{th}} \to 0^+$ |
+| $z^*$ | $\approx 0.7286$ | Standardized selection threshold at $\sigma = \sigma^*$ |
+| $k^*_{\text{th}}$ | $-z^*\sqrt{2\pi} \approx -1.83$ | Selection threshold in parameter space |
+
+The ratio $\sigma^*/\sigma^*_{\text{th}} = 2$ reflects the doubling of conditional growth when the survival filter excludes negative outcomes. The constant $z^*$, defined by $1 - \Phi(z^*) = e^{-z^{*2}/2}$, is the standardized selection parameter at which power-law behavior first emerges when volatility reaches the divergence threshold; $k^*_{\text{th}}$ expresses this in the units of the phase diagram.
+
+These constants arise from the geometry of Gaussian rectification—the interplay of tail probability, local density, and the normalization factor $\sqrt{2\pi}$.
+
+
+### 6.8 Implications
+
+The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ depends on both survival probability and conditional growth. Near criticality ($\beta_{\text{eff}} \approx 1$), even modest selection pressure produces heavy tails. Deep in the supercritical regime ($\beta_{\text{eff}} \gg 1$), the distribution becomes increasingly extreme—a few massive winners among many losers.
+
+The phase diagrams reveal that V* dynamics are accessible across a wide range of volatilities, provided selection is appropriately tuned. Systems with moderate volatility ($\sigma \approx 100-200\%$) can exhibit power-law behavior if participants impose sufficient selectivity on continuation. Systems with extreme volatility can exhibit power-law behavior even with weak selection.
+
+This mechanism requires no exotic assumptions: iterated rectification of a Gaussian process with selective continuation based on outcomes. The fat tails emerge from the mathematics itself—specifically, from the tension between exponential attrition and exponential conditional growth that selection creates.
 
 ---
 
 ## 7. Numerical Simulations for V*
 
-To validate the theoretical predictions, we simulate a simplified ATM model where participants repeatedly bet their entire wealth on an at-the-money option with payoff $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$.
+To validate the theoretical predictions, we simulate a simplified model which we call ATV (At The Value) where participants repeatedly bet their entire wealth on an at-the-money option with payoff $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$.
 
 ### 7.1 Simulation Setup
 
@@ -369,7 +454,7 @@ The simulation algorithm:
 
 \small
 ```python
-def simulate_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
+def simulate_atv_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
     w = np.full(n, w0, dtype=float)
     in_high_risk = np.ones(n, dtype=bool)
     sigma_low = 0.1
@@ -393,9 +478,9 @@ def simulate_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5
 
 ### 7.2 Results
 
-Figure 1 shows the rank-wealth distribution from simulation across all volatility regimes on a log-log scale, with the V* theoretical prediction overlaid (purple dashed line). The transition from curved (log-normal) to linear (power-law) behavior is clearly visible as volatility crosses the critical threshold. Figure 2 compares the wealth distributions in subcritical and supercritical regimes, with the V* theoretical power-law slope shown for comparison. Table 1 presents detailed statistics for each volatility level.
+Figure 3 shows the rank-wealth distribution from simulation across all volatility regimes on a log-log scale, with the V* theoretical prediction overlaid (purple dashed line). The transition from curved (log-normal) to linear (power-law) behavior is clearly visible as volatility crosses the critical threshold. Figure 4 compares the wealth distributions in subcritical and supercritical regimes, with the V* theoretical power-law slope shown for comparison. Table 1 presents detailed statistics for each volatility level.
 
-![Simulation vs V* Theory: Rank-wealth distribution across volatility regimes. Colored lines show simulation results from $\sigma$=0.1 (blue) to $\sigma$=4.0 (red). The purple dashed line shows the V* theoretical prediction ($\alpha = -\log(p)/\log(\beta_{\text{eff}})$) for $\sigma$=3.0. Above criticality ($\sigma^* \approx 2.507$), simulated distributions converge to the theoretical power-law slope.](atm_transition.png)
+![Simulation vs V* Theory: Rank-wealth distribution across volatility regimes. Colored lines show simulation results from $\sigma$=0.1 (blue) to $\sigma$=4.0 (red). The purple dashed line shows the V* theoretical prediction ($\alpha = -\log(p)/\log(\beta_{\text{eff}})$) for $\sigma$=3.0. Above criticality ($\sigma^* \approx 2.507$), simulated distributions converge to the theoretical power-law slope.](atv_transition.png)
 
 ![Simulation vs V* Theory: Subcritical ($\sigma$=2.0, blue) vs supercritical ($\sigma$=3.0, red) wealth distributions. Left: Probability density on log-log scale. Right: Rank-wealth plot with V* theoretical prediction (purple dashed) showing close agreement with supercritical simulation.](regime_comparison.png)
 

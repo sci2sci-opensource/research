@@ -9,6 +9,56 @@ import csv
 from scipy.stats import norm
 
 
+def simulate_real_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=0.0):
+    """
+    Real ATM option model: pay fair price, receive payoff.
+
+    Each period:
+    - Pay option premium: σw/√(2π) (fair price = expected value)
+    - Receive payoff: max(X, 0) where X ~ N(0, σw)
+    - Net change: max(X, 0) - σw/√(2π)
+    - Expected net change = 0 (fair game)
+
+    Args:
+        n: Number of participants
+        t: Number of time periods
+        w0: Initial wealth
+        sigma: Volatility parameter
+        threshold_k: Dropout threshold (as fraction of wealth)
+
+    Returns:
+        Array of final wealth values
+    """
+    w = np.full(n, w0, dtype=float)
+    in_game = np.ones(n, dtype=bool)
+    critical = np.sqrt(2 * np.pi)
+
+    for period in range(t):
+        # Option premium (fair price) = expected value of max(X, 0)
+        premium = sigma * w / critical
+
+        # Payoff: max(X, 0) where X ~ N(0, σw)
+        x = np.random.randn(n) * sigma * w
+        payoff = np.maximum(x, 0)
+
+        # Net wealth change
+        net_change = payoff - premium
+        new_wealth = w + net_change
+
+        # Can't go negative
+        new_wealth = np.maximum(new_wealth, 0)
+
+        # Dropout condition: wealth dropped too much
+        if threshold_k > 0:
+            dropout = in_game & (new_wealth < threshold_k * w)
+            in_game = in_game & ~dropout
+
+        # Update wealth (those out of game keep their wealth)
+        w = np.where(in_game, new_wealth, w)
+
+    return w
+
+
 def vstar_theory(sigma, threshold_k):
     """
     Calculate V* distribution theoretical predictions.
@@ -47,8 +97,8 @@ def vstar_theory(sigma, threshold_k):
         'alpha': alpha
     }
 
-
-def simulate_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
+# At the value model - you bet it all, and win or loose
+def simulate_atv_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
     """
     Paper's ATM model: payoff = max(X, 0) where X ~ N(0, σw)
 
@@ -87,6 +137,48 @@ def simulate_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5
     return w
 
 
+
+# ATM model - you get optionality
+def simulate_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
+    """
+    Paper's ATM model: payoff = max(X, 0) where X ~ N(0, σw)
+
+    Args:
+        n: Number of participants
+        t: Number of time periods (years)
+        w0: Initial wealth
+        sigma: Volatility parameter
+        threshold_k: Dropout threshold - stay in game only if payoff >= threshold_k * w
+                     (e.g., 1.5 means you need 1.5x returns to justify staying)
+
+    Returns:
+        Array of final wealth values
+    """
+    w = np.full(n, w0, dtype=float)
+    in_high_risk = np.ones(n, dtype=bool)
+    sigma_low = 0.1  # Low-risk option for dropouts
+
+    for year in range(t):
+        # High-risk ATM option: max(X, 0) where X ~ N(0, σw)
+        x_high = np.random.randn(n) * sigma * w
+        payoff_high = np.maximum(x_high, 0)
+
+        # Low-risk alternative for dropouts
+        payoff_low = w * (1 + np.random.randn(n) * sigma_low)
+        payoff_low = np.maximum(payoff_low, 0)
+
+        # Dropout condition: payoff not good enough (need at least threshold_k * w to stay)
+        threshold = threshold_k * w
+        dropout = in_high_risk & (payoff_high < threshold)
+
+        in_high_risk = in_high_risk & ~dropout
+        # Update wealth
+        w = np.where(in_high_risk, payoff_high, payoff_low)
+
+    return w
+
+
+
 def plot_transition():
     """Plot the phase transition around σ* = √(2π)"""
 
@@ -110,7 +202,7 @@ def plot_transition():
 
     for i, sigma in enumerate(sigmas):
         np.random.seed(42)
-        wealth = simulate_atm_model(sigma=sigma)
+        wealth = simulate_atv_model(sigma=sigma)
         living = wealth[wealth > 0]
 
         # Plot rank-wealth distribution
@@ -192,8 +284,8 @@ def plot_transition():
     ax.legend(loc='upper right', fontsize=10, framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig('atm_transition.png', dpi=150, bbox_inches='tight')
-    print("\n✓ Saved: atm_transition.png")
+    plt.savefig('atv_transition.png', dpi=150, bbox_inches='tight')
+    print("\n✓ Saved: atv_transition.png")
 
     # Export statistics to CSV
     csv_filename = 'simulation_results.csv'
@@ -219,13 +311,13 @@ def plot_single_regime_comparison():
     # Subcritical: σ = 2.0
     print("Running subcritical simulation (σ = 1.0)...")
     np.random.seed(42)
-    wealth_sub = simulate_atm_model(sigma=1.0, n=5_000_000)
+    wealth_sub = simulate_atv_model(sigma=1.0, n=5_000_000)
     living_sub = wealth_sub[wealth_sub > 0]
 
     # Supercritical: σ = 3.0
     print("Running supercritical simulation (σ = 3.0)...")
     np.random.seed(42)
-    wealth_super = simulate_atm_model(sigma=3.0, n=5_000_000)
+    wealth_super = simulate_atv_model(sigma=3.0, n=5_000_000)
     living_super = wealth_super[wealth_super > 0]
 
     # Plot 1: Histograms
