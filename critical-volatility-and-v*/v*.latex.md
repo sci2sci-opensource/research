@@ -339,6 +339,7 @@ where:
 - $\phi$, $\Phi$ are the standard normal PDF and CDF
 
 This can be written as $P(V > v) \propto v^{-\alpha}$ where $\alpha = -\log(p)/\log(\beta_{\text{eff}})$.
+
 ### 6.4 At The Value: Extending to Negative Thresholds
 
 The survival condition in Section 6.2 requires $X \geq k_{\text{th}} \cdot w$, where $X$ is the underlying return (before rectification) and $k_{\text{th}}$ is the threshold multiplier. While the payoff remains $\max(X, 0)$, the survival condition is evaluated on $X$ itself.
