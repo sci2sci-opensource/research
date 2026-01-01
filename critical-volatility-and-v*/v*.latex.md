@@ -339,8 +339,25 @@ where:
 - $\phi$, $\Phi$ are the standard normal PDF and CDF
 
 This can be written as $P(V > v) \propto v^{-\alpha}$ where $\alpha = -\log(p)/\log(\beta_{\text{eff}})$.
+### 6.4 At The Value: Extending to Negative Thresholds
 
-### 6.4 Phase Space Characterization
+The survival condition in Section 6.2 requires $X \geq k_{\text{th}} \cdot w$, where $X$ is the underlying return (before rectification) and $k_{\text{th}}$ is the threshold multiplier. While the payoff remains $\max(X, 0)$, the survival condition is evaluated on $X$ itself.
+
+For $k_{\text{th}} > 0$, participants require positive returns above a threshold—a natural constraint for investors seeking real gains. For $k_{\text{th}} = 0$, participants continue if $X > 0$; the option paid something.
+
+Mathematically, nothing prevents $k_{\text{th}} < 0$. This models a different game: participants accept losses to their wealth to continue playing. If $X = -0.5w$, the option pays zero, but a participant with $k_{\text{th}} = -1$ survives—they absorb the loss from reserves and enter the next round.
+
+This is no longer option-like behavior. With negative thresholds, participants have linear exposure to losses up to $|k_{\text{th}}| \cdot w$. We call this regime **At The Value (ATV)**: participants commit to continue through adverse outcomes, accepting wealth destruction for the chance to remain in the game.
+
+The ATV regime characterizes patient capital:
+- Venture funds that continue supporting portfolio companies through down rounds
+- Strategic investors with long time horizons
+- Any participant with reserves who values continuation over immediate returns
+
+The phase diagrams that follow extend into this negative $k_{\text{th}}$ region, revealing how the critical boundary behaves when participants tolerate losses.
+
+
+### 6.5 Phase Space Characterization
 
 The V* Distribution exists in a two-dimensional parameter space $(\sigma, k_{\text{th}})$. Figure 1 shows this space with the critical boundary $\beta_{\text{eff}} = 1$ separating two regimes:
 
@@ -362,7 +379,7 @@ The shape of the critical boundary reflects a fundamental tradeoff. High volatil
 The boundary curves through the parameter space accordingly, extending into the risk-tolerant region ($k_{\text{th}} < 0$) at sufficiently high volatility.
 
 
-### 6.5 Divergence versus Power-Law: The Role of Selection
+### 6.6 Divergence versus Power-Law: The Role of Selection
 
 It is important to distinguish two phenomena that the framework reveals.
 
@@ -381,7 +398,7 @@ These phenomena are related but distinct:
 The critical volatility $\sigma^* = \sqrt{2\pi}$ marks where expected values begin to diverge. But power-law behavior can emerge at any volatility, provided selection is strong enough to achieve $\beta_{\text{eff}} > 1$. Conversely, even above $\sigma^*$, insufficient selection can fail to produce power-law tails if the survival pool is too large.
 
 
-### 6.6 The Critical Intersection Point
+### 6.7 The Critical Intersection Point
 
 The phase diagram reveals where these two thresholds intersect: the point at which the unconditional divergence threshold $\sigma = \sqrt{2\pi}$ meets the critical boundary $\beta_{\text{eff}} = 1$.
 
@@ -414,7 +431,7 @@ At the unconditional divergence threshold, expected values grow without bound. Y
 The constant $z^*$ thus marks the minimum selection pressure required to convert divergent growth into power-law distribution at $\sigma = \sqrt{2\pi}$. Above this point, selection concentrates growth sufficiently for V* dynamics to emerge. Below it, dilution dominates.
 
 
-### 6.7 Four Constants of Gaussian Rectification
+### 6.8 Four Constants of Gaussian Rectification
 
 The framework yields four characteristic constants:
 
@@ -430,7 +447,7 @@ The ratio $\sigma^*/\sigma^*_{\text{th}} = 2$ reflects the doubling of condition
 These constants arise from the geometry of Gaussian rectification—the interplay of tail probability, local density, and the normalization factor $\sqrt{2\pi}$.
 
 
-### 6.8 Implications
+### 6.9 Implications
 
 The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ depends on both survival probability and conditional growth. Near criticality ($\beta_{\text{eff}} \approx 1$), even modest selection pressure produces heavy tails. Deep in the supercritical regime ($\beta_{\text{eff}} \gg 1$), the distribution becomes increasingly extreme—a few massive winners among many losers.
 
