@@ -88,11 +88,13 @@ The ATM option price reduces to a single Gaussian CDF minus a constant. Let us a
 
 The Gaussian distribution appears explicitly in Black-Scholes through $N(d_+)$ and $N(d_-)$, and simplifies to a single Gaussian CDF under the high-volatility ATM assumption. We observe that the option payoff $\max(S_T - K, 0)$ cannot be negative by definition - the option structure rectifies the underlying returns at zero.
 
-The expected value of a rectified Gaussian is the mathematical core of option pricing. We now analyze the general case of $\mathbb{E}[\max(X, 0)]$ for $X \sim \mathcal{N}(\mu, \sigma)$.
+The expected value of a rectified Gaussian is the mathematical core of option pricing. We now analyze the general case of $\mathbb{E}[\max(X, 0)]$ for $X \sim \mathcal{N}(\mu, \sigma^2)$.
+
+In the following mathematical derivation, $\sigma$ denotes the standard deviation of the distribution $X \sim \mathcal{N}(\mu, \sigma^2)$, following standard statistical convention, not the scale-less volatility.
 
 ### 2.4 Rectified Gaussian Expectations
 
-Let $Y = \max(X, 0)$ where $X \sim \mathcal{N}(\mu, \sigma)$. We seek $\mathbb{E}[Y]$.
+Let $Y = \max(X, 0)$ where $X \sim \mathcal{N}(\mu, \sigma^2)$. We seek $\mathbb{E}[Y]$.
 
 The expectation splits into two regions:
 
@@ -226,7 +228,7 @@ $$C \approx \frac{S \cdot \sigma\sqrt{T}}{\sqrt{2\pi}} \approx 0.4 \cdot S \cdot
 
 In financial contexts, we frequently assume that volatility is a percentage related to the price - a stock with higher price has proportionally higher absolute volatility. We use a similar definition which scales with expected values.
 
-Assuming constant percentage volatility $\sigma_n = \sigma \cdot \mu_n$ (volatility scales with the underlying):
+We now return to the finance convention where $\sigma$ denotes percentage volatility (coefficient of variation, $\sigma_n/\mu_n$). Assuming constant percentage volatility (absolute volatility scales proportionally with price):
 
 $$\mu_{n+1} = \frac{\sigma \cdot \mu_n}{\sqrt{2\pi}} = \beta \cdot \mu_n$$
 
@@ -280,7 +282,7 @@ Each iteration amplifies the previous expected value. The total sum diverges - t
 
 On the real market, participants do not receive the expected value - they receive a realized draw from the distribution. The ability of players to continue playing depends on their outcomes and risk tolerance.
 
-In the ATM option model, payoff is $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$ - a zero-centered Gaussian. Participants require a minimum return to justify continued risk-taking. Let $k_{\text{th}}$ be the threshold multiplier: participants survive only if their payoff exceeds $k_{\text{th}} \cdot w$.
+We can take simplified option-like model which scales payoff with the bet, and assume payoff is $\max(X, 0)$ where $X \sim \mathcal{N}(0, \sigma w)$ - a zero-centered Gaussian. Participants require a minimum return to justify continued risk-taking. Let $k_{\text{th}}$ be the threshold multiplier: participants survive only if their payoff exceeds $k_{\text{th}} \cdot w$.
 
 Since the payoff must be positive and exceed the threshold, survival requires $X \geq k_{\text{th}} \cdot w$. Standardizing to $Z = X/(\sigma w)$ where $Z \sim \mathcal{N}(0, 1)$:
 
@@ -351,6 +353,7 @@ Mathematically, nothing prevents $k_{\text{th}} < 0$. This models a different ga
 This is no longer option-like behavior. With negative thresholds, participants have linear exposure to losses up to $|k_{\text{th}}| \cdot w$. We call this regime **At The Value (ATV)**: participants commit to continue through adverse outcomes, accepting wealth destruction for the chance to remain in the game.
 
 The ATV regime characterizes patient capital:
+
 - Venture funds that continue supporting portfolio companies through down rounds
 - Strategic investors with long time horizons
 - Any participant with reserves who values continuation over immediate returns
@@ -387,12 +390,14 @@ It is important to distinguish two phenomena that the framework reveals.
 **Divergence of expected values** occurs when $\beta = \sigma/\sqrt{2\pi} > 1$, i.e., when $\sigma > \sqrt{2\pi}$. In this regime, the expected value at each iteration exceeds the previous: $\mu_{n+1} = \beta \cdot \mu_n$. The sum of an infinite chain diverges. This is the result derived in Section 5 for the unconditional ATM case.
 
 **Power-law distribution** requires selection. The V* Distribution emerges from the combination of two exponential processes:
+
 - The number of surviving participants decays as $p^n$
 - The value of each survivor grows as $\beta_{\text{eff}}^n$
 
 The power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ is well-defined only when both $p < 1$ (selection occurs) and $\beta_{\text{eff}} > 1$ (conditional growth exceeds unity). Without selection ($p = 1$), there is no distribution of outcomes - all participants follow the same trajectory.
 
 These phenomena are related but distinct:
+
 - Divergence concerns the total expected value of the system
 - Power-law concerns the shape of the outcome distribution under selection
 
