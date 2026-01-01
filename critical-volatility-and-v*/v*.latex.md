@@ -362,11 +362,11 @@ The phase diagrams that follow extend into this negative $k_{\text{th}}$ region,
 
 The V* Distribution exists in a two-dimensional parameter space $(\sigma, k_{\text{th}})$. Figure 1 shows this space with the critical boundary $\beta_{\text{eff}} = 1$ separating two regimes:
 
-- **Subcritical region** (upper-left, blue): $\beta_{\text{eff}} < 1$. Conditional growth does not compensate for attrition. Outcomes are log-normally distributed.
+- **Subcritical region** (upper-left, blue): $\beta_{\text{eff}} < 1$. Conditional growth does not compensate for attrition. Outcomes are thin-tailed.
 
 - **Supercritical region** (lower-right, red/orange): $\beta_{\text{eff}} > 1$. Conditional growth exceeds attrition. Outcomes follow the V* Distribution with power-law tails.
 
-![V* Phase Transition in $(\sigma, k_{\text{th}})$ space. Color indicates conditional growth factor $\beta_{\text{eff}}$. The critical boundary (solid curve) where $\beta_{\text{eff}} = 1$ separates subcritical (log-normal) from supercritical (V* power-law) regimes. Vertical lines mark $\sigma_{\text{th}}^{*} = \sqrt{\pi/2}$ and $\sigma^* = \sqrt{2\pi}$.](phase_transition.png)
+![V* Phase Transition in $(\sigma, k_{\text{th}})$ space. Color indicates conditional growth factor $\beta_{\text{eff}}$. The critical boundary (solid curve) where $\beta_{\text{eff}} = 1$ separates subcritical (thin-tailed) from supercritical (V* power-law) regimes. Vertical lines mark $\sigma_{\text{th}}^{*} = \sqrt{\pi/2}$ and $\sigma^* = \sqrt{2\pi}$.](phase_transition.png)
 
 Figure 2 decomposes the phase space into its constituent quantities. The left panel shows survival probability $p = 1 - \Phi(k_{\text{th}}/\sigma)$, which decreases as the threshold becomes more selective (higher $k_{\text{th}}$) or volatility decreases (lower $\sigma$). The right panel shows the power-law exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$ in the supercritical region, with lower $\alpha$ indicating heavier tails.
 
@@ -425,9 +425,9 @@ The solution is $z^* \approx 0.7286$, corresponding to $k_{\text{th}}^* = -z^* \
 |-----------|--------|----------|
 | $k_{\text{th}} > -1.83$ | $\beta_{\text{eff}} > 1$ | Power-law (V*) |
 | $k_{\text{th}} = -1.83$ | $\beta_{\text{eff}} = 1$ | Critical |
-| $k_{\text{th}} < -1.83$ | $\beta_{\text{eff}} < 1$ | Log-normal |
+| $k_{\text{th}} < -1.83$ | $\beta_{\text{eff}} < 1$ | Thin-tailed |
 
-At the unconditional divergence threshold, expected values grow without bound. Yet this divergence alone does not guarantee power-law outcomes. If selection pressure is too weak ($k_{\text{th}} < -1.83$), the survival pool includes too many participants, diluting conditional growth below unity. The distribution remains log-normal despite divergent expectations.
+At the unconditional divergence threshold, expected values grow without bound. Yet this divergence alone does not guarantee power-law outcomes. If selection pressure is too weak ($k_{\text{th}} < -1.83$), the survival pool includes too many participants, diluting conditional growth below unity. The distribution remains thin-tailed despite divergent expectations.
 
 The constant $z^*$ thus marks the minimum selection pressure required to convert divergent growth into power-law distribution at $\sigma = \sqrt{2\pi}$. Above this point, selection concentrates growth sufficiently for V* dynamics to emerge. Below it, dilution dominates.
 
@@ -534,7 +534,7 @@ Figure 3 shows the rank-wealth distribution from simulation across all volatilit
 
 | Regime | Condition | Behavior |
 |--------|-----------|----------|
-| **Subcritical** | $\sigma < \sqrt{2\pi} \approx 250.66\%$ | Convergent: Each payoff expected value is lower than previous and the total payoff is bounded. Produces log-normal distribution of outcomes. |
+| **Subcritical** | $\sigma < \sqrt{2\pi} \approx 250.66\%$ | Convergent: Each payoff expected value is lower than previous and the total payoff is bounded. Produces thin-tailed distribution of outcomes. |
 | **Critical** | $\sigma \approx \sqrt{2\pi}$ | Self-similar: Each layer reproduces the previous. |
 | **Supercritical** | $\sigma > \sqrt{2\pi}$ | Divergent: Each payoff expected value is higher than previous and the total payoff goes to infinity. |
 
@@ -542,7 +542,7 @@ Figure 3 shows the rank-wealth distribution from simulation across all volatilit
 
 | Regime | Condition | Behavior |
 |--------|-----------|----------|
-| **Subcritical** | $\beta_{\text{eff}} < 1$ | Convergent: Survivors do not grow fast enough to compensate for attrition. Produces log-normal distribution. |
+| **Subcritical** | $\beta_{\text{eff}} < 1$ | Convergent: Survivors do not grow fast enough to compensate for attrition. Produces thin-tailed distribution. |
 | **Critical** | $\beta_{\text{eff}} \approx 1$ | Self-similar: Conditional growth exactly balances survival probability. V* behavior emerges. |
 | **Supercritical** | $\beta_{\text{eff}} > 1$ | Divergent: Survivors grow faster than the population decays. Produces V* Distribution with exponent $\alpha = -\log(p)/\log(\beta_{\text{eff}})$. |
 

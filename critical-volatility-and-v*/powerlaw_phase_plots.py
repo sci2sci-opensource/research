@@ -81,7 +81,7 @@ ax.annotate(r'$z^* \approx 0.7286$' + '\n' + r'$\Phi(z^*)=e^{-z^{*2}/2}$' + '\n'
             arrowprops=dict(arrowstyle='->', color='black', lw=1.5))
 
 # Add region labels - positioned for clarity
-ax.text(0.3, 3.2, 'SUBCRITICAL\n' + r'$\beta_{eff} < 1$' + '\nLog-normal\n(convergent)',
+ax.text(0.3, 3.2, 'SUBCRITICAL\n' + r'$\beta_{eff} < 1$' + '\nThin-tailed\n(convergent)',
         fontsize=12, ha='center', va='center', fontweight='bold',
         bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='blue', linewidth=2))
 
@@ -108,7 +108,7 @@ ax.clabel(alpha_contour, fmt=r'$\alpha$=%.1f', fontsize=9, inline=True)
 # Labels and title
 ax.set_xlabel(r'Volatility $\sigma$', fontsize=14)
 ax.set_ylabel(r'Survival Threshold $k_{th}$', fontsize=14)
-ax.set_title(r'V* Phase Transition: Log-Normal → Power-Law', fontsize=16, fontweight='bold')
+ax.set_title(r'V* Phase Transition: Thin-Tailed → Power-Law', fontsize=16, fontweight='bold')
 
 # Add subtitle with the key equation
 ax.text(0.5, -0.12,
@@ -185,7 +185,7 @@ ax2.set_ylim(-3.0, 5.0)
 ax2.axhline(y=0, color='white', linestyle='-', linewidth=1, alpha=0.5)
 
 # Add annotation
-ax2.text(0.5, 3.5, 'Subcritical\n(log-normal)', fontsize=10, ha='center', color='white',
+ax2.text(0.5, 3.5, 'Subcritical\n(thin-tailed)', fontsize=10, ha='center', color='white',
          bbox=dict(boxstyle='round', facecolor='gray', alpha=0.8))
 
 plt.tight_layout()

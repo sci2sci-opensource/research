@@ -200,6 +200,8 @@ def plot_transition():
     # Collect statistics for CSV export
     stats_data = []
 
+    sigma3_sorted = None  # Store σ=3.0 data for V* line anchoring
+
     for i, sigma in enumerate(sigmas):
         np.random.seed(42)
         wealth = simulate_atv_model(sigma=sigma)
@@ -209,6 +211,10 @@ def plot_transition():
         sorted_w = np.sort(living)[::-1]
         ranks = np.arange(1, len(sorted_w) + 1)
         idx = np.unique(np.logspace(0, np.log10(len(ranks)-1), 1000).astype(int))
+
+        # Store σ=3.0 data for V* theoretical line
+        if abs(sigma - 3.0) < 0.01:
+            sigma3_sorted = sorted_w
 
         beta = sigma / critical
         regime_label = "Sub" if beta < 0.95 else "Super" if beta > 1.05 else "CRITICAL"
@@ -263,10 +269,13 @@ def plot_transition():
 
     # Add V* theoretical line for sigma=3, threshold_k=2.5
     theory = vstar_theory(sigma=3.0, threshold_k=2.5)
-    ranks_vstar = np.logspace(0, 6, 100)
-    wealth_vstar = 1e10 / (ranks_vstar ** (1/theory['alpha']))
+    ranks_vstar = np.logspace(0, np.log10(len(sigma3_sorted)), 100)
+    # Anchor to simulation data at rank ~1000 for stable fit
+    anchor_rank = 1000
+    anchor_wealth = sigma3_sorted[anchor_rank]
+    wealth_vstar = anchor_wealth * (anchor_rank / ranks_vstar) ** (1/theory['alpha'])
     ax.loglog(ranks_vstar, wealth_vstar, 'purple', linestyle='--', linewidth=3, alpha=0.8,
-             label=f'V* Theory σ=3.0 (k={theory["k"]:.2f}, α={theory["alpha"]:.2f})')
+             label=f'V* Theory σ=3.0 (α={theory["alpha"]:.2f})')
 
     # Add Pareto reference
     ranks_ref = np.logspace(0, 7, 100)
@@ -328,11 +337,11 @@ def plot_single_regime_comparison():
     ax1.set_yscale('log')
     ax1.set_xlabel('Wealth ($)')
     ax1.set_ylabel('Probability Density')
-    ax1.set_title('Wealth Distribution: Log-Normal vs Power-Law', fontweight='bold')
+    ax1.set_title('Wealth Distribution: Thin-Tailed vs Power-Law', fontweight='bold')
     ax1.legend()
     ax1.grid(True, alpha=0.3)
 
-    # Plot 2: Rank-wealth (Zipf plot)
+    # Plot 2: Rank-wealth plot
     sorted_sub = np.sort(living_sub)[::-1]
     ranks_sub = np.arange(1, len(sorted_sub) + 1)
     idx_sub = np.unique(np.logspace(0, np.log10(len(ranks_sub)-1), 1000).astype(int))
@@ -346,10 +355,13 @@ def plot_single_regime_comparison():
 
     # Add V* theoretical line for sigma=3, threshold_k=2.5
     theory = vstar_theory(sigma=3.0, threshold_k=2.5)
-    ranks_vstar = np.logspace(0, 6, 100)
-    wealth_vstar = 1e10 / (ranks_vstar ** (1/theory['alpha']))
+    ranks_vstar = np.logspace(0, np.log10(len(sorted_super)), 100)
+    # Anchor to simulation data at rank ~1000 for stable fit
+    anchor_rank = 1000
+    anchor_wealth = sorted_super[anchor_rank]
+    wealth_vstar = anchor_wealth * (anchor_rank / ranks_vstar) ** (1/theory['alpha'])
     ax2.loglog(ranks_vstar, wealth_vstar, 'purple', linestyle='--', linewidth=3, alpha=0.8,
-             label=f'V* Theory σ=3.0 (k={theory["k"]:.2f}, α={theory["alpha"]:.2f})')
+             label=f'V* Theory σ=3.0 (α={theory["alpha"]:.2f})')
 
     # Add Pareto reference line
     ranks_ref = np.logspace(0, 7, 100)
@@ -360,7 +372,7 @@ def plot_single_regime_comparison():
 
     ax2.set_xlabel('Rank')
     ax2.set_ylabel('Wealth ($)')
-    ax2.set_title('Rank-Wealth Plot (Zipf)', fontweight='bold')
+    ax2.set_title('Rank-Wealth Plot', fontweight='bold')
     ax2.legend()
     ax2.grid(True, alpha=0.3)
 
@@ -376,7 +388,7 @@ def main():
     print("V* DISTRIBUTION - SIMPLE ATM MODEL")
     print("="*70)
     print("\nCritical threshold: σ* = √(2π) ≈ 2.507")
-    print("Below σ*: Log-normal distribution (convergent)")
+    print("Below σ*: Thin-tailed distribution (convergent)")
     print("Above σ*: Power-law distribution (divergent)")
     print("="*70)
 
