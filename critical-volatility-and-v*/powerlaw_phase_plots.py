@@ -104,14 +104,14 @@ ax.text(1, -2, 'SUBCRITICAL\n' + r'$\beta_{eff} < 1$' + '\nThin-tailed\n(converg
 ax.text(3.0, 2.5, 'SUPERCRITICAL\n' + r'$\beta_{eff} > 1$' + '\nPower-law (V*)\n(divergent)',
         fontsize=11, ha='center', va='center', fontweight='bold',
         bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='red', linewidth=2))
-
-ax.text(0.8, -2.5, 'Risk Tolerant\n' + r'($k_{th} < 0$)',
-        fontsize=10, ha='center', va='center', style='italic',
-        bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-
-ax.text(0.6, 3.8, 'Risk Averse\n' + r'($k_{th} > 0$)',
-        fontsize=10, ha='center', va='center', style='italic',
-        bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+#
+# ax.text(0.8, -2.5, 'Risk Tolerant\n' + r'($k_{th} < 0$)',
+#         fontsize=10, ha='center', va='center', style='italic',
+#         bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+#
+# ax.text(0.6, 3.8, 'Risk Averse\n' + r'($k_{th} > 0$)',
+#         fontsize=10, ha='center', va='center', style='italic',
+#         bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
 
 # Labels and title
 ax.set_xlabel(r'Volatility $\sigma$', fontsize=14)
