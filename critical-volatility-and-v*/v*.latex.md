@@ -523,7 +523,7 @@ Figure 3 shows the rank-wealth distribution from simulation across all volatilit
 
 ### 7.3 Key Observations
 
-**The Low-Volatility Trap.** At $\sigma = 0.1$, where $\beta = 0.04$, an astonishing 85\% of participants are either bankrupt or suffer heavy losses. This occurs because the expected payoff per period is only $0.04w$ - a 96\% loss rate per iteration. Low volatility provides insufficient upside to compensate for the inherent bankruptcy risk of the ATM structure. Zero millionaires emerge from 10 million participants.
+**The Low-Volatility Trap.** At $\sigma = 0.1$, where $\beta = 0.04$, an astonishing 85\% of participants are either bankrupt or suffer heavy losses. This occurs because the expected payoff per period is only $0.04w$ - a 96\% loss rate per iteration. Low volatility provides insufficient upside to compensate for the inherent bankruptcy risk of the ATV structure. Zero millionaires emerge from 10 million participants.
 
 **Critical Transition.** At $\sigma = 2.507 \approx \sigma^*$, we observe $\beta = 1.00$ - the break-even point where expected payoff equals current wealth. The ratio of millionaires to decamillionaires drops sharply to 21.8, indicating the emergence of heavy tails. The first billionaire appears in the simulation.
 
