@@ -200,7 +200,8 @@ def plot_transition():
     # Collect statistics for CSV export
     stats_data = []
 
-    sigma3_sorted = None  # Store σ=3.0 data for V* line anchoring
+    # Store sorted wealth for each sigma to add V* theory lines
+    sorted_wealth_by_sigma = {}
 
     for i, sigma in enumerate(sigmas):
         np.random.seed(42)
@@ -212,9 +213,8 @@ def plot_transition():
         ranks = np.arange(1, len(sorted_w) + 1)
         idx = np.unique(np.logspace(0, np.log10(len(ranks)-1), 1000).astype(int))
 
-        # Store σ=3.0 data for V* theoretical line
-        if abs(sigma - 3.0) < 0.01:
-            sigma3_sorted = sorted_w
+        # Store sorted wealth for V* theoretical lines
+        sorted_wealth_by_sigma[sigma] = sorted_w
 
         beta = sigma / critical
         regime_label = "Sub" if beta < 0.95 else "Super" if beta > 1.05 else "CRITICAL"
@@ -267,15 +267,19 @@ def plot_transition():
     ax.axhline(1e6, color='gray', linestyle=':', alpha=1, linewidth=1, label='$1M')
     ax.axhline(1e9, color='green', linestyle=':', alpha=1, linewidth=2, label='$1B')
 
-    # Add V* theoretical line for sigma=3, threshold_k=2.5
-    theory = vstar_theory(sigma=3.0, threshold_k=2.5)
-    ranks_vstar = np.logspace(0, np.log10(len(sigma3_sorted)), 100)
-    # Anchor to simulation data at rank ~1000 for stable fit
-    anchor_rank = 1000
-    anchor_wealth = sigma3_sorted[anchor_rank]
-    wealth_vstar = anchor_wealth * (anchor_rank / ranks_vstar) ** (1/theory['alpha'])
-    ax.loglog(ranks_vstar, wealth_vstar, 'purple', linestyle='--', linewidth=3, alpha=0.8,
-             label=f'V* Theory σ=3.0 (α={theory["alpha"]:.2f})')
+    # Add V* theoretical lines for supercritical sigmas
+    theory_colors = plt.cm.Purples(np.linspace(0.4, 0.9, len(sigmas)))
+    for i, sigma in enumerate(sigmas):
+        beta = sigma / critical
+        if beta > 1.0:  # Only supercritical
+            theory = vstar_theory(sigma=sigma, threshold_k=2.5)
+            sorted_w = sorted_wealth_by_sigma[sigma]
+            ranks_vstar = np.logspace(0, np.log10(len(sorted_w)), 100)
+            anchor_rank = 1000
+            anchor_wealth = sorted_w[anchor_rank]
+            wealth_vstar = anchor_wealth * (anchor_rank / ranks_vstar) ** (1/theory['alpha'])
+            ax.loglog(ranks_vstar, wealth_vstar, color=theory_colors[i], linestyle='--', linewidth=2, alpha=0.8,
+                     label=f'V* theory σ={sigma:.1f} (α={theory["alpha"]:.2f})')
 
     # Add Pareto reference
     ranks_ref = np.logspace(0, 7, 100)
