@@ -9,7 +9,7 @@ import csv
 from scipy.stats import norm
 
 
-def simulate_real_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=0.0):
+def simulate_real_atm_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=0.1):
     """
     Real ATM option model: pay fair price, receive payoff.
 
@@ -98,7 +98,7 @@ def vstar_theory(sigma, threshold_k):
     }
 
 # At the value model - you bet it all, and win or loose
-def simulate_atv_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=2.5):
+def simulate_atv_model(n=10_000_000, t=15, w0=20_000, sigma=2.5, threshold_k=1):
     """
     Paper's ATM model: payoff = max(X, 0) where X ~ N(0, σw)
 
@@ -272,14 +272,17 @@ def plot_transition():
     for i, sigma in enumerate(sigmas):
         beta = sigma / critical
         if beta > 1.0:  # Only supercritical
-            theory = vstar_theory(sigma=sigma, threshold_k=2.5)
-            sorted_w = sorted_wealth_by_sigma[sigma]
-            ranks_vstar = np.logspace(0, np.log10(len(sorted_w)), 100)
-            anchor_rank = 1000
-            anchor_wealth = sorted_w[anchor_rank]
-            wealth_vstar = anchor_wealth * (anchor_rank / ranks_vstar) ** (1/theory['alpha'])
-            ax.loglog(ranks_vstar, wealth_vstar, color=theory_colors[i], linestyle='--', linewidth=2, alpha=0.8,
-                     label=f'V* theory σ={sigma:.1f} (α={theory["alpha"]:.2f})')
+            try:
+                theory = vstar_theory(sigma=sigma, threshold_k=1)
+                sorted_w = sorted_wealth_by_sigma[sigma]
+                ranks_vstar = np.logspace(0, np.log10(len(sorted_w)), 100)
+                anchor_rank = 1000
+                anchor_wealth = sorted_w[anchor_rank]
+                wealth_vstar = anchor_wealth * (anchor_rank / ranks_vstar) ** (1/theory['alpha'])
+                ax.loglog(ranks_vstar, wealth_vstar, color=theory_colors[i], linestyle='--', linewidth=2, alpha=0.8,
+                         label=f'V* theory σ={sigma:.1f} (α={theory["alpha"]:.2f})')
+            except:
+                pass
 
     # Add Pareto reference
     ranks_ref = np.logspace(0, 7, 100)

@@ -10,11 +10,196 @@ from scipy.optimize import brentq
 from scipy.special import log_ndtr
 
 def expected_wealth(sigma, k_th, n, N=1000, w0=1.0):
-    """Calculate expected total wealth at step n."""
+    """
+    Calculate expected total wealth.
+
+    Model:
+    - Draw Y = 1 + X where X ~ N(0, σ)
+    - If Y >= 1: wealth *= Y (win)
+    - If Y < 1 and k_th < 1: try to borrow (debt += (1-Y)*W)
+      - If new debt <= (1-k_th)*W: continue
+      - If new debt > limit: STOP with current (W - D)
+    - If Y < 1 and k_th >= 1: STOP with max(W*Y, 0)
+    - If Y < k_th: STOP with (W - D) for debt case, max(W*Y,0) for no-debt
+    """
     sigma = np.maximum(sigma, 1e-6)
-    term1 = (sigma / np.sqrt(2 * np.pi)) ** n
-    term2 = np.exp(-n * k_th**2 / (2 * sigma**2))
-    return N * w0 * term1 * term2
+
+    # --- Base probabilities ---
+    z_kth = (k_th - 1) / sigma
+    z_0 = -1 / sigma
+    phi_0 = norm.pdf(0)
+    phi_kth = norm.pdf(z_kth)
+    cdf_kth = norm.cdf(z_kth)
+
+    # E[Y | Y >= 1] = 1 + σφ(0)/0.5
+    beta_w = 1 + sigma * phi_0 / 0.5
+
+    # For k_th >= 1: limited liability
+    p_continue_kth1 = 1 - cdf_kth
+    with np.errstate(divide='ignore', invalid='ignore'):
+        beta_kth1 = np.where(
+            p_continue_kth1 > 1e-10,
+            1 + sigma * phi_kth / p_continue_kth1,
+            1.0
+        )
+
+    # E[max(Y, 0) | Y < k_th] for limited liability
+    z_min = np.minimum(z_kth, 0)
+    cdf_min = norm.cdf(z_min)
+    cdf_zero = norm.cdf(z_0)
+    phi_zero = norm.pdf(z_0)
+    phi_min = norm.pdf(z_min)
+
+    p_partial = np.maximum(cdf_min - cdf_zero, 0)
+    with np.errstate(divide='ignore', invalid='ignore'):
+        E_Y_partial = np.where(
+            p_partial > 1e-10,
+            1 + sigma * (phi_zero - phi_min) / p_partial,
+            0.5 * np.minimum(k_th, 1)
+        )
+    with np.errstate(divide='ignore', invalid='ignore'):
+        E_maxY0 = np.where(
+            cdf_min > 1e-10,
+            p_partial / cdf_min * np.maximum(E_Y_partial, 0),
+            0.0
+        )
+
+    # --- State tracking: separate winners (D=0) and borrowers (D>0) ---
+    is_scalar = np.isscalar(sigma)
+
+    # Winners: no debt
+    W_win = w0 * (np.ones_like(sigma) if not is_scalar else 1.0)
+    # Borrowers: have debt
+    W_bor = 0.0 * (np.ones_like(sigma) if not is_scalar else 1.0)
+    D_bor = 0.0 * (np.ones_like(sigma) if not is_scalar else 1.0)
+    # Stopped
+    stopped = 0.0 * (np.ones_like(sigma) if not is_scalar else 1.0)
+
+    # E[1-Y | k_th <= Y < 1] = average debt added when first borrowing
+    p_first_borrow = np.maximum(0.5 - cdf_kth, 0)
+    with np.errstate(divide='ignore', invalid='ignore'):
+        E_1mY_first = np.where(
+            p_first_borrow > 1e-10,
+            sigma * (phi_kth - phi_0) / p_first_borrow,
+            (1 - k_th) / 2
+        )
+
+    for step in range(n):
+        if is_scalar:
+            if k_th >= 1:
+                # Limited liability: losers exit with max(W*Y, 0)
+                stop_nw = cdf_kth * W_win * E_maxY0
+                stopped = stopped + stop_nw
+                W_win = p_continue_kth1 * W_win * beta_kth1
+            else:
+                # === Winners (D=0) ===
+                # Win (Y >= 1): stay winner, W *= beta_w
+                win_to_win = 0.5 * W_win * beta_w
+                # Borrow (k_th <= Y < 1): become borrower
+                win_to_bor_W = p_first_borrow * W_win
+                win_to_bor_D = p_first_borrow * W_win * E_1mY_first
+                # Stop (Y < k_th): exit with W (since D=0)
+                win_stop = cdf_kth * W_win
+
+                # === Borrowers (D>0) ===
+                if W_bor > 1e-10:
+                    debt_ratio = D_bor / W_bor
+                    eff_kth = k_th + debt_ratio
+                    z_eff = (eff_kth - 1) / sigma
+                    phi_eff = norm.pdf(z_eff)
+                    cdf_eff = norm.cdf(z_eff)
+
+                    # Win (Y >= 1): W *= beta_w, D unchanged
+                    bor_win_W = 0.5 * W_bor * beta_w
+                    bor_win_D = 0.5 * D_bor
+
+                    # Borrow more (eff_kth <= Y < 1)
+                    p_bor_more = max(0.5 - cdf_eff, 0)
+                    if p_bor_more > 1e-10:
+                        E_1mY_more = sigma * (phi_eff - phi_0) / p_bor_more
+                    else:
+                        E_1mY_more = 0.0
+                    bor_to_bor_W = p_bor_more * W_bor
+                    bor_to_bor_D = p_bor_more * (D_bor + W_bor * E_1mY_more)
+
+                    # Stop (Y < eff_kth): exit with W - D
+                    p_bor_stop = cdf_eff
+                    bor_stop = p_bor_stop * (W_bor - D_bor)
+                else:
+                    bor_win_W = 0.0
+                    bor_win_D = 0.0
+                    bor_to_bor_W = 0.0
+                    bor_to_bor_D = 0.0
+                    bor_stop = 0.0
+
+                # Update state
+                stopped = stopped + win_stop + bor_stop
+                # New winners = winners who won + borrowers who won
+                W_win = win_to_win + bor_win_W - bor_win_D  # net worth for recovered
+                # Actually, recovered borrowers still have debt... keep them as borrowers
+                # Let me reconsider: if a borrower wins, their W grows but D stays
+                # They're still a borrower (D > 0), just with better W/D ratio
+
+                # Simpler: just track total W and D for borrowers (including recovered)
+                new_W_bor = win_to_bor_W + bor_win_W + bor_to_bor_W
+                new_D_bor = win_to_bor_D + bor_win_D + bor_to_bor_D
+
+                W_win = win_to_win
+                W_bor = new_W_bor
+                D_bor = new_D_bor
+        else:
+            # Array case - simplified
+            no_debt = k_th >= 1
+
+            # Limited liability
+            stop_ltd = cdf_kth * W_win * E_maxY0
+            new_W_win_ltd = p_continue_kth1 * W_win * beta_kth1
+
+            # Debt case
+            # Winners
+            win_to_win = 0.5 * W_win * beta_w
+            win_to_bor_W = p_first_borrow * W_win
+            win_to_bor_D = p_first_borrow * W_win * E_1mY_first
+            win_stop = cdf_kth * W_win
+
+            # Borrowers
+            debt_ratio = np.where(W_bor > 1e-10, D_bor / W_bor, 0.0)
+            eff_kth = k_th + debt_ratio
+            z_eff = (eff_kth - 1) / sigma
+            phi_eff = norm.pdf(z_eff)
+            cdf_eff = norm.cdf(z_eff)
+
+            bor_win_W = 0.5 * W_bor * beta_w
+            bor_win_D = 0.5 * D_bor
+
+            p_bor_more = np.maximum(0.5 - cdf_eff, 0)
+            with np.errstate(divide='ignore', invalid='ignore'):
+                E_1mY_more = np.where(
+                    p_bor_more > 1e-10,
+                    sigma * (phi_eff - phi_0) / p_bor_more,
+                    0.0
+                )
+            bor_to_bor_W = p_bor_more * W_bor
+            bor_to_bor_D = p_bor_more * (D_bor + W_bor * E_1mY_more)
+
+            bor_stop = cdf_eff * (W_bor - D_bor)
+
+            # Update
+            stop_debt = win_stop + bor_stop
+            new_W_win_debt = win_to_win
+            new_W_bor = win_to_bor_W + bor_win_W + bor_to_bor_W
+            new_D_bor = win_to_bor_D + bor_win_D + bor_to_bor_D
+
+            stopped = stopped + np.where(no_debt, stop_ltd, stop_debt)
+            W_win = np.where(no_debt, new_W_win_ltd, new_W_win_debt)
+            W_bor = np.where(no_debt, np.zeros_like(W_bor), new_W_bor)
+            D_bor = np.where(no_debt, np.zeros_like(D_bor), new_D_bor)
+
+    # Final
+    active_nw = W_win + (W_bor - D_bor)
+    total = active_nw + stopped
+
+    return N * total
 
 
 def asymmetric_log_scale(W, compress_negative=0.3):
@@ -216,6 +401,23 @@ def create_figure(n, N, w0):
         colorscale=[[0, 'rgba(255,165,0,0.15)'], [1, 'rgba(255,165,0,0.15)']],
         showscale=False,
         name=f'σ*_th ≈ {SIGMA_TH:.2f}',
+        hoverinfo='skip'
+    ))
+
+    # Initial wealth level - just border lines (doesn't block cursor)
+    initial_wealth_z = asymmetric_log_scale(np.array([N * w0]))[0]
+    # Draw rectangle border at initial wealth level
+    border_sigma = [0.3, 4.0, 4.0, 0.3, 0.3]
+    border_k = [-3.0, -3.0, 5.0, 5.0, -3.0]
+    border_z = [initial_wealth_z] * 5
+
+    fig.add_trace(go.Scatter3d(
+        x=border_sigma,
+        y=border_k,
+        z=border_z,
+        mode='lines',
+        line=dict(color='green', width=6),
+        name=f'Initial wealth (N×w₀ = ${N*w0:,.0f})',
         hoverinfo='skip'
     ))
 

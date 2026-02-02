@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Axiomatic Extensions of Turing Machines are Equivalent to Oracles</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="paper-style.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Axiomatic Extensions of Turing Machines are Equivalent
+to Oracles</h1>
+</header>
+<blockquote>
+<p>“Let us suppose we are supplied with some unspecified means of
+solving number-theoretic problems; a kind of oracle as it were. We shall
+not go any further into the nature of the oracle apart from saying it
+cannot be a machine.”</p>
+<ul>
+<li>A. M. Turing, 1939 [2]</li>
+</ul>
+</blockquote>
+<h2 data-number="1" id="abstract"><span
+class="header-section-number">1</span> Abstract</h2>
+<p>Computer algebra systems are implemented as Turing machines, yet they
+allow one to manipulate symbols representing real numbers and
+transcendental functions. Richardson [1] established that for expression
+classes containing elementary functions (<span
+class="math inline">\(\exp\)</span>, <span
+class="math inline">\(\sin\)</span>, <span
+class="math inline">\(\pi\)</span>, <span class="math inline">\(\log
+2\)</span>), the identity problem - deciding whether an expression
+equals zero - is generally undecidable. But current literature mostly
+treats the expressions about reals provided to the TM as given. This
+raises a question: what is the formal status of axioms that CAS systems
+use?</p>
+<p>We draw a distinction between rules and axioms <em>accessible</em> to
+a Turing machine (decidable through mechanical symbol replacement) and
+axioms that must be <em>provided</em> externally (undecidable, yet
+accepted in the formal system). We show that providing an inaccessible
+axiom or rule is functionally isomorphic to providing an oracle in
+Turing’s sense.</p>
+<p>We would like to highlight the applicability of those results to any
+arbitrary TM which is supplied by externally provided rules or axioms -
+including modern AI systems. We find the question of the epistemic
+stance of AI towards the rules discoverable in training data directly
+relevant for understanding abilities and limitations of such
+systems.</p>
+<hr />
+<h2 data-number="2" id="oracle-structure"><span
+class="header-section-number">2</span> 1. Oracle Structure</h2>
+<p>In Turing’s original formulation, the machine enters internal
+configuration <span class="math inline">\(\mathbf{o}\)</span> with a
+well-formed formula <span class="math inline">\(\mathbf{A}\)</span> on
+the tape, and transitions to configuration <span
+class="math inline">\(\mathbf{p}\)</span> or <span
+class="math inline">\(\mathbf{t}\)</span> depending on whether <span
+class="math inline">\(\mathbf{A}\)</span> is true. We represent <span
+class="math inline">\(\mathbf{A}\)</span> as the query string <span
+class="math inline">\(w\)</span> throughout.</p>
+<p>On entering <span class="math inline">\(q_?\)</span> with string
+<span class="math inline">\(w\)</span> on the oracle tape: <span
+class="math display">\[
+\text{if } w \in O: \text{ transition to } q_{\text{yes}}, \quad
+\text{else: transition to } q_{\text{no}}
+\]</span> This transition is instantaneous and requires no
+computation.</p>
+<p><strong>Properties:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instantaneous</td>
+<td>One step, no computation</td>
+</tr>
+<tr>
+<td>Unjustified</td>
+<td>No proof, just yes/no</td>
+</tr>
+<tr>
+<td>Infinite scope</td>
+<td>Decides membership in potentially infinite sets</td>
+</tr>
+<tr>
+<td>External</td>
+<td>Truth imported from outside the system</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="3" id="rewrite-rule-structure-for-cas"><span
+class="header-section-number">3</span> 2. Rewrite Rule Structure for
+CAS</h2>
+<p>A CAS operates by applying rewrite rules to expressions. We would
+like to formalize it to show the equivalence to an oracle.</p>
+<p>Pattern matching and substitution are computable and represent pure
+symbol manipulation.</p>
+<p><strong>Example:</strong> The rule <span
+class="math inline">\(\sin^2(x) + \cos^2(x) \to 1\)</span></p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 36%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Step</th>
+<th>Operation</th>
+<th>Computation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Match</td>
+<td>Find <span class="math inline">\(\sigma\)</span> such that <span
+class="math inline">\(\sin^2(x) + \cos^2(x)\)</span> matches <span
+class="math inline">\(E\)</span></td>
+<td>Computable</td>
+</tr>
+<tr>
+<td>Valid?</td>
+<td>Is <span class="math inline">\(\sin^2(t) + \cos^2(t) = 1\)</span>
+for the matched term <span class="math inline">\(t\)</span>?</td>
+<td>Not computable in general</td>
+</tr>
+<tr>
+<td>Rewrite</td>
+<td>Replace <span class="math inline">\(E\)</span> with <span
+class="math inline">\(1\)</span></td>
+<td>Computable</td>
+</tr>
+</tbody>
+</table>
+<p>The CAS performs steps 1 and 3. Step 2 - the validity of the rule -
+is given. The decision that the rule exists and is correct was provided
+to the CAS.</p>
+<p><strong>The Oracle Perspective:</strong> A rewrite rule <span
+class="math inline">\(L \to R\)</span> encodes answers to queries about
+the set of valid equalities: <span class="math display">\[
+O = \{ (E, E&#39;) \mid E = E&#39; \text{ is a valid equality} \}
+\]</span></p>
+<p>The rule pre-answers infinitely many membership queries: <span
+class="math display">\[
+\forall \sigma: (L[\sigma], R[\sigma]) \in O \to \text{Yes} | \text{No}
+\]</span></p>
+<p>When the CAS pattern-matches <span class="math inline">\(E\)</span>
+against <span class="math inline">\(L\)</span> and obtains <span
+class="math inline">\(\sigma\)</span>, it queries: is <span
+class="math inline">\((E, R[\sigma]) \in O\)</span>? The rule provides
+the answer: “yes” - for existing rule, or “no” - for any other arbitrary
+input. But does this mean that any rule acts as an oracle and can solve
+an undecidable problem?</p>
+<hr />
+<h2 data-number="4" id="accessible-and-inaccessible-rules"><span
+class="header-section-number">4</span> 3. Accessible and Inaccessible
+Rules</h2>
+<p><strong>Example:</strong> The rule <span class="math inline">\(x + 0
+\to x\)</span></p>
+<p>Validity follows from ring axioms. Given any term <span
+class="math inline">\(t\)</span>, the equality <span
+class="math inline">\(t + 0 = t\)</span> can be verified by finite
+symbolic manipulation within decidable arithmetic.</p>
+<p><strong>Example:</strong> The rule <span
+class="math inline">\(\sin^2(x) + \cos^2(x) \to 1\)</span></p>
+<p>Real numbers are equivalence classes of Cauchy sequences. Determining
+whether <span class="math inline">\(\sin^2(\alpha) + \cos^2(\alpha) =
+1\)</span> for arbitrary real <span
+class="math inline">\(\alpha\)</span> requires:</p>
+<ul>
+<li>Computing <span class="math inline">\(\sin(\alpha)\)</span> and
+<span class="math inline">\(\cos(\alpha)\)</span> for a Cauchy sequence
+<span class="math inline">\(\alpha\)</span></li>
+<li>Verifying the sum equals <span class="math inline">\(1\)</span></li>
+</ul>
+<p>This is undecidable in general. The rule’s validity depends on the
+completeness of <span class="math inline">\(\mathbb{R}\)</span> and
+properties of transcendental functions - axioms a TM cannot verify.</p>
+<p>The proof of undecidability trivially comes from the fact that the
+direct computation of the next digit of <span
+class="math inline">\(\sin^2(\alpha) + \cos^2(\alpha)\)</span> and
+subsequent check of equivalence to 1 is not guaranteed to halt at any
+step of the computation due to continuity of reals. Similarly, stopping
+the algorithm at arbitrary precision wouldn’t guarantee that the current
+result is equal to 1. This result is well known and documented, though
+the fact about incomputability of real numbers in finite steps is so
+trivial that it’s not even attributable to any particular citation, and
+proven through reduction to halting.</p>
+<hr />
+<h2 data-number="5" id="equivalence"><span
+class="header-section-number">5</span> 4. Equivalence</h2>
+<p><em>Proof.</em> We construct explicit mappings between oracle queries
+and rule applications.</p>
+<p><strong>The equality oracle.</strong> Define the set of valid
+equalities: <span class="math display">\[
+O = \{ (E, E&#39;) \mid E = E&#39; \}
+\]</span></p>
+<p><strong>Forward mapping <span class="math inline">\(\varphi\)</span>:
+Oracle query <span class="math inline">\(\to\)</span> Rule
+application</strong></p>
+<p>An oracle query asks: <span class="math inline">\((E, E&#39;) \in
+O\)</span>?</p>
+<p>Given rule <span class="math inline">\(L \to R\)</span> and
+expression <span class="math inline">\(E\)</span>:</p>
+<ol type="1">
+<li>Pattern match: find <span class="math inline">\(\sigma\)</span> such
+that <span class="math inline">\(L[\sigma] = E\)</span>
+(computable)</li>
+<li>Compute <span class="math inline">\(E&#39; = R[\sigma]\)</span>
+(computable)</li>
+<li>Query: <span class="math inline">\((E, E&#39;) \in O\)</span>?</li>
+<li>If yes: apply <span class="math inline">\(L \to R\)</span>;
+continue</li>
+<li>If no: <span class="math inline">\(L\)</span>; continue</li>
+</ol>
+<p><span class="math display">\[
+\varphi: \text{query}((L[\sigma], R[\sigma]) \in O?) \mapsto
+\text{apply}(L \to R, \sigma)
+\]</span></p>
+<p><strong>Reverse mapping <span class="math inline">\(\psi\)</span>:
+Rule application <span class="math inline">\(\to\)</span> Oracle
+query</strong></p>
+<p>A rule application takes <span class="math inline">\(E\)</span>,
+finds <span class="math inline">\(\sigma\)</span>, returns <span
+class="math inline">\(R[\sigma]\)</span>.</p>
+<p>This is equivalent to:</p>
+<ol type="1">
+<li>Form the pair <span class="math inline">\((E,
+R[\sigma])\)</span></li>
+<li>Assert <span class="math inline">\((E, R[\sigma]) \in
+O\)</span></li>
+</ol>
+<p><span class="math display">\[
+\psi: \text{apply}(L \to R, \sigma) \mapsto \text{query}((L[\sigma],
+R[\sigma]) \in O?)
+\]</span></p>
+<p><strong>Bijectivity:</strong></p>
+<ul>
+<li><span class="math inline">\(\varphi \circ \psi = \text{id}\)</span>:
+Apply rule, form query, apply rule <span
+class="math inline">\(\to\)</span> same result</li>
+<li><span class="math inline">\(\psi \circ \varphi = \text{id}\)</span>:
+Form query, apply rule, form query <span
+class="math inline">\(\to\)</span> same query</li>
+</ul>
+<p><strong>Decision-preservation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Oracle</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\((E, E&#39;) \in O\)</span>?</td>
+<td>Does <span class="math inline">\(L\)</span> match <span
+class="math inline">\(E\)</span>?</td>
+</tr>
+<tr>
+<td><span class="math inline">\(q_{\text{yes}}\)</span>: pair is
+valid</td>
+<td>Match: rewrite <span class="math inline">\(E \to
+R[\sigma]\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(q_{\text{no}}\)</span>: pair not
+covered</td>
+<td>No match: try next rule or keep</td>
+</tr>
+</tbody>
+</table>
+<p>The rule encodes: “for all <span
+class="math inline">\(\sigma\)</span>, answer Yes to query <span
+class="math inline">\((L[\sigma], R[\sigma]) \in O\)</span>?”</p>
+<p><strong>Computational equivalence:</strong></p>
+<p>For inaccessible rules:</p>
+<ul>
+<li>Oracle: TM cannot compute membership in <span
+class="math inline">\(O\)</span></li>
+<li>Rule validity: TM cannot decide <span
+class="math inline">\(L[\sigma] = R[\sigma]\)</span></li>
+</ul>
+<p>The rule provides oracle access without oracle computation.</p>
+<p><strong>Pseudocode Example.</strong> If we express this equivalence
+as pseudocode, we will see that these two programs are structurally
+identical:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Program 1: Rule-based</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_rule(expr: <span class="bu">str</span>, pattern: <span class="bu">str</span>, replacement: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> match(pattern, expr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> sigma:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> substitute(replacement, sigma)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> execute(expr: <span class="bu">str</span>, rules: <span class="bu">list</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (pattern, replacement) <span class="kw">in</span> rules:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> apply_rule(expr, pattern, replacement)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> result:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> result</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> expr</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Program 2: Oracle-based</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_oracle_set(pair: <span class="bu">tuple</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    oracle <span class="op">=</span> {} <span class="co"># Can&#39;t be constructed from within TM</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pair <span class="kw">in</span> oracle </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> execute(expr: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> candidate <span class="kw">in</span> possible_results(expr):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> check_oracle_set((expr, candidate)):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> candidate</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> expr</span></code></pre></div>
+<p>As you can see, while in the first section we are “applying the
+rules”, which looks like a typical TM operation, we could’ve
+equivalently expressed it as pre-constructing the possible set of checks
+of pairs. In this case the oracle structure is very clear: we get a
+separate program which has a set the TM couldn’t express. If we receive
+yes - we continue execution with rewrite. If we receive no - the
+expression stays the same, and we either take new rule, or stop
+attempting to change the expression.</p>
+<hr />
+<h2 data-number="6" id="example-sin2x-cos2x-1"><span
+class="header-section-number">6</span> 5. Example: <span
+class="math inline">\(\sin^2(x) + \cos^2(x) = 1\)</span></h2>
+<p>The identity <span class="math inline">\(\sin^2(x) + \cos^2(x) =
+1\)</span> depends on rules from two distinct sources:</p>
+<p>The left branch contains rules whose validity a TM can verify:
+algebraic identities following from ring and field axioms.</p>
+<p>The right branch contains rules whose validity a TM cannot verify:
+they depend on real number equality (undecidable), completeness
+(non-constructive), and transcendental function properties.</p>
+<p>A CAS returns <code>1</code> for this query by applying the rule
+<span class="math inline">\(\sin^2(x) + \cos^2(x) \to 1\)</span>:</p>
+<ol type="1">
+<li>Input: <span class="math inline">\(\sin^2(x) +
+\cos^2(x)\)</span></li>
+<li>Pattern match: <span class="math inline">\(\sigma = \{x \mapsto
+x\}\)</span></li>
+<li>Query (implicit): <span class="math inline">\((\sin^2(x) +
+\cos^2(x), 1) \in O\)</span>?</li>
+<li>Rule answers: Yes</li>
+<li>Output: <span class="math inline">\(1\)</span></li>
+</ol>
+<p>The CAS can continue the computation and apply the rewrite only given
+the oracle output.</p>
+<hr />
+<h2 data-number="7" id="cas-behavior"><span
+class="header-section-number">7</span> 6. CAS Behavior</h2>
+<p>The distinction manifests in CAS queries:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">(* Accessible: algebraic identity, validity decidable *)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Simplify</span><span class="op">[</span><span class="fu">Sqrt</span><span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="sc">+</span> <span class="fu">Sqrt</span><span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="ex">==</span> <span class="fu">Sqrt</span><span class="op">[</span><span class="dv">5</span> <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">Sqrt</span><span class="op">[</span><span class="dv">6</span><span class="op">]]]</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">(* Output: True *)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">(* Inaccessible: pre-computed oracle output, cached as rule *)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Simplify</span><span class="op">[</span><span class="fu">Sin</span><span class="op">[</span><span class="fu">x</span><span class="op">]</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">Cos</span><span class="op">[</span><span class="fu">x</span><span class="op">]</span><span class="sc">^</span><span class="dv">2</span><span class="op">]</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">(* Output: 1 *)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">(* No rule available: oracle not consulted for this query *)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">Simplify</span><span class="op">[</span><span class="fu">E</span> <span class="sc">+</span> <span class="fu">Pi</span> <span class="ex">==</span> SomeExpression<span class="op">]</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">(* Output: E + Pi == SomeExpression  (unevaluated) *)</span></span></code></pre></div>
+<p>The first query reduces via TM-accessible rules. The second applies
+an inaccessible rule (cached oracle output). The third finds no matching
+rule - the oracle was never queried for this input, so no cached answer
+exists.</p>
+<p>When a CAS returns “unevaluated,” it has not encountered an
+inaccessible axiom. The query is well-formed, but there is no external
+truth to continue.</p>
+<hr />
+<h2 data-number="8" id="conclusion"><span
+class="header-section-number">8</span> 7. Conclusion</h2>
+<p>We have shown that oracles, as defined in Turing’s original paper
+[2], and inaccessible rewrite rules are equivalent.</p>
+<p>From the perspective of a Turing machine, an inaccessible rule is a
+true oracle in exactly Turing’s original sense: an external source of
+truth that gives a yes-or-no answer undecidable from within the TM
+system.</p>
+<p>The implication for AI systems, including the ones with access to
+tool calling, is that even though they can extract, memoise and use the
+rules derived from training data, there will be no configuration in
+which they could verify the validity of those rules and their
+consistency with each other. From the perspective of an AI system, it’s
+an oracle call, and thus can’t be decided from within.</p>
+<hr />
+<p>We use “oracle” when we wish to emphasize that the answer comes from
+beyond computation. We use “axioms” when we have agreed, as a community,
+that we don’t question a specific rule, accept it as truth, and halt on
+question where it came from.</p>
+<p>Which poses a question: If reality were Turing machines all the way
+down, where is the source of inaccessible rules?</p>
+<h2 data-number="9" id="references"><span
+class="header-section-number">9</span> References</h2>
+<p>[1] D. Richardson, “Some Undecidable Problems Involving Elementary
+Functions of a Real Variable,” <em>The Journal of Symbolic Logic</em>,
+vol. 33, no. 4, pp. 514–520, 1968.</p>
+<p>[2] A. M. Turing, “Systems of Logic Based on Ordinals,”
+<em>Proceedings of the London Mathematical Society</em>, Series 2,
+vol. 45, pp. 161–228, 1939.</p>
+</body>
+</html>

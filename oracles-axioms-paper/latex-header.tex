@@ -1,0 +1,27 @@
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{etoolbox}
+\usepackage{float}
+\usepackage{array}
+\usepackage{booktabs}
+\AtBeginEnvironment{longtable}{\tiny\setlength{\tabcolsep}{2pt}\renewcommand{\arraystretch}{2.5}}
+\setlength{\LTpre}{1em}
+\setlength{\LTpost}{1em}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{$\ast$}
+\renewcommand{\labelenumi}{\arabic{enumi}.}
+\renewcommand{\labelenumii}{\alph{enumii}.}
+\makeatletter
+\def\fps@figure{H}
+\makeatother
