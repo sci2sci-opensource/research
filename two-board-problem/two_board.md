@@ -1,4 +1,4 @@
-The Two-Board Problem
+## The Two-Board Problem
 
 Let us suppose we have a setup in which the state consists of two "whiteboards" holding symbols.
 
@@ -9,7 +9,7 @@ The second board, which we shall call "Imaginary," begins blank. The agent may w
 There also exists the "unsolvable" state, to which one may transition at any step.
 
 
-Operations:
+### Operations:
 
 On the Real board: any operation permitted by the grammar of reals (arithmetic, rearrangement, simplification, etc.), applied to both sides of the equality.
 
@@ -20,8 +20,16 @@ Between boards: substitute - replace a variable or argument on the Real board wi
 Multi-root: reset - return the Real board to the initial equation, preserving the Imaginary board. Declare complete - declare that all roots have been found.
 
 
-Short example:
+### Rewards:
 
+Root found: the agent receives a reward of 1 upon reaching equality (0=0) on the Real board via a valid substitution of a previously undiscovered root.
+
+All roots found: upon declaring complete, the agent receives a reward of Len(initial_string) if all roots have been found. If the declaration is incomplete, the agent receives found_roots minus unfound_roots.
+
+Equality non-solvability: a correct declaration that equality is not achievable under any substitution and any operations on both boards yields 0.5 * Len(initial_string)^(1/n_steps). An incorrect declaration yields -0.5 * Len(initial_string)^(1/n_steps). Random guessing therefore has expected value zero.
+
+### Short example:
+```
 Initial state:
 Real: x - 5 = 0
 Imaginary: (empty)
@@ -45,30 +53,14 @@ Root found, reward: 1
 
 Step 4 - declare complete →
 Reward: Len("x-5=0") = 5
+```
 
-
-Rewards:
-
-Root found: the agent receives a reward of 1 upon reaching equality (0=0) on the Real board via a valid substitution of a previously undiscovered root.
-
-All roots found: upon declaring complete, the agent receives a reward of Len(initial_string) if all roots have been found. If the declaration is incomplete, the agent receives found_roots minus unfound_roots.
-
-Equality non-solvability: a correct declaration that equality is not achievable under any substitution and any operations on both boards yields 0.5 * Len(initial_string)^(1/n_steps). An incorrect declaration yields -0.5 * Len(initial_string)^(1/n_steps). Random guessing therefore has expected value zero.
-
-
-Specific problem:
+### Specific problem:
 
 As an initial state, we write an arbitrary polynomial with coefficients in Q upon the first whiteboard. The goal is to find all roots by taking steps on both the Real and Imaginary whiteboards. The agent does not know how many roots exist.
 
 
-General problem:
-
-The specific problem is a concrete instance of a broader mathematical task: given an existing group or field, define another group or field in which the solution for the original algebraic structure exists. In our example, Galois theory provides the machinery necessary for polynomial solvability decisions, and the complex number field provides a way for solving cubics and degree-4 polynomials. More generally, any "extend and embed" problem - in which solving requires constructing a new structure that extends the given one - will fall under the same two-board setup. We note that a great many scientific discoveries share this structure: one can measure only real values, but the hypothesis which explains them must be written on the Imaginary board.
-
-We note that the construction is neither incomplete in the sense of Gödel nor undecidable for verification in the sense of Turing: the formal grammar of the Real board guarantees that equality verification yields a definite yes/no answer in finite time. Non-solvability verification is answered by Galois theory, which is embedded in the environment but hidden from the agent.
-
-
-Core challenge for polynomials:
+### Core challenge for polynomials:
 
 The core challenge for any learning algorithm in this setup is that verification yields flat rewards until the correct solution is produced.
 
@@ -85,7 +77,14 @@ We already know that the only heuristics which actually produce positive reward 
 It is not clear how one would achieve Galois theory when nothing provides a gradient signal until one has done so - but del Ferro, Tartaglia, Cardano, and Ferrari solved cubics and quartics; Abel and Ruffini proved the quintic impossibility; and Galois completed the general theory at 19 - so it is possible.
 
 
-Open problems:
+### General problem:
+
+The specific problem is a concrete instance of a broader mathematical task: given an existing group or field, define another group or field in which the solution for the original algebraic structure exists. In our example, Galois theory provides the machinery necessary for polynomial solvability decisions, and the complex number field provides a way for solving cubics and degree-4 polynomials. More generally, any "extend and embed" problem - in which solving requires constructing a new structure that extends the given one - will fall under the same two-board setup. We note that a great many scientific discoveries share this structure: one can measure only real values, but the hypothesis which explains them must be written on the Imaginary board.
+
+We note that the construction is neither incomplete in the sense of Gödel nor undecidable for verification in the sense of Turing: the formal grammar of the Real board guarantees that equality verification yields a definite yes/no answer in finite time. Non-solvability verification is answered by Galois theory, which is embedded in the environment but hidden from the agent.
+
+
+### Open problems:
 
 1. Search methods. Does there exist an internal heuristic capable of guiding the agent toward the correct construction? For instance, might one introduce intermediate reward shaping without knowing the answer, or does solving degree 3 provide transferable structure toward degree 5 and beyond?
 
