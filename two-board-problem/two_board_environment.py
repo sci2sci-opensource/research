@@ -48,6 +48,10 @@ class ActionType(Enum):
     # Cross-board
     SUBSTITUTE = auto()   # replace a symbol on Real board with expr from Imaginary board
 
+    # Multi-root actions
+    RESET = auto()        # reset Real board to original equation (after finding a root)
+    DECLARE_COMPLETE = auto()  # declare all roots have been found
+
     # Terminal
     DECLARE_UNSOLVABLE = auto()
 
@@ -69,9 +73,12 @@ class BoardState:
     real_rhs: object            # sympy expression (right-hand side)
     imaginary: list = field(default_factory=list)   # list of arbitrary strings
     unsolvable_declared: bool = False
+    complete_declared: bool = False  # agent declared all roots found
     solved: bool = False
     steps: int = 0
     initial_string: str = ""
+    found_roots: list = field(default_factory=list)  # roots found so far
+    last_substitution: object = None  # track last substitution for root detection
 
     def real_eq(self) -> Eq:
         return Eq(self.real_lhs, self.real_rhs)
@@ -79,7 +86,8 @@ class BoardState:
     def display(self):
         print(f"  Real:      {self.real_lhs} = {self.real_rhs}")
         print(f"  Imaginary: {self.imaginary}")
-        print(f"  Solved:    {self.solved}")
+        print(f"  Roots found: {len(self.found_roots)} (values hidden)")
+        print(f"  Complete declared: {self.complete_declared}")
         print(f"  Unsolvable declared: {self.unsolvable_declared}")
         print(f"  Steps:     {self.steps}")
 
@@ -246,6 +254,11 @@ class TwoBoardEnv:
     Initialize with a polynomial equation (as sympy Eq or as lhs expression
     with rhs assumed 0). The agent takes actions and receives reward upon
     reaching verified equality or declaring unsolvability.
+
+    The agent does NOT know how many roots exist. They must:
+    1. Find roots one at a time via SUBSTITUTE (reaching 0=0)
+    2. Use RESET to return to original equation and find more roots
+    3. Use DECLARE_COMPLETE when they believe all roots are found
     """
 
     def __init__(self, equation, var=None):
@@ -260,6 +273,8 @@ class TwoBoardEnv:
             lhs, rhs = equation, S.Zero
 
         self.var = var or list(lhs.free_symbols)[0]
+        self.initial_lhs = lhs  # store original for RESET
+        self.initial_rhs = rhs
         self.initial_string = str(Eq(lhs, rhs))
 
         self.state = BoardState(
@@ -272,15 +287,45 @@ class TwoBoardEnv:
         # Pre-compute solvability (hidden from agent)
         self._solvable = check_solvable_by_radicals(lhs - rhs, self.var)
 
+        # Pre-compute all roots (hidden from agent)
+        self._all_roots = self._compute_roots(lhs - rhs, self.var)
+        # Number of roots is hidden from agent
+        self._num_roots = len(self._all_roots)
+
+    def _compute_roots(self, expr, var):
+        """Compute all roots of the polynomial (hidden from agent)."""
+        try:
+            roots = solve(expr, var)
+            # Simplify each root for comparison
+            return [simplify(r) for r in roots]
+        except Exception:
+            return []
+
+    def _is_known_root(self, value):
+        """Check if value matches any of the actual roots."""
+        value_simplified = simplify(value)
+        for root in self._all_roots:
+            if simplify(value_simplified - root) == 0:
+                return True
+        return False
+
+    def _is_already_found(self, value):
+        """Check if this root was already found."""
+        value_simplified = simplify(value)
+        for found in self.state.found_roots:
+            if simplify(value_simplified - found) == 0:
+                return True
+        return False
+
     def reward_len(self) -> int:
         return len(self.initial_string.replace(" ", ""))
 
     def step(self, action: Action) -> float:
         """
-        Execute one action. Returns reward (0 unless terminal).
+        Execute one action. Returns reward (0 unless terminal or root found).
         """
         s = self.state
-        if s.solved or s.unsolvable_declared:
+        if s.complete_declared or s.unsolvable_declared:
             raise RuntimeError("Environment already in terminal state.")
 
         s.steps += 1
@@ -361,8 +406,43 @@ class TwoBoardEnv:
                         f"Expression {action.expr} is not extractable from the Imaginary board. "
                         f"Available: {valid}"
                     )
+                s.last_substitution = action.expr  # track for root detection
                 s.real_lhs = s.real_lhs.subs(target, action.expr)
                 s.real_rhs = s.real_rhs.subs(target, action.expr)
+
+            # ---------------------------------------------------------------
+            # Multi-root: reset to original equation
+            # ---------------------------------------------------------------
+            case ActionType.RESET:
+                s.real_lhs = self.initial_lhs
+                s.real_rhs = self.initial_rhs
+                s.last_substitution = None
+                # Imaginary board is preserved
+
+            # ---------------------------------------------------------------
+            # Terminal: declare all roots found
+            # ---------------------------------------------------------------
+            case ActionType.DECLARE_COMPLETE:
+                s.complete_declared = True
+                L = self.reward_len()
+                n = s.steps
+                found_count = len(s.found_roots)
+                total_count = self._num_roots
+
+                if found_count == total_count and total_count > 0:
+                    # Perfect: found all roots
+                    reward = float(L)
+                elif found_count > total_count:
+                    # Should not happen, but penalize
+                    reward = -0.5 * (L ** (1.0 / n))
+                elif found_count < total_count:
+                    # Incomplete: found - unfound
+                    unfound_count = total_count - found_count
+                    reward = float(found_count - unfound_count)
+                else:
+                    # No roots exist and none found (constant equation)
+                    reward = 0.5 * (L ** (1.0 / n))
+                return reward
 
             # ---------------------------------------------------------------
             # Terminal: declare unsolvable
@@ -381,12 +461,19 @@ class TwoBoardEnv:
                 return reward
 
         # ---------------------------------------------------------------
-        # Check for solved state (0 = 0)
+        # Check for root found (0 = 0 after substitution)
         # ---------------------------------------------------------------
         diff = simplify(s.real_lhs - s.real_rhs)
         if diff == 0 and len(s.real_lhs.free_symbols) == 0:
-            s.solved = True
-            reward = float(self.reward_len())
+            # Reached 0 = 0, check if this is a new valid root
+            if s.last_substitution is not None:
+                if self._is_known_root(s.last_substitution):
+                    if not self._is_already_found(s.last_substitution):
+                        s.found_roots.append(s.last_substitution)
+                        # Minimal reward for finding a root
+                        reward = 1.0
+                    # else: duplicate root, no reward
+                # else: reached 0=0 but not via a valid root substitution
 
         return reward
 
@@ -410,7 +497,7 @@ class TwoBoardEnv:
 def demo_linear():
     """Solve x - 5 = 0  (the example from the document)."""
     print("=" * 60)
-    print("DEMO: Linear — x - 5 = 0")
+    print("DEMO: Linear — x - 5 = 0 (one root)")
     print("=" * 60)
 
     x = Symbol('x')
@@ -419,24 +506,29 @@ def demo_linear():
 
     # Step 1: copy from Real board
     r = env.step(Action(ActionType.COPY))
-    print(f"Step 1 — COPY from Real board (reward: {r})")
+    print(f"COPY from Real board (reward: {r})")
     env.display()
 
-    # Step 2: write "5" on imaginary board (redundant after copy, but explicit)
+    # Step 2: write "5" on imaginary board
     r = env.step(Action(ActionType.WRITE, expr="5"))
-    print(f"Step 2 — WRITE '5' to Imaginary (reward: {r})")
+    print(f"WRITE '5' to Imaginary (reward: {r})")
     env.display()
 
     # Step 3: substitute x -> 5
     r = env.step(Action(ActionType.SUBSTITUTE, expr=Integer(5), target_symbol=x))
-    print(f"Step 3 — SUBSTITUTE x = 5 (reward: {r})")
+    print(f"SUBSTITUTE x = 5 (reward: {r})")
+    env.display()
+
+    # Step 4: declare complete (only one root)
+    r = env.step(Action(ActionType.DECLARE_COMPLETE))
+    print(f"DECLARE_COMPLETE (reward: {r})")
     env.display()
 
 
 def demo_quadratic():
-    """Solve x^2 - 5x + 6 = 0 by constructing the discriminant on the Imaginary board."""
+    """Solve x^2 - 5x + 6 = 0 — find BOTH roots using discriminant."""
     print("=" * 60)
-    print("DEMO: Quadratic — x² - 5x + 6 = 0")
+    print("DEMO: Quadratic — x² - 5x + 6 = 0 (two roots)")
     print("=" * 60)
 
     x = Symbol('x')
@@ -463,9 +555,24 @@ def demo_quadratic():
 
     env.display()
 
-    # Substitute x = 2 (extracted from the string "(5 - 1) / 2")
+    # Find first root: x = 2
     r = env.step(Action(ActionType.SUBSTITUTE, expr=Integer(2), target_symbol=x))
     print(f"Step 6 — SUBSTITUTE x = 2 (reward: {r})")
+    env.display()
+
+    # Reset to find second root
+    r = env.step(Action(ActionType.RESET))
+    print(f"Step 7 — RESET to original equation (reward: {r})")
+    env.display()
+
+    # Find second root: x = 3
+    r = env.step(Action(ActionType.SUBSTITUTE, expr=Integer(3), target_symbol=x))
+    print(f"Step 8 — SUBSTITUTE x = 3 (reward: {r})")
+    env.display()
+
+    # Declare complete
+    r = env.step(Action(ActionType.DECLARE_COMPLETE))
+    print(f"Step 9 — DECLARE_COMPLETE (reward: {r})")
     env.display()
 
 
@@ -584,12 +691,36 @@ def demo_arbitrary_strings():
     env.display()
 
 
+def demo_incomplete_roots():
+    """Show penalty for declaring complete without finding all roots."""
+    print("=" * 60)
+    print("DEMO: Incomplete — x² - 5x + 6 = 0 (only find one root)")
+    print("=" * 60)
+
+    x = Symbol('x')
+    env = TwoBoardEnv(x**2 - 5*x + 6)
+    env.display()
+
+    # Find only one root
+    r = env.step(Action(ActionType.WRITE, expr="2"))
+    r = env.step(Action(ActionType.SUBSTITUTE, expr=Integer(2), target_symbol=x))
+    print(f"SUBSTITUTE x = 2 (reward: {r})")
+    env.display()
+
+    # Declare complete prematurely (missing x=3)
+    r = env.step(Action(ActionType.DECLARE_COMPLETE))
+    print(f"DECLARE_COMPLETE (incomplete - reward: {r})")
+    env.display()
+
+
 if __name__ == "__main__":
     demo_arbitrary_strings()
     print("\n")
     demo_linear()
     print("\n")
     demo_quadratic()
+    print("\n")
+    demo_incomplete_roots()
     print("\n")
     demo_cubic()
     print("\n")

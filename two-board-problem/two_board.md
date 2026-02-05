@@ -17,6 +17,8 @@ On the Imaginary board: write any symbol or string. Copy a string from the Real 
 
 Between boards: substitute - replace a variable or argument on the Real board with a valid string from the Imaginary board. Decline - transition to the "unsolvable" state.
 
+Multi-root: reset - return the Real board to the initial equation, preserving the Imaginary board. Declare complete - declare that all roots have been found.
+
 
 Short example:
 
@@ -39,20 +41,24 @@ Step 3 - simplify →
 Real: 0 = 0
 Imaginary: "x - 5 = 0", valid substitutions: [x, 5, -5, 0, x - 5]
 Unsolvable: no
+Root found, reward: 1
 
+Step 4 - declare complete →
 Reward: Len("x-5=0") = 5
 
 
 Rewards:
 
-Equality verification: the agent receives a reward of Len(initial_string) upon reaching equality (0=0) on the Real board.
+Root found: the agent receives a reward of 1 upon reaching equality (0=0) on the Real board via a valid substitution of a previously undiscovered root.
+
+All roots found: upon declaring complete, the agent receives a reward of Len(initial_string) if all roots have been found. If the declaration is incomplete, the agent receives found_roots minus unfound_roots.
 
 Equality non-solvability: a correct declaration that equality is not achievable under any substitution and any operations on both boards yields 0.5 * Len(initial_string)^(1/n_steps). An incorrect declaration yields -0.5 * Len(initial_string)^(1/n_steps). Random guessing therefore has expected value zero.
 
 
 Specific problem:
 
-As an initial state, we write an arbitrary polynomial with coefficients in Q upon the first whiteboard, and the goal is to solve it by taking steps on both the Real and Imaginary whiteboards.
+As an initial state, we write an arbitrary polynomial with coefficients in Q upon the first whiteboard. The goal is to find all roots by taking steps on both the Real and Imaginary whiteboards. The agent does not know how many roots exist.
 
 
 General problem:
@@ -85,6 +91,8 @@ Open problems:
 
 2. Minimal agent complexity. What is the minimum complexity of an agent that achieves positive reward at degree n?
 
-3. Computability of policy for polynomials. Is the optimal policy for the polynomial case computable?
+3. Computability of policy-finding for polynomials. Is there any computable algorithm for finding a policy for the polynomial case?
 
-4. Computability of policy in the general case. Are all two-board problems computable, non-computable, or is this determined by the specific instance of the two-board problem?
+4. Computability of policy and policy-finding in the general case. Are all two-board problems computable, non-computable, or is this determined by the specific instance of the two-board problem?
+
+5. Specific two-board frameworks for ablation studies. How might one express known mathematical results - e.g. the proof of the Poincaré conjecture, Fermat's Last Theorem, Viazovska's sphere packing - within the two-board setup, and what are the corresponding Real board axioms, Imaginary board constructions, and reward structures? Can the framework be extended to experimental sciences such as physics and biology, where verification depends on empirical observation?
