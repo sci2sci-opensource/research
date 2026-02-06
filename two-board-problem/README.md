@@ -11,6 +11,8 @@ It captures the core property which makes those particularly challenging: inform
 
 Designing the solution requires inventing new primitives, the reward landscape is sparse, and no gradient signal exists until the correct construction is found.
 
+The canonical example provided in this repository is an MDP of the environment which forced the invention of the complex number field and Galois group.
+
 # Citation
 
 - Paper: CC-BY 4.0 (cite as: Kremnev, V. (2026). The Two-Board Problem)
