@@ -86,12 +86,12 @@ We note that the construction is neither incomplete in the sense of Gödel nor u
 
 ### Open problems:
 
-1. Search methods. Does there exist an internal heuristic capable of guiding the agent toward the correct construction? For instance, might one introduce intermediate reward shaping without knowing the answer, or does solving degree 3 provide transferable structure toward degree 5 and beyond?
+1. Search methods. Does there exist an internal heuristic capable of guiding the agent toward the correct construction? For instance, might one introduce intermediate reward shaping without knowing the answer. Does solving degree 3 provide transferable structure toward degree 5 and beyond?
 
-2. Minimal agent complexity. What is the minimum complexity of an agent that achieves positive reward at degree n?
+2. Minimal agent complexity K(a). What is the minimum complexity of an agent that achieves positive reward at degree n, relative to agent succeeding on n-1? 
 
 3. Computability of policy-finding for polynomials. Is there any computable algorithm for finding a policy for the polynomial case?
 
-4. Computability of policy and policy-finding in the general case. Are all two-board problems computable, non-computable, or is this determined by the specific instance of the two-board problem?
+4. Computability of policy and policy-finding in the general case. Are all two-board problems computable, non-computable, or is this determined by the specific instance of the two-board problem? If yes, does there exist a procedure to determine the decidability?
 
 5. Specific two-board frameworks for ablation studies. How might one express known mathematical results - e.g. the proof of the Poincaré conjecture, Fermat's Last Theorem, Viazovska's sphere packing - within the two-board setup, and what are the corresponding Real board axioms, Imaginary board constructions, and reward structures? Can the framework be extended to experimental sciences such as physics and biology, where verification depends on empirical observation?
