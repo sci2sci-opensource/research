@@ -31,25 +31,25 @@ import re
 
 class ActionType(Enum):
     # Real board operations (applied to both sides of the equality)
-    ADD = auto()          # add expr to both sides
-    SUB = auto()          # subtract expr from both sides
-    MUL = auto()          # multiply both sides by expr
-    DIV = auto()          # divide both sides by expr
-    SIMPLIFY = auto()     # simplify both sides
-    EXPAND = auto()       # expand both sides
-    FACTOR = auto()       # factor both sides
-    COLLECT = auto()      # collect terms w.r.t. a symbol
-    POWER = auto()        # raise both sides to a rational power
+    ADD = auto()  # add expr to both sides
+    SUB = auto()  # subtract expr from both sides
+    MUL = auto()  # multiply both sides by expr
+    DIV = auto()  # divide both sides by expr
+    SIMPLIFY = auto()  # simplify both sides
+    EXPAND = auto()  # expand both sides
+    FACTOR = auto()  # factor both sides
+    COLLECT = auto()  # collect terms w.r.t. a symbol
+    POWER = auto()  # raise both sides to a rational power
 
     # Imaginary board operations
-    WRITE = auto()        # write arbitrary sympy expression to imaginary board
-    COPY = auto()         # copy expression (or sub-expression) from Real board
+    WRITE = auto()  # write arbitrary sympy expression to imaginary board
+    COPY = auto()  # copy expression (or sub-expression) from Real board
 
     # Cross-board
-    SUBSTITUTE = auto()   # replace a symbol on Real board with expr from Imaginary board
+    SUBSTITUTE = auto()  # replace a symbol on Real board with expr from Imaginary board
 
     # Multi-root actions
-    RESET = auto()        # reset Real board to original equation (after finding a root)
+    RESET = auto()  # reset Real board to original equation (after finding a root)
     DECLARE_COMPLETE = auto()  # declare all roots have been found
 
     # Terminal
@@ -59,7 +59,7 @@ class ActionType(Enum):
 @dataclass
 class Action:
     action_type: ActionType
-    expr: Optional[object] = None       # sympy expression or string
+    expr: Optional[object] = None  # sympy expression or string
     target_symbol: Optional[object] = None  # for SUBSTITUTE / COLLECT
 
 
@@ -69,9 +69,9 @@ class Action:
 
 @dataclass
 class BoardState:
-    real_lhs: object            # sympy expression (left-hand side)
-    real_rhs: object            # sympy expression (right-hand side)
-    imaginary: list = field(default_factory=list)   # list of arbitrary strings
+    real_lhs: object  # sympy expression (left-hand side)
+    real_rhs: object  # sympy expression (right-hand side)
+    imaginary: list = field(default_factory=list)  # list of arbitrary strings
     unsolvable_declared: bool = False
     complete_declared: bool = False  # agent declared all roots found
     solved: bool = False
@@ -284,6 +284,9 @@ class TwoBoardEnv:
             if simplify(value_simplified - root) == 0:
                 return True
             # Fall back to numerical
+
+            # TODO This is a workaround which needs to be removed, but
+            #   I don't want to fight sympy about symbolic equality of pre-computed roots and roots found for now
             try:
                 diff = complex(N(value_simplified - root))
                 if abs(diff) < 1e-10:
@@ -300,6 +303,8 @@ class TwoBoardEnv:
             if simplify(value_simplified - found) == 0:
                 return True
             try:
+                # TODO This is a workaround which needs to be removed, but
+                #   I don't want to fight sympy about symbolic equality of pre-computed roots and roots found for now
                 diff = complex(N(value_simplified - found))
                 if abs(diff) < 1e-10:
                     return True
@@ -454,7 +459,6 @@ class TwoBoardEnv:
         # ---------------------------------------------------------------
         # Check for root found (0 = 0 after substitution)
         # ---------------------------------------------------------------
-        # In the root-check section:
         diff = simplify(s.real_lhs - s.real_rhs)
         if diff == 0 and len(s.real_lhs.free_symbols) == 0:
             # Build resolved chain: invert power targets
@@ -547,7 +551,7 @@ def demo_quadratic():
     print("=" * 60)
 
     x = Symbol('x')
-    env = TwoBoardEnv(x**2 - 5*x + 6)
+    env = TwoBoardEnv(x ** 2 - 5 * x + 6)
     env.display()
 
     # Step 1: Copy equation from Real board (as a string)
@@ -598,7 +602,7 @@ def demo_cubic():
     print("=" * 60)
 
     x = Symbol('x')
-    env = TwoBoardEnv(x**3 - 2)
+    env = TwoBoardEnv(x ** 3 - 2)
     env.display()
 
     # Agent writes ∛2 on imaginary board as a string
@@ -606,7 +610,7 @@ def demo_cubic():
     print(f"Step 1 — WRITE '2**(1/3)' (reward: {r})")
 
     # Substitute — root(2,3) is extracted from the string
-    r = env.step(Action(ActionType.SUBSTITUTE, expr=Rational(2)**Rational(1,3), target_symbol=x))
+    r = env.step(Action(ActionType.SUBSTITUTE, expr=Rational(2) ** Rational(1, 3), target_symbol=x))
     print(f"Step 2 — SUBSTITUTE x = ∛2 (reward: {r})")
     env.display()
 
@@ -722,7 +726,7 @@ def demo_unsolvable_quintic():
     print("=" * 60)
 
     x = Symbol('x')
-    env = TwoBoardEnv(x**5 - x - 1)
+    env = TwoBoardEnv(x ** 5 - x - 1)
     env.display()
 
     # Agent (correctly) declares unsolvable
@@ -738,7 +742,7 @@ def demo_solvable_quintic():
     print("=" * 60)
 
     x = Symbol('x')
-    env = TwoBoardEnv(x**5 - 32)
+    env = TwoBoardEnv(x ** 5 - 32)
     env.display()
 
     # Agent incorrectly declares unsolvable
@@ -754,7 +758,7 @@ def demo_operations():
     print("=" * 60)
 
     x = Symbol('x')
-    env = TwoBoardEnv(Eq(2*x + 3, 7))
+    env = TwoBoardEnv(Eq(2 * x + 3, 7))
     env.display()
 
     # Subtract 3 from both sides
@@ -817,7 +821,7 @@ def demo_incomplete_roots():
     print("=" * 60)
 
     x = Symbol('x')
-    env = TwoBoardEnv(x**2 - 5*x + 6)
+    env = TwoBoardEnv(x ** 2 - 5 * x + 6)
     env.display()
 
     # Find only one root
