@@ -14,7 +14,7 @@ from sympy import (
     expand, factor, cancel, collect, apart, together,
     Add, Mul, Pow, Integer, S,
     solveset, solve,
-    sympify,
+    sympify, parse_expr,
 )
 from sympy.polys.numberfields.galoisgroups import galois_group
 from sympy.polys.polytools import Poly
@@ -79,6 +79,7 @@ class BoardState:
     initial_string: str = ""
     found_roots: list = field(default_factory=list)  # roots found so far
     last_substitution: object = None  # track last substitution for root detection
+    substitution_chain: dict = field(default_factory=dict)  # {target: expr}
 
     def real_eq(self) -> Eq:
         return Eq(self.real_lhs, self.real_rhs)
@@ -107,25 +108,8 @@ def _has_undefined_functions(expr):
 
 
 def extract_valid_expressions(strings: list, known_symbols=None) -> set:
-    """
-    Given a list of arbitrary strings on the Imaginary board, find all
-    substrings that are valid expressions in the grammar of the reals.
-
-    A valid expression is one that:
-    - Parses as a sympy expression
-    - Contains only known symbols (from the Real board) and numbers
-    - Is not just an arbitrary new symbol name
-
-    Returns a set of sympy expressions that can be used for substitution.
-    """
     from sympy.parsing.sympy_parser import parse_expr
-
-    if known_symbols is None:
-        known_symbols = set()
-
-    # Functions that are valid in the grammar of reals
-    from sympy import (sin, cos, tan, exp, log, sqrt, Abs,
-                       asin, acos, atan, sinh, cosh, tanh)
+    from sympy import sin, cos, tan, exp, log, sqrt, Abs
     from sympy.core.function import UndefinedFunction
 
     valid = set()
@@ -133,8 +117,6 @@ def extract_valid_expressions(strings: list, known_symbols=None) -> set:
     for s in strings:
         if not isinstance(s, str):
             s = str(s)
-
-        # Try all substrings
         for i in range(len(s)):
             for j in range(i + 1, len(s) + 1):
                 sub = s[i:j].strip()
@@ -142,22 +124,15 @@ def extract_valid_expressions(strings: list, known_symbols=None) -> set:
                     continue
                 try:
                     expr = parse_expr(sub)
-                    if expr is None:
+                    if expr is None or isinstance(expr, bool):
                         continue
-                    if isinstance(expr, bool):
-                        continue
-                    # Reject expressions with unknown functions (e.g. rt(1), qrt(1))
                     if _has_undefined_functions(expr):
                         continue
-                    # Only accept if all free symbols are known, or it's purely numeric
-                    free = expr.free_symbols
-                    if free and not free.issubset(known_symbols):
-                        continue
+                    # CHANGED: accept ALL free symbols, not just known ones
                     valid.add(expr)
                 except Exception:
                     pass
 
-    # For every valid expression found, also extract implicit field atoms
     atoms = set()
     for expr in valid:
         atoms.update(_extract_field_atoms(expr))
@@ -167,14 +142,12 @@ def extract_valid_expressions(strings: list, known_symbols=None) -> set:
 
 
 def _extract_field_atoms(expr):
-    """
-    Extract implicit field atoms from an expression.
-    e.g. -5*x -> {5, -5, 1, -1, 0, x}
-    """
     atoms = set()
 
     def _walk(e):
         if isinstance(e, bool):
+            return
+        if not hasattr(e, 'is_Number'):  # skip non-sympy objects
             return
         atoms.add(e)
         if e.is_Number:
@@ -282,6 +255,7 @@ class TwoBoardEnv:
             real_rhs=rhs,
             imaginary=[],
             initial_string=self.initial_string,
+
         )
 
         # Pre-compute solvability (hidden from agent)
@@ -303,18 +277,34 @@ class TwoBoardEnv:
 
     def _is_known_root(self, value):
         """Check if value matches any of the actual roots."""
+        from sympy import N, Abs
         value_simplified = simplify(value)
         for root in self._all_roots:
+            # Try symbolic first
             if simplify(value_simplified - root) == 0:
                 return True
+            # Fall back to numerical
+            try:
+                diff = complex(N(value_simplified - root))
+                if abs(diff) < 1e-10:
+                    return True
+            except Exception:
+                pass
         return False
 
     def _is_already_found(self, value):
         """Check if this root was already found."""
+        from sympy import N, Abs
         value_simplified = simplify(value)
         for found in self.state.found_roots:
             if simplify(value_simplified - found) == 0:
                 return True
+            try:
+                diff = complex(N(value_simplified - found))
+                if abs(diff) < 1e-10:
+                    return True
+            except Exception:
+                pass
         return False
 
     def reward_len(self) -> int:
@@ -409,6 +399,7 @@ class TwoBoardEnv:
                 s.last_substitution = action.expr  # track for root detection
                 s.real_lhs = s.real_lhs.subs(target, action.expr)
                 s.real_rhs = s.real_rhs.subs(target, action.expr)
+                s.substitution_chain[target] = action.expr
 
             # ---------------------------------------------------------------
             # Multi-root: reset to original equation
@@ -463,17 +454,41 @@ class TwoBoardEnv:
         # ---------------------------------------------------------------
         # Check for root found (0 = 0 after substitution)
         # ---------------------------------------------------------------
+        # In the root-check section:
         diff = simplify(s.real_lhs - s.real_rhs)
         if diff == 0 and len(s.real_lhs.free_symbols) == 0:
-            # Reached 0 = 0, check if this is a new valid root
-            if s.last_substitution is not None:
-                if self._is_known_root(s.last_substitution):
-                    if not self._is_already_found(s.last_substitution):
-                        s.found_roots.append(s.last_substitution)
-                        # Minimal reward for finding a root
-                        reward = 1.0
-                    # else: duplicate root, no reward
-                # else: reached 0=0 but not via a valid root substitution
+            # Build resolved chain: invert power targets
+            # e.g. u**3 -> val  becomes  u -> val**(1/3)
+            resolved = {}
+            for target, expr in s.substitution_chain.items():
+                if isinstance(target, Pow) and target.exp.is_Integer:
+                    base_sym = target.base
+                    inv_exp = Rational(1, target.exp)
+                    resolved[base_sym] = Pow(expr, inv_exp)
+                    print(f'{target}: {expr}  =>  {base_sym}: {Pow(expr, inv_exp)}')
+                else:
+                    resolved[target] = expr
+                    print(f'{target}: {expr}')
+
+            # Compose back to x
+            root_value = self.var
+            changed = True
+            while changed:
+                changed = False
+                for target, expr in resolved.items():
+                    new_val = root_value.subs(target, expr)
+                    if new_val != root_value:
+                        root_value = new_val
+                        changed = True
+            root_value = simplify(root_value)
+
+            if self._is_known_root(root_value):
+                print(f'root is known!')
+                if not self._is_already_found(root_value):
+                    s.found_roots.append(root_value)
+                    reward = 1.0
+            else:
+                print(f'root is NOT known')
 
         return reward
 
@@ -596,6 +611,58 @@ def demo_cubic():
     env.display()
 
 
+def demo_cubic_cardano():
+    print("=" * 60)
+    print("DEMO: Solve x³ - 3x - 1 = 0 via Cardano. I is just a parsed constant.")
+    print("=" * 60)
+    """Solve x³ - 3x - 1 = 0 via Cardano. I is just a parsed constant."""
+    x = Symbol('x')
+    u, v = symbols('u v')
+    env = TwoBoardEnv(x ** 3 - 3 * x - 1)
+
+    # Step 1: Write x = u + v on imaginary board
+    env.step(Action(ActionType.WRITE, expr="u + v"))
+    candidate = u + v
+    env.display()
+    r = env.step(Action(ActionType.SUBSTITUTE, expr=candidate, target_symbol=x))
+    print(f"SUBSTITUTE x = u + v (reward: {r})")
+
+    # Real board now: (u+v)³ - 3(u+v) - 1 = 0
+    r = env.step(Action(ActionType.EXPAND))
+    r = env.step(Action(ActionType.SIMPLIFY))
+    print("After expand+simplify:")
+    env.display()
+
+    # Real board: u³ + 3u²v + 3uv² + v³ - 3u - 3v - 1 = 0
+    #           = u³ + v³ + 3uv(u+v) - 3(u+v) - 1 = 0
+    # Cardano's trick: CHOOSE u*v = 1, then 3uv(u+v) - 3(u+v) = 0 cancels!
+    # Leaving: u³ + v³ - 1 = 0
+    # And u³v³ = 1, u³+v³ = 1 → u³,v³ are roots of t²-t+1=0 → (1±I*sqrt(3))/2
+
+    # Factor out: collect as function of (u*v)
+    # Sub u*v = 1 — write "1" and substitute
+    env.step(Action(ActionType.WRITE, expr="1"))
+    r = env.step(Action(ActionType.SUBSTITUTE, expr=S.One, target_symbol=u * v))
+    r = env.step(Action(ActionType.SIMPLIFY))
+    print("After substituting u*v = 1:")
+    env.display()
+
+    # Now sub u³ + v³ = 1
+    # Write the Cardano roots: u³ = (1 + I*sqrt(3))/2, v³ = (1 - I*sqrt(3))/2
+    env.step(Action(ActionType.WRITE, expr="(1 + I*sqrt(3))/2"))
+    env.step(Action(ActionType.WRITE, expr="(1 - I*sqrt(3))/2"))
+
+    env.display()
+
+    r = env.step(Action(ActionType.SUBSTITUTE,
+                        expr=parse_expr("(1 + I*sqrt(3))/2"), target_symbol=u ** 3))
+    r = env.step(Action(ActionType.SUBSTITUTE,
+                        expr=parse_expr("(1 - I*sqrt(3))/2"), target_symbol=v ** 3))
+    r = env.step(Action(ActionType.SIMPLIFY))
+    print("After substituting u³, v³ — I cancels:")
+    env.display()
+
+
 def demo_unsolvable_quintic():
     """Declare x^5 - x - 1 = 0 unsolvable by radicals."""
     print("=" * 60)
@@ -714,6 +781,7 @@ def demo_incomplete_roots():
 
 
 if __name__ == "__main__":
+    demo_cubic_cardano()
     demo_arbitrary_strings()
     print("\n")
     demo_linear()
