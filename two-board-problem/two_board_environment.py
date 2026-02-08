@@ -488,7 +488,7 @@ class TwoBoardEnv:
                     s.found_roots.append(root_value)
                     reward = 1.0
             else:
-                print(f'root is NOT known')
+                print(f'Equality achieved but root is NOT know in canonical form!')
 
         return reward
 
@@ -663,6 +663,58 @@ def demo_cubic_cardano():
     env.display()
 
 
+def demo_cubic_cardano_non_canonical_substitution():
+    print("=" * 60)
+    print("DEMO: Solve x³ - 3x - 1 = 0 via Cardano. I is just a parsed constant.")
+    print("=" * 60)
+    """Solve x³ - 3x - 1 = 0 via Cardano. I is just a parsed constant."""
+    x = Symbol('x')
+    u, v = symbols('u v')
+    env = TwoBoardEnv(x ** 3 - 3 * x - 1)
+
+    # Step 1: Write x = u + v on imaginary board
+    env.step(Action(ActionType.WRITE, expr="u + v"))
+    candidate = u + v
+    env.display()
+    r = env.step(Action(ActionType.SUBSTITUTE, expr=candidate, target_symbol=x))
+    print(f"SUBSTITUTE x = u + v (reward: {r})")
+
+    # Real board now: (u+v)³ - 3(u+v) - 1 = 0
+    r = env.step(Action(ActionType.EXPAND))
+    r = env.step(Action(ActionType.SIMPLIFY))
+    print("After expand+simplify:")
+    env.display()
+
+    # Real board: u³ + 3u²v + 3uv² + v³ - 3u - 3v - 1 = 0
+    #           = u³ + v³ + 3uv(u+v) - 3(u+v) - 1 = 0
+    # Cardano's trick: CHOOSE u*v = 1, then 3uv(u+v) - 3(u+v) = 0 cancels!
+    # Leaving: u³ + v³ - 1 = 0
+    # And u³v³ = 1, u³+v³ = 1 → u³,v³ are roots of t²-t+1=0 → (1±I*sqrt(3))/2
+
+    # Factor out: collect as function of (u*v)
+    # Sub u*v = 1 — write "1" and substitute
+    env.step(Action(ActionType.WRITE, expr="1"))
+    r = env.step(Action(ActionType.SUBSTITUTE, expr=S.One, target_symbol=u * v))
+    r = env.step(Action(ActionType.SIMPLIFY))
+    print("After substituting u*v = 1:")
+    env.display()
+
+    # Now sub u³ + v³ = 1
+    # Write the Cardano roots: u³ = (1 + I*sqrt(3))/2, v³ = (1 - I*sqrt(3))/2
+    env.step(Action(ActionType.WRITE, expr="(1 + 👻*sqrt(3))/2"))
+    env.step(Action(ActionType.WRITE, expr="(1 - 👻*sqrt(3))/2"))
+
+    env.display()
+
+    r = env.step(Action(ActionType.SUBSTITUTE,
+                        expr=parse_expr("(1 + 👻*sqrt(3))/2"), target_symbol=u ** 3))
+    r = env.step(Action(ActionType.SUBSTITUTE,
+                        expr=parse_expr("(1 - 👻*sqrt(3))/2"), target_symbol=v ** 3))
+    r = env.step(Action(ActionType.SIMPLIFY))
+    print("After substituting u³, v³ — I cancels:")
+    env.display()
+
+
 def demo_unsolvable_quintic():
     """Declare x^5 - x - 1 = 0 unsolvable by radicals."""
     print("=" * 60)
@@ -782,6 +834,7 @@ def demo_incomplete_roots():
 
 if __name__ == "__main__":
     demo_cubic_cardano()
+    demo_cubic_cardano_non_canonical_substitution()
     demo_arbitrary_strings()
     print("\n")
     demo_linear()
