@@ -13,6 +13,9 @@ Designing the solution requires inventing new primitives, the reward landscape i
 
 The canonical example provided in this repository is an MDP of the environment which forced the invention of the complex number field and Galois group.
 
+Motivation, explanation, and discussion of design choices in accessible form, while paper is getting prepared: 
+https://www.lesswrong.com/posts/TbMedZDimwc5TRnu7/the-two-board-problem-training-environment-for-research
+
 # Citation
 
 - Paper: CC-BY 4.0 (cite as: Kremnev, V. (2026). The Two-Board Problem)
