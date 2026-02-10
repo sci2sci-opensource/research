@@ -95,3 +95,13 @@ We note that the construction is neither incomplete in the sense of Gödel nor u
 4. Computability of policy and policy-finding in the general case. Are all two-board problems computable, non-computable, or is this determined by the specific instance of the two-board problem? If yes, does there exist a procedure to determine the decidability?
 
 5. Specific two-board frameworks for ablation studies. How might one express known mathematical results - e.g. the proof of the Poincaré conjecture, Fermat's Last Theorem, Viazovska's sphere packing - within the two-board setup, and what are the corresponding Real board axioms, Imaginary board constructions, and reward structures? Can the framework be extended to experimental sciences such as physics and biology, where verification depends on empirical observation?
+
+
+
+### Observations: 
+
+The Two-Board appears to be is closed under self-representation. Let G' = G ∪ {Two-Board Operations} ∪ {Permissive(I)}. Representing the system within itself yields:
+
+G'' = G' ∪ {Two-Board Operations} ∪ {Permissive(I)} = G ∪ {Operations} ∪ {Permissive(I)} ∪ {Operations} ∪ {Permissive(I)} = G ∪ {Operations} ∪ {Permissive(I)} = G'
+
+The fixed point is immediate, following from the idempotence of set union and the permissive rule. It looks like the maximally permissive I, unconstrained by any grammar allows the system to be stable under self-reference.
