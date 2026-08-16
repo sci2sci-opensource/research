@@ -1,0 +1,7 @@
+torch
+transformers
+datasets
+scipy
+numpy
+matplotlib
+markdown
