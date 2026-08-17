@@ -1,0 +1,16 @@
+# build noise
+__pycache__/
+*.pyc
+_out/
+
+# experiment outputs (never committed)
+runs/
+ckpt/
+*.pt
+results_*.zip
+
+# local environments / IDEs
+venv/
+.venv/
+.idea/
+.vscode/

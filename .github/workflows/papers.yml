@@ -1,0 +1,41 @@
+name: papers
+
+on:
+  push:
+    paths:
+      - '**.md'
+      - 'paper-tools/**'
+      - '.github/workflows/papers.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq pandoc \
+            texlive-latex-base texlive-latex-recommended texlive-latex-extra
+
+      - name: Build all papers (HTML + PDF)
+        run: python3 paper-tools/build_all.py --html --pdf
+
+      - name: Collect build outputs
+        run: |
+          mkdir -p _out
+          { git ls-files -o --exclude-standard; git diff --name-only; } \
+            | grep -E '\.(html|pdf)$' \
+            | while read -r f; do
+                mkdir -p "_out/$(dirname "$f")"
+                cp "$f" "_out/$f"
+              done
+          find _out -type f | sort
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: papers-${{ github.sha }}
+          path: _out
+          if-no-files-found: error
