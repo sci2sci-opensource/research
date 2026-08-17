@@ -1,5 +1,5 @@
 """Token-classification model, data, enrichment (head widening), training and evaluation primitives."""
-import random, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+import hashlib, random, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 from datasets import load_dataset
 from transformers import AutoModel, BertTokenizerFast
 
@@ -10,9 +10,20 @@ FINAL = ["O", "PER", "LOC", "ORG", "MISC"]   # canonical name order for comparis
 HF_REVISIONS = {  # snapshots used by the recorded batteries (see requirements.txt)
     "bert-base-uncased": "86b5e0934494",
     "google/bert_uncased_L-2_H-128_A-2": "30b0a37ccaaa",
-    "eriktks/conll2003": "3f1cce917ab3",
+    # The parquet files live on the auto-conversion branch, not on main (main carries only
+    # the legacy loading script), so this pin is a refs/convert/parquet commit.
+    "eriktks/conll2003": "ce85b39f9dd99f552d0739d456814e95fb6a39b0",
 }
-def hf_rev(name): return HF_REVISIONS.get(name)
+
+
+def hf_rev(name):
+    """Pinned snapshot for `name`. Raises rather than returning None: an unpinned load
+    silently tracks HEAD, which is the reproducibility hole the pins exist to close."""
+    try:
+        return HF_REVISIONS[name]
+    except KeyError:
+        raise KeyError(f"no pinned HF revision for {name!r}; add one to HF_REVISIONS "
+                       f"(known: {sorted(HF_REVISIONS)})") from None
 
 
 def set_seed(s):
@@ -102,6 +113,45 @@ def pool_with(rows, typ, n, rng):
     idx = rng.permutation(len(cand))[:n]
     if len(idx) < n: raise RuntimeError(f"only {len(idx)} sentences with {typ}, need {n}")
     return [cand[i] for i in idx]
+
+
+def split_type_by_entity(rows, typ, salt="nullswap", names=("ORG#1", "ORG#2")):
+    """Relabel `typ` into two arbitrary sub-categories, partitioned by ENTITY SURFACE FORM.
+
+    Used by the null-swap control. Each distinct token form carrying `typ` is assigned to one
+    sub-label by a deterministic hash and keeps it everywhere — same assignment in train and
+    validation, and for forms seen in only one of them — so the two sub-categories are consistent
+    and mutually exclusive, exactly how ORG and MISC relate. (Partitioning by *sentence* instead
+    would label "Microsoft" ORG#1 in one pool and ORG#2 in another: not a null control but a
+    maximal-conflict condition that manufactures an order effect by construction. Partitioning by
+    a random draw over the training vocabulary would silently push every unseen validation form
+    into one half.)
+    """
+    def side(form):
+        return names[hashlib.sha256(f"{salt}\x00{form.lower()}".encode()).digest()[0] & 1]
+    return [dict(tokens=r["tokens"],
+                 types=[side(t) if y == typ else y for t, y in zip(r["tokens"], r["types"])])
+            for r in rows]
+
+
+def split_pools_same_type(rows, typ, n, rng, names=("ORG#1", "ORG#2")):
+    """Matched null-swap pools: both passes add an arbitrary half of ONE real category.
+
+    The NER analogue of euh's `--mode nullswap`. The treatment adds two genuinely different
+    distinctions (ORG, MISC); here the two added distinctions are two arbitrary halves of the
+    same category, so they are semantically the same operator while the structure is unchanged —
+    two widens, two fresh labels, equal pools, same lr, same anchor. Pools are drawn exactly as
+    the treatment draws its ORG and MISC pools, so cross-category sentence overlap arises the
+    same way rather than being forced to zero. Any order effect that survives is therefore not
+    caused by the two added distinctions being different ones.
+
+    Returns (A_rows, B_rows, relabelled_all) — the last so the caller can keep the gold view
+    consistent with the split.
+    """
+    tagged = split_type_by_entity(rows, typ, names=names)
+    A = pool_with(tagged, names[0], n, rng)
+    B = pool_with(tagged, names[1], n, rng)
+    return A, B, tagged
 
 
 # ---------------------------------------------------------- encoding ---

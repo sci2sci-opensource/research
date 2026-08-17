@@ -1,10 +1,25 @@
 # Lab notes — the order-dependence experiments
 
-**Date:** 15 August 2026
-**Companion to:** *On Learning Languages* (OLL) and *Perfect Theory* (PT), drafts of 14 Aug 2026
+**Date:** 15 August 2026 · revised 17 August 2026 (re-runs, matched controls, contextual fraction)
+**Companion to:** *On Learning Languages* (OLL) v31 and *Perfect Theory* (PT) v21, drafts of 14 Aug 2026;
+*Universal Language Learning Machine* (ULLM) v5, 17 Aug 2026
 **Archived:** Zenodo, *Universal Language Learning series* — DOI [10.5281/zenodo.21971310](https://doi.org/10.5281/zenodo.21971310) (concept, latest version)
 **Code:** `euh_pkg/` (experiment 1), `ner_enrich_pkg/` (experiment 2)
-**Data artifacts:** `runs/exp_full_20260815_151503` (euh), `runs/exp_full_20260815_213139` (ner), checkpoints on `D:\model_checkpoints\`
+**Data artifacts (17 Aug re-runs supersede the 15 Aug batteries):**
+`euh_pkg/runs/exp_full_20260817_124411` (sealed H1–H13), `exp_power_20260817_173817` (m=4, null-swap,
+scale curve; H14–H16);
+`ner_enrich_pkg/runs/exp_full_20260817_143553` (N1–N5 incl. the β=0 ablation),
+`exp_control_20260817_202041` (matched null-swap; N6).
+Checkpoints on `D:\model_checkpoints\`; the 15 Aug batteries' weights were deleted after the
+17 Aug re-runs reproduced their headline numbers (results packages and ledgers retained).
+
+> **A note on this revision.** The 17 August pass added matched controls to both experiments and a
+> contextuality test that no earlier battery contained. Several readings in the first draft were
+> wrong and are corrected in place rather than quietly dropped — the H11 calibration is degenerate
+> by construction (§1.4), the euh order effect is not attributable to the two operators differing
+> (§1.5), the enrichment-vs-reweighting gap measures the token population rather than the
+> intervention type (§2.3), and the results sort onto PT §6.8's ladder differently than we first
+> framed them (§4).
 
 These notes retell the two experiments in plain ML language — what we built, why we built it that
 way, what broke, and what came out. The papers state the claims formally; this document is for a
@@ -137,17 +152,50 @@ effect smaller than the declared resolution, or noise the floor underestimates �
 not say, and neither may we.
 
 A further audit finding cuts deeper (all numbers reproducible from the committed ledgers):
-**the H3/H4/H6 rules as sealed do not discriminate signal from noise.** H3's χ² rejects the
-Markov composite even when the "observed composite" is replaced by a *same-order replicate* —
-pure seed noise — in 19/19 tested cells; H4's outside-overlap fraction is **identical for
-observed disagreement and replicate noise** (0.92 vs 0.92 on base_strength; 0.86 vs 0.86 on the
-control); H6's boundary AUC fires on the control too (0.88). These rules therefore establish
-that the *fitted predictors are rejected* — which noise alone suffices to do — not that the
-revision dynamics are context-dependent. The euh claim that survives with a discriminating rule
-is **H2 (Γ_U marginal-sign: E on base stages, correctly U on control and tiny)**. Properly
-noise-calibrated versions of H3/H4 (test statistics benchmarked against replicate-pair nulls)
-belong in the next battery's sealed set — added now, after seeing this data, they would be
-post-hoc.
+**the H3/H4/H6 rules as sealed do not discriminate context-dependence from other causes.** H3's
+χ² rejects the Markov composite even when the "observed composite" is replaced by a *same-order
+replicate* in 19/19 tested cells; H4's outside-overlap fraction is **identical for observed
+disagreement and replicate noise** (0.92 vs 0.92 on base_strength; 0.86 vs 0.86 on the control);
+H6's boundary AUC fires on the control too (0.88). The euh claim that survives with a
+discriminating rule is **H2 (Γ_U marginal-sign: E on base stages, correctly U on control and
+tiny)**.
+
+Two corrections to our own reading of that finding, both from the 2026-08-17 re-analysis
+(`analysis/stratified_lumpability.py`), plus a clarification of which question the statistic
+answers at all.
+
+*The replicate substitution is not a noise null.* We originally read H3's behaviour as "noise
+alone suffices to reject the Markov composite." That is wrong. A same-order replicate is another
+run of the *same* composite, so it carries the same systematic non-lumpability as the
+observation; the two are exchangeable and the ratio sits at ~1 whether or not the lumpable model
+is false. The same flaw makes the calibrated **H11 degenerate**: measured across all four stages
+its ratio is 0.95–1.16×, exactly what the construction forces, so its H verdict cannot be read
+as "non-lumpability is at noise level." Against a null that *can* fail — a parametric bootstrap
+under the lumpable model, resampling items and re-estimating both channels inside the null — the
+observed χ² is **15.6–20.7× the null median, p < 0.007 in every cell-order tested**. The verdict
+alphabet is genuinely not a closed description, and by a wide margin. (H11's ~1 does carry one
+piece of information its rule never intended: the deviation *reproduces across independent runs*,
+so it is systematic rather than run noise.)
+
+*It is not item heterogeneity either.* Stratifying by base margin shrinks the excess (5.2× at 4
+strata, 2.0× at 16), but stratifying on a *shuffled* covariate of identical granularity shrinks
+it just as much (5.3× and 2.1×). The reduction is a mechanical parameter-count effect; margin
+explains nothing.
+
+*Which boundary this belongs to.* The Markov composite is the "declared readout is a sufficient
+statistic" theory, so its failure is a statement about **comparison adequacy** — whether the
+verdict alphabet supplies an operationally adequate common description (PT §6.1–6.2) — and not
+about revision order. That is exactly why the single-operator negative control, where H9 confirms
+no order effect at all (0.7× floor), shows non-lumpability just as strongly: **20.7× versus
+20.0×** in the two-operator stage. PT keeps these apart deliberately: §6.4 notes that the
+contextual fraction "says nothing by itself about the order of revision operations," and §6.8
+lists an inadequate common comparison, a missing global noncontextual model, and order-dependent
+revision as three *different* rungs of one ladder. Our χ² statistic lives on the first rung. It
+should not be cited for either of the other two, and the control is what shows why.
+
+Properly noise-calibrated versions of H3/H4 belong in a sealed set (H11–H13 were added for the
+2026-08-17 battery); the bootstrap null above is post-hoc and is reported as such, alongside the
+sealed H11 verdict as recorded rather than in place of it.
 
 One seal is restart-contaminated: for `base_strength/a0.25_s0` the committed seal was rewritten
 on a resume (18:13) after an aborted first attempt had already trained that cell's composites
@@ -164,6 +212,45 @@ That cell is excluded from sealed-prediction claims; sweep.py now refuses to ove
   at the item level can dissociate.
 - The contested-susceptibility count gets the *scale* of the effect roughly right from sealed inputs
   (~10% capable items vs ~7–9% observed) and, after the confound fix, tracks the α-trend too.
+
+### 1.5 The power battery (2026-08-17): can the 2× bar be cleared at all?
+
+The v1 floor rested on a **single replicate pair per cell**, which is why sibling seeds at the same
+α reported 1.82× and 1.06×. The `--power` battery attacks the measurement rather than the effect:
+m = 4 runs per order (so the ratio rests on 12 within-order and 16 cross-order pairs instead of one
+of each), a matched control arm, and a scale curve at fixed settings. The pairwise ratio is
+m-independent in expectation, so more replicates sharpen it without inflating it — unlike ensemble
+averaging, which would have let us buy the threshold with compute.
+
+Three routes to the bar were tested and all three are closed:
+
+- **Displacement doesn't work.** Across a 20× range in lr_T (α = 0.1 → 2.0), order disagreement
+  grows 1.7× and the floor grows 2.0×, so the ratio *declines* (1.47× → 1.20×, fit −0.065/α).
+  Order-sensitivity and seed-sensitivity scale together. We had predicted the opposite — the
+  commutator is bilinear in the two step sizes while the noise is first order — and that prediction
+  is simply false here.
+- **Scale doesn't work.** At fixed settings, 11M → 29M → 41M → 110M gives ratios 1.39×, 1.22×,
+  1.23×, 1.26× (Spearman −0.20) while base accuracy climbs 0.748 → 0.849. The apparent v1
+  tiny→base gain (0.85 → 1.35) was a config confound: tiny ran at different `n_base`/`epochs`/
+  `n_pass` than base.
+- **Better estimation doesn't work — it tightens rather than raises.** Same three cells, old
+  single-pair statistic: 1.03–1.40. New pairwise statistic: **1.18–1.28**. The 0.37-wide scatter
+  was estimator noise.
+
+What the sharper instrument *does* deliver is a definite verdict where the 2× rule returned U.
+Sealed **H14** ("a systematic, non-noise order component exists": cross-order minus within-order
+pairwise disagreement, bootstrap CI excluding 0, in ≥⅔ of cells) returns **E in 100% of cells in
+all six stages**, with 17–28% of cross-order disagreement systematic. So the effect is certain and
+small; the 2× bar was demanding a magnitude this phenomenon does not have.
+
+**The matched control (H15) is the informative negative.** `power_nullswap` replaces the second
+operator with a second instance of the first — same objective, different data draw, everything else
+identical — and shows *more* effect than the treatment (19% vs 17% systematic). Making the two
+operators genuinely different in objective contributes nothing. The direction test agrees once it is
+run symmetrically: Γ_U is stably positive in the treatment and scatters in the control, but that is
+because both control passes are `binEH` and neither targets U, so the control cannot move that
+coordinate by construction. Measured on the axis each arm actually has (NER, §2.3), *both* arms show
+the same stable last-writer drift. **H16** (scale trend) returns **H**.
 
 ---
 
@@ -228,9 +315,10 @@ Reading:
 
 - **The entity-matched magnitude is the strongest result in either experiment.** With floor and
   effect measured in the same unit (entity-relevant tokens for both), the order/floor ratio has
-  **median ~2.0–2.2 with 8–9 of 12 bert-base cells at or above 2×** — this clears the bar the
-  euh effect failed. (No hypothesis ledger is ported to this package, so this is a reported
-  ratio, not a sealed verdict; porting the ledger is queued.)
+  **median 2.02× with 8 of 12 bert-base cells at or above 2×** — this clears the bar the euh
+  effect failed. The ledger is now ported: this is the sealed verdict **N1 = E** from the
+  2026-08-17 battery, replicating the reported ratio to two decimals. Removing the KL anchor
+  raises it further (**2.25×, 10/12 cells**), and bert-tiny stays correctly **U** (1.37×).
 - **The conflict set strongly localizes a minority of the effect.** Sealed before any composite
   existed, it captures **17–31% (median 25%) of observed disagreement at ~28× enrichment** — a
   sharp beacon, not an account of the magnitude; most of the disagreement lies outside it.
@@ -257,6 +345,48 @@ Reading:
   of a new distinction"** — and "did this training help?" still has no readout-independent answer;
   the readouts just disagree by less when the model is big enough. This is the paper's abstract
   non-monotonicity result (Prop 6.4) wearing overalls, with an error bar.
+
+### 2.3 The matched control (2026-08-17): does the order effect need the distinctions to differ?
+
+euh's null-swap arm showed its order effect survives replacing the second operator with a second
+instance of the first. NER is where the project's positive magnitude result lives, so it needed the
+same control. `ctrl_nullswap` has both passes add an arbitrary half of **one** category — ORG#1 and
+ORG#2 — against `ctrl_treat`'s ORG and MISC, with `n_pass`, `n_base`, lr, anchor, seeds and
+replicates all matched to the recorded `base_strength` at its α=1.0 slice (so the treatment arm
+doubles as a replication of that stage; its pool line is identical, 997 cross-category sentences,
+36358 eval tokens).
+
+**Design note worth keeping.** The obvious construction — split ORG's *sentences* into two pools —
+is not a null control. The same entity would be ORG#1 in one pool and ORG#2 in the other, so the two
+enrichments would make contradictory claims about identical tokens: a maximal-conflict condition
+that manufactures an order effect by construction. The split is therefore by **entity surface form**
+via a deterministic hash, so each form keeps one sub-label everywhere and the two sub-categories are
+consistent and mutually exclusive, exactly as ORG and MISC are (verified: 4960 vs 5065 tokens, zero
+forms inconsistent between train and validation, conflict set correctly empty in a smoke run).
+
+Sealed **N6** returns **H**: 64% systematic in the control against 49% in the treatment. But the raw
+comparison is not like-for-like — the arbitrary split leaves the two halves semantically
+indistinguishable, so the model cannot tell which half an unseen entity belongs to and the arms
+contest very different amounts (sealed predicted conflict 0.036 vs 0.010, overlap ratios 19 vs 5.8;
+pool overlap 2770 vs 997 sentences). Both asymmetries bias toward H.
+
+The fair statistic is each arm against **its own** sealed conflict prediction, written before any
+composite existed (`analysis/conflict_normalized.py`): treatment **0.61**, control **0.70**, ratio
+0.88. Both arms realise about two thirds of the order dependence their own conflict structure
+implies, and the treatment does not exceed its prediction by any more than the control exceeds its
+own. So the identity of the added distinctions adds nothing detectable beyond how much they contest,
+and the euh result replicates on the other task and the other intervention type.
+
+This also dissolves the enrichment-versus-reweighting asymmetry we had briefly treated as the
+headline. NER shows ~50% systematic against euh's ~20%, but NER's entity-matched population strips
+the ~80% of tokens that are trivially `O`, leaving a contested subpopulation; euh's items have no
+comparable dead weight. The gap measures the population, not the intervention type.
+
+**The direction test, run symmetrically.** Per-label marginal drift C(AB) − C(BA), entity-matched:
+the treatment moves MISC +0.029 and ORG −0.046; the control moves ORG#2 +0.141 and ORG#1 −0.153.
+Both are stable across cells and both say the same thing — the category added **last** is
+over-represented. The control does it 3–5× more strongly. Last-writer-wins on contested items is
+the mechanism in both arms.
 
 ---
 
@@ -286,6 +416,32 @@ monotonically with operator strength α and **crosses zero** (at α≈0.45 for t
 α≈1.06 for H), with a near-satisfying band between. Training operators aren't uniformly
 quantum-shaped, but the QQ diagnostic sees an asymmetry structure the raw disagreement rate is
 blind to.
+
+**Contextual fraction (Contextuality-by-Default)** — *what it is:* PT §6.4 defines a graded
+quantity. An empirical model is a family of context-wise joint distributions; a **global model** is
+one distribution over all outcomes whose marginals reproduce every context. Failure of a global
+model is contextuality, and CF = 1 − NCF measures the residual obstruction. Crucially, PT states in
+the same paragraph that CF "says nothing by itself about the order of revision operations" — order
+dependence and contextuality are different rungs of §6.8's ladder, and none of our sealed
+hypotheses tested the second one. *Our test* (`analysis/cbd_contextuality.py`): two contents —
+q₁ = "the S pass's verdict," q₂ = "the T pass's verdict" — each measured in two contexts, c₁ = order
+S→T and c₂ = order T→S. That is a cyclic system of rank 2, the same structure used on survey
+question-order data, and the CbD criterion reduces to
+
+    CNTX = |ΔCorr between the orders| − (|Δ⟨R_S⟩| + |Δ⟨R_T⟩|)
+
+with CNTX > 0 meaning contextual: the two-way correlation moved further than the shift in the
+individual marginals can pay for. Verdicts are dichotomised against each label in turn. *Result:*
+**CF ≈ 0.** NER: 0/15 tests in each arm. euh: 1/9 in the treatment, 0/9 in the control, and the
+single positive (a1.0_s0, target U, +0.026) fails our own replication standard — the same test at
+the other two seeds gives +0.004 and −0.103 — and sits within chance for 18 tests at a 95%
+interval. The NER numbers show *how* it fails: the largest raw order signal anywhere in the project
+(treatment, ORG: |ΔCorr| = 0.478) lands just inside a marginal budget of Δ₀ = 0.485. The order
+effects are **direct influences** in the CbD sense — inconsistent connectedness — with essentially
+nothing left over. *Caveats:* rank 2 is the weakest scenario available (CHSH-style tests are rank
+4), we dichotomised a three-valued verdict, and we treated items as realisations of one system,
+which is a modelling choice; a per-item-across-seeds construction asks a different question and the
+replicates would support it.
 
 **Instrument context-independence ("deficiency")** — *what it is:* in a proper operator algebra,
 "the T operation" is one object regardless of what state it acts on. *Our test:* fit T's verdict
@@ -348,28 +504,78 @@ the papers' relativity-to-readout theme reappearing one level up.
 
 ## 4. What we think this adds up to
 
-1. **The honest scoreboard, after auditing our own rules.** The NLI item-level order effect is
-   **U** (1.2–1.6× floor, positive in all 23 cells, below the sealed 2× bar). H3/H4/H6, though
-   formally E, turned out to be **non-discriminating as sealed** — their statistics fire equally
-   on replicate noise and on the control — so they establish rejection of the fitted predictors,
-   not context dependence; the discriminating euh positive is H2 (Γ_U sign). The strongest
-   magnitude result is the **NER entity-matched order effect (median ≈2.0–2.2×, 8–9/12 cells
-   ≥2×)**, reported as a ratio pending a ported hypothesis ledger. Sufficiency-failure claims
-   await noise-calibrated re-tests in the next sealed battery; the case for them is currently
-   suggestive, not established.
-2. **Intervention types differ in *transparency*.** Category acquisition (NER) is mostly label-visible
+The three papers separate several properties that ordinary talk runs together, and the results land
+on different ones. PT §6.8 gives the ladder: (1) no operationally adequate common comparison,
+(2) locally compatible statistics but no global noncontextual model, (3) representational but not
+dynamical commensurability — comparison works, revision is order-dependent, "perfection must be
+indexed by the declared update protocol or path," (4) both, so a path-independent claim is well
+typed. Sorted onto it:
+
+1. **Rung 1 — the declared readout is not an adequate common description.** The Markov composite
+   (verdict-as-sufficient-statistic) fails at **15.6–20.7× a bootstrap null that can fail,
+   p < 0.007**, survives the margin-heterogeneity explanation (shuffled-strata placebo), and
+   reproduces across independent runs. It appears identically in the single-operator control, which
+   is the point: this is a statement about the coarse-graining, not about order. The companion
+   result is **H10** — publishing `join(ST,TS)` instead of the tuple destroys 0.22–0.42 bits/item —
+   which is OLL §4.4 verbatim: "if only s₁∨⋯∨s_k is published, the identities and disagreements of
+   the reporters have been discarded."
+2. **Rung 2 — the contextual fraction is ≈ 0.** Measured by CbD on a rank-2 cyclic system: 0/15 in
+   both NER arms, 1/9 unreplicated in euh. Every order effect we produced is a **direct influence**
+   in the CbD sense; a classical hidden state with order-dependent readouts reproduces the data. In
+   the largest case the correlation shift (0.478) is almost exactly paid for by the marginal shift
+   (0.485). This is a measurement of a quantity PT §6.4 defines, not a refutation of anything the
+   papers assert — and PT is explicit that CF and revision order are separate questions.
+3. **Rung 3 — this is where the experiments live.** Revision is order-dependent and the
+   commuting-square condition of PT §6.6 fails, while the comparison itself remains available. That
+   combination is exactly the **unsharp gap** PT §6.5 constructs: two observables that *are* jointly
+   measurable — (√3+1)/2 < 2 — yet whose Lüders channels do not commute, so that "static gluing
+   without dynamic gluing" (Prop 6.3) is possible. Our batteries are an empirical instance of that
+   configuration, not evidence against it. Note the implication runs only one way outside the sharp
+   case: Theorem 6.1 makes commutation, joint measurability and order-independent revision coincide
+   for **sharp** observables, so with projective readouts order dependence would have forced
+   contextuality. A coarse-grained probabilistic verdict is about as unsharp as a readout gets,
+   which is why the naive inference fails and why the paper devotes a section to the gap.
+
+Within rung 3, the order effect itself is **certain but small and unstructured by operator
+identity**: sealed H14 = E in 100% of cells across six stages (17–28% systematic); the 2× bar
+returns U and is unreachable by displacement (flat across 20× lr), by scale (ρ = −0.20 from 11M to
+110M), or by better estimation (which tightens 1.03–1.40 to 1.18–1.28). Matched controls on both
+tasks — euh's H15 (19% vs 17%) and NER's N6 (0.70 vs 0.61 against each arm's own sealed conflict
+prediction) — say the same thing: swapping *which* operators are used changes nothing. The
+mechanism visible in every arm is **last-writer-wins on contested items**, with magnitude tracking
+contest volume and direction tracking which pass went last. The strongest magnitude result remains
+the **NER entity-matched effect (median 2.02×, 8/12 cells ≥2×, sealed N1 = E; 2.25× and 10/12 with
+the anchor removed)**, now with its own ported ledger.
+
+4. **Intervention types differ in *transparency*.** Category acquisition (NER) is mostly label-visible
    and its conflicts are predictable in advance; loss-reweighting (EUH) is representation-opaque.
    The protocol measures where on that spectrum an intervention sits — which is exactly what you'd
-   want to know before trusting a behavioral audit of it.
-3. **Conservativity is purchasable.** A KL anchor on the retracted distribution empirically confines
-   path-dependence to newly acquired capabilities (old-language divergence below noise). Cheap,
-   actionable continual-learning recipe.
-4. **Improvement is readout-relative under capacity constraints** — 38 measured verdict flips at
-   bert-tiny, zero at bert-base. "Did the update help?" needs a declared readout to be a question.
-5. **The algebra signal is real but lives in refined observables** (QQ drift, context-deficiency,
-   amplitude geometry), not in the naive ones (channel commutators, BCH curvature). The
-   quantum-measurement toolbox earned its keep as a *source of falsifiable identities* — most were
-   violated, each violation informative, one (amplitude composition) quietly supported.
+   want to know before trusting a behavioral audit of it. What we may *not* infer from the raw gap
+   (NER ~50% systematic vs euh ~20%) is that language extension is intrinsically more
+   order-sensitive: entity-matching strips the ~80% trivially-`O` tokens, so the gap measures the
+   population, not the intervention type.
+5. **Conservativity is observed; that the anchor *causes* it is not established.** With the KL
+   anchor in place, path-dependence stays confined to newly acquired capabilities — the retracted
+   old language sits below the 2× bar in **every cell** (sealed N2 = E, median 1.44×). The
+   pre-registered ablation that would license the causal reading did **not** clear its bar: with
+   the anchor removed the retracted effect moves only 1.44× → 1.59× (**N5 = U, 1.1×**), while
+   conservativity degrades just enough to drop N2 to U. So the recipe is worth trying and the
+   correlation is clean, but "the anchor buys conservativity" remains an unresolved causal claim
+   on this data, not a demonstrated one.
+6. **Improvement is readout-relative under capacity constraints** — 38 measured verdict flips at
+   bert-tiny, **0/72 at bert-base in both the anchored and unanchored arms** (sealed N4: E on
+   tiny, H on both base stages), against a flip floor of 0 expected. "Did the update help?" needs
+   a declared readout to be a question.
+7. **The algebra signal is real but lives in refined observables** (QQ drift, context-deficiency,
+   amplitude geometry, CF), not in the naive ones (channel commutators, BCH curvature). What the
+   borrowed apparatus supplied was a *source of falsifiable identities* — most violated, each
+   violation informative, one (amplitude composition) quietly supported, and one (CF) returning a
+   clean zero that places the experiments on a specific rung of PT's ladder. Note what the
+   batteries do **not** touch: the phase-sensitive sections of OLL §6 and PT §6.7 are conditional
+   on reference resources — intertwiners, calibration, cross-sector observables — that we never had
+   and that OLL §6.3 says must be charged before they mean anything ("without that resource, adding
+   complex amplitudes merely redescribes an empirically classical mixture"). Nothing here bears on
+   them either way.
 
 ## 5. Infrastructure notes (for whoever reruns this)
 

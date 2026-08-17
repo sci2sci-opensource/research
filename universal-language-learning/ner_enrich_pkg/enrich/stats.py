@@ -14,6 +14,20 @@ from scipy import stats
 FINAL = ["O", "PER", "LOC", "ORG", "MISC"]
 
 
+def set_final(labels):
+    """Set the canonical name order for comparisons, in place.
+
+    The default final language is O/PER/LOC/ORG/MISC. The null-swap control replaces ORG with
+    two sub-labels, so its final language is O/PER/LOC/ORG#1/ORG#2 and every name-indexed
+    statistic (marginal, joint, channel, the Markov composite, token F1) must speak it.
+
+    Mutates the list rather than rebinding the module global: the `order=FINAL` default
+    arguments below and `viz.py`'s `from enrich.stats import FINAL` both captured *this list
+    object* at import time, and a rebind would leave them pointing at the old contents.
+    """
+    FINAL[:] = list(labels)
+
+
 def verdict_names(P, labels):
     return np.array(labels)[P.argmax(1)]
 

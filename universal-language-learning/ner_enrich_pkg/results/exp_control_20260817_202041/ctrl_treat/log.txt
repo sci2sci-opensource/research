@@ -1,0 +1,142 @@
+20:20:48 device=cuda  model=bert-base-uncased
+20:20:51 pools: base=10000 A(+ORG)=2500 B(+MISC)=2500 cross-category sentences=997  eval tokens=36358  mode=enrich
+20:20:51 training base (ORG/MISC occluded as O)
+20:20:54       step 25 loss 0.1553
+20:20:56       step 50 loss 0.0361
+20:20:58       step 75 loss 0.0713
+20:21:01       step 100 loss 0.0320
+20:21:04       step 125 loss 0.0165
+20:21:07       step 150 loss 0.0151
+20:21:11       step 175 loss 0.0266
+20:21:14       step 200 loss 0.0201
+20:21:17       step 225 loss 0.0170
+20:21:20       step 250 loss 0.0089
+20:21:24       step 275 loss 0.0162
+20:21:27       step 300 loss 0.0144
+20:21:31       step 325 loss 0.0092
+20:21:34       step 350 loss 0.0030
+20:21:37       step 375 loss 0.0136
+20:21:41       step 400 loss 0.0284
+20:21:44       step 425 loss 0.0278
+20:21:47       step 450 loss 0.0065
+20:21:51       step 475 loss 0.0121
+20:21:54       step 500 loss 0.0258
+20:21:57       step 525 loss 0.0109
+20:22:00       step 550 loss 0.0010
+20:22:04       step 575 loss 0.0307
+20:22:07       step 600 loss 0.0065
+20:22:10       step 625 loss 0.0104
+20:22:14 base acc(R0) 0.996  C=[0.894 0.063 0.042 0.    0.   ]
+20:22:14 == α=1.0 seed=0  lr_A=3e-05 lr_B=3e-05
+20:22:14     pass A [+ORG, n=2500, lr=3e-05]
+20:22:19       step 25 loss 0.0662
+20:22:23       step 50 loss 0.0421
+20:22:27       step 75 loss 0.0364
+20:22:32     pass B [+MISC, n=2500, lr=3e-05]
+20:22:36       step 25 loss 0.0639
+20:22:41       step 50 loss 0.0929
+20:22:46       step 75 loss 0.0552
+20:22:50     SEALED e0a6bc884defaa8e…  claims A=0.056 B=0.031 overlap=0.010 (ratio 5.81) conflict=0.0098 pred-dis claims=0.0098 markov=0.0000 ‖[Φ]‖=0.075
+20:22:50     pass A→B [+MISC, n=2500, lr=3e-05]
+20:22:55       step 25 loss 0.0962
+20:23:00       step 50 loss 0.1084
+20:23:04       step 75 loss 0.0805
+20:23:09     pass B→A [+ORG, n=2500, lr=3e-05]
+20:23:13       step 25 loss 0.1220
+20:23:17       step 50 loss 0.0942
+20:23:22       step 75 loss 0.0504
+20:23:26     pass A→B rep1 [+MISC, n=2500, lr=3e-05]
+20:23:31       step 25 loss 0.0964
+20:23:35       step 50 loss 0.0639
+20:23:40       step 75 loss 0.0700
+20:23:44     pass B→A rep1 [+ORG, n=2500, lr=3e-05]
+20:23:49       step 25 loss 0.0948
+20:23:53       step 50 loss 0.0896
+20:23:57       step 75 loss 0.0957
+20:24:02     pass A→B rep2 [+MISC, n=2500, lr=3e-05]
+20:24:06       step 25 loss 0.1403
+20:24:11       step 50 loss 0.0618
+20:24:15       step 75 loss 0.0690
+20:24:20     pass B→A rep2 [+ORG, n=2500, lr=3e-05]
+20:24:24       step 25 loss 0.1051
+20:24:28       step 50 loss 0.0981
+20:24:33       step 75 loss 0.0693
+20:24:51     OBSERVED dis=0.0167 (ent 0.0898) SM p=0 | claims agree 0.962/0.969 in/out conflict 0.390/0.013 | retraction: AB~base 0.998 BA~base 0.997 AB~BA 0.998 old-lang order-dis 0.0024
+20:24:51     FLOOR pair-dis AB=0.0080 BA=0.0087 | order-dis = 2.0× floor
+20:24:51     IMPROVE base: R0err=0.004 R1err=0.071  A: R0err=0.004 R1err=0.033  B: R0err=0.003 R1err=0.055  AB: R0err=0.004 R1err=0.016  BA: R0err=0.004 R1err=0.018
+20:24:53 == α=1.0 seed=1  lr_A=3e-05 lr_B=3e-05
+20:24:54     pass A [+ORG, n=2500, lr=3e-05]
+20:24:59       step 25 loss 0.0602
+20:25:03       step 50 loss 0.0369
+20:25:08       step 75 loss 0.0810
+20:25:12     pass B [+MISC, n=2500, lr=3e-05]
+20:25:17       step 25 loss 0.0652
+20:25:21       step 50 loss 0.0646
+20:25:26       step 75 loss 0.0393
+20:25:30     SEALED 9937a3b4be3cad99…  claims A=0.058 B=0.034 overlap=0.012 (ratio 5.89) conflict=0.0114 pred-dis claims=0.0114 markov=0.0000 ‖[Φ]‖=0.082
+20:25:31     pass A→B [+MISC, n=2500, lr=3e-05]
+20:25:35       step 25 loss 0.0966
+20:25:40       step 50 loss 0.0523
+20:25:44       step 75 loss 0.0932
+20:25:49     pass B→A [+ORG, n=2500, lr=3e-05]
+20:25:53       step 25 loss 0.1078
+20:25:58       step 50 loss 0.0651
+20:26:02       step 75 loss 0.0666
+20:26:06     pass A→B rep1 [+MISC, n=2500, lr=3e-05]
+20:26:11       step 25 loss 0.1303
+20:26:15       step 50 loss 0.0910
+20:26:20       step 75 loss 0.0589
+20:26:24     pass B→A rep1 [+ORG, n=2500, lr=3e-05]
+20:26:29       step 25 loss 0.0537
+20:26:33       step 50 loss 0.0618
+20:26:38       step 75 loss 0.0907
+20:26:42     pass A→B rep2 [+MISC, n=2500, lr=3e-05]
+20:26:46       step 25 loss 0.0948
+20:26:51       step 50 loss 0.0458
+20:26:56       step 75 loss 0.0532
+20:27:00     pass B→A rep2 [+ORG, n=2500, lr=3e-05]
+20:27:04       step 25 loss 0.0600
+20:27:09       step 50 loss 0.1850
+20:27:13       step 75 loss 0.0946
+20:27:31     OBSERVED dis=0.0150 (ent 0.0825) SM p=0 | claims agree 0.959/0.968 in/out conflict 0.405/0.011 | retraction: AB~base 0.998 BA~base 0.996 AB~BA 0.996 old-lang order-dis 0.0036
+20:27:31     FLOOR pair-dis AB=0.0075 BA=0.0073 | order-dis = 2.0× floor
+20:27:31     IMPROVE base: R0err=0.004 R1err=0.071  A: R0err=0.005 R1err=0.034  B: R0err=0.004 R1err=0.057  AB: R0err=0.004 R1err=0.015  BA: R0err=0.005 R1err=0.017
+20:27:36 == α=1.0 seed=2  lr_A=3e-05 lr_B=3e-05
+20:27:37     pass A [+ORG, n=2500, lr=3e-05]
+20:27:41       step 25 loss 0.0995
+20:27:46       step 50 loss 0.0642
+20:27:50       step 75 loss 0.0548
+20:27:55     pass B [+MISC, n=2500, lr=3e-05]
+20:27:59       step 25 loss 0.0693
+20:28:04       step 50 loss 0.0347
+20:28:08       step 75 loss 0.0203
+20:28:12     SEALED b96f9df8f76b7e9b…  claims A=0.059 B=0.035 overlap=0.012 (ratio 6.01) conflict=0.0121 pred-dis claims=0.0121 markov=0.0000 ‖[Φ]‖=0.085
+20:28:13     pass A→B [+MISC, n=2500, lr=3e-05]
+20:28:18       step 25 loss 0.0751
+20:28:22       step 50 loss 0.0814
+20:28:27       step 75 loss 0.1012
+20:28:31     pass B→A [+ORG, n=2500, lr=3e-05]
+20:28:36       step 25 loss 0.0902
+20:28:40       step 50 loss 0.0762
+20:28:44       step 75 loss 0.0657
+20:28:49     pass A→B rep1 [+MISC, n=2500, lr=3e-05]
+20:28:53       step 25 loss 0.1234
+20:28:58       step 50 loss 0.1061
+20:29:02       step 75 loss 0.0920
+20:29:07     pass B→A rep1 [+ORG, n=2500, lr=3e-05]
+20:29:11       step 25 loss 0.1305
+20:29:15       step 50 loss 0.0809
+20:29:20       step 75 loss 0.0679
+20:29:24     pass A→B rep2 [+MISC, n=2500, lr=3e-05]
+20:29:28       step 25 loss 0.0671
+20:29:33       step 50 loss 0.0374
+20:29:38       step 75 loss 0.0727
+20:29:42     pass B→A rep2 [+ORG, n=2500, lr=3e-05]
+20:29:47       step 25 loss 0.0967
+20:29:51       step 50 loss 0.0809
+20:29:55       step 75 loss 0.0934
+20:30:14     OBSERVED dis=0.0116 (ent 0.0628) SM p=0 | claims agree 0.958/0.967 in/out conflict 0.243/0.009 | retraction: AB~base 0.998 BA~base 0.998 AB~BA 0.998 old-lang order-dis 0.0019
+20:30:14     FLOOR pair-dis AB=0.0076 BA=0.0093 | order-dis = 1.4× floor
+20:30:14     IMPROVE base: R0err=0.004 R1err=0.071  A: R0err=0.005 R1err=0.034  B: R0err=0.004 R1err=0.057  AB: R0err=0.003 R1err=0.018  BA: R0err=0.004 R1err=0.015
+20:30:20 checkpoints: 25 files, 5.69 GB (excluded from zip)
+20:30:20 sweep done

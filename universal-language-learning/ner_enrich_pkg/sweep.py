@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 for _s in (sys.stdout, sys.stderr):
     if hasattr(_s, "reconfigure"): _s.reconfigure(encoding="utf-8", errors="replace")
 from enrich.model import (Tagger, widen, clone, save_state, load_ckpt, load_conll, pool_with,
+                          split_pools_same_type, split_type_by_entity,
                           build_eval, train_pass, evaluate, set_seed, device, hf_rev,
                           LABELS0, ENRICH_A, ENRICH_B)
 from enrich import stats as S
@@ -47,6 +48,13 @@ def main():
     ap.add_argument("--base_seed", type=int, default=1234)
     ap.add_argument("--no_zip", action="store_true")
     ap.add_argument("--n_replicate", type=int, default=1)
+    ap.add_argument("--mode", choices=["enrich", "nullswap"], default="enrich",
+                    help="enrich: the two passes add two genuinely different categories (ORG, MISC). "
+                         "nullswap: MATCHED CONTROL — both passes add an arbitrary half of ONE category "
+                         "(ORG#1, ORG#2) on disjoint sentence pools, so the two enrichments are "
+                         "semantically the same operator and swapping them is null, while the structure "
+                         "(two widens, two fresh labels, equal disjoint pools, same lr and anchor) is "
+                         "unchanged. Isolates whether the order effect needs the distinctions to differ.")
     ap.add_argument("--save_ckpt", choices=["fp16", "fp32", "none"], default="fp16")
     ap.add_argument("--ckpt_dir", default=os.environ.get("CKPT_DIR", ""),
                     help="root dir for checkpoint storage (e.g. another drive); a runs/<name>/ckpt junction is created")
@@ -96,14 +104,24 @@ def main():
     train_rows, val_rows = load_conll()
     rng = np.random.default_rng(args.base_seed)
     base_rows = [train_rows[i] for i in rng.permutation(len(train_rows))[:args.n_base]]
-    A_rows = pool_with(train_rows, ENRICH_A, args.n_pass, rng)
-    B_rows = pool_with(train_rows, ENRICH_B, args.n_pass, rng)
-    both = sum(1 for r in A_rows if ENRICH_B in r["types"]) + sum(1 for r in B_rows if ENRICH_A in r["types"])
+    if args.mode == "nullswap":
+        NAME_A, NAME_B = f"{ENRICH_A}#1", f"{ENRICH_A}#2"
+        A_rows, B_rows, _tagged = split_pools_same_type(train_rows, ENRICH_A, args.n_pass, rng,
+                                                        names=(NAME_A, NAME_B))
+        # the eval gold must speak the same language as the passes (same deterministic split)
+        val_rows = split_type_by_entity(val_rows, ENRICH_A, names=(NAME_A, NAME_B))
+        # ...and so must every name-indexed statistic: the final language is O/PER/LOC/ORG#1/ORG#2
+        S.set_final(LABELS0 + [NAME_A, NAME_B])
+    else:
+        NAME_A, NAME_B = ENRICH_A, ENRICH_B
+        A_rows = pool_with(train_rows, ENRICH_A, args.n_pass, rng)
+        B_rows = pool_with(train_rows, ENRICH_B, args.n_pass, rng)
+    both = sum(1 for r in A_rows if NAME_B in r["types"]) + sum(1 for r in B_rows if NAME_A in r["types"])
     ev = build_eval(tok, val_rows[:args.n_eval], args.max_len)
-    log(f"pools: base={len(base_rows)} A(+{ENRICH_A})={len(A_rows)} B(+{ENRICH_B})={len(B_rows)} "
-        f"cross-category sentences={both}  eval tokens={len(ev['gold'])}")
+    log(f"pools: base={len(base_rows)} A(+{NAME_A})={len(A_rows)} B(+{NAME_B})={len(B_rows)} "
+        f"cross-category sentences={both}  eval tokens={len(ev['gold'])}  mode={args.mode}")
 
-    LA, LB = LABELS0 + [ENRICH_A], LABELS0 + [ENRICH_B]
+    LA, LB = LABELS0 + [NAME_A], LABELS0 + [NAME_B]
 
     # ---------- base ----------
     ck_base = os.path.join(ckdir, "base.pt")
@@ -150,9 +168,9 @@ def main():
                 log(f"== α={alpha} seed={seed}: already in ledger — skipped (resume)"); continue
             log(f"== α={alpha} seed={seed}  lr_A={args.lr:g} lr_B={lrB:g}")
             # 1. single enrichments
-            mA = enrich(base, ENRICH_A, A_rows, LA, args.lr, seed, "A")
+            mA = enrich(base, NAME_A, A_rows, LA, args.lr, seed, "A")
             P_A = evaluate(mA, tok, ev, args.max_len); save_ckpt(mA, f"{key}_A"); mA.cpu()
-            mB = enrich(base, ENRICH_B, B_rows, LB, lrB, seed, "B")
+            mB = enrich(base, NAME_B, B_rows, LB, lrB, seed, "B")
             P_B = evaluate(mB, tok, ev, args.max_len); save_ckpt(mB, f"{key}_B"); mB.cpu()
             if dev == "cuda": torch.cuda.empty_cache()
             # 2. sealed prediction — append-only: never overwrite an existing seal (a prior
@@ -174,17 +192,17 @@ def main():
                 f"pred-dis claims={cl['pred_disagreement']:.4f} markov={pred['markov']['pred_disagreement']:.4f} "
                 f"‖[Φ]‖={pred['comm_markov']:.3f}")
             # 3. composites (+ replicates)
-            mAB = enrich(mA, ENRICH_B, B_rows, LA + [ENRICH_B], lrB, seed + 100, "A→B")
+            mAB = enrich(mA, NAME_B, B_rows, LA + [NAME_B], lrB, seed + 100, "A→B")
             P_AB = evaluate(mAB, tok, ev, args.max_len); save_ckpt(mAB, f"{key}_AB"); lab_AB = list(mAB.labels); mAB.cpu()
-            mBA = enrich(mB, ENRICH_A, A_rows, LB + [ENRICH_A], args.lr, seed + 100, "B→A")
+            mBA = enrich(mB, NAME_A, A_rows, LB + [NAME_A], args.lr, seed + 100, "B→A")
             P_BA = evaluate(mBA, tok, ev, args.max_len); save_ckpt(mBA, f"{key}_BA"); lab_BA = list(mBA.labels); mBA.cpu()
             if dev == "cuda": torch.cuda.empty_cache()
             reps = dict(AB=[], BA=[])
             for r in range(1, args.n_replicate):
-                mr = enrich(mA, ENRICH_B, B_rows, LA + [ENRICH_B], lrB, seed + 100 + 1000 * r, f"A→B rep{r}")
+                mr = enrich(mA, NAME_B, B_rows, LA + [NAME_B], lrB, seed + 100 + 1000 * r, f"A→B rep{r}")
                 reps["AB"].append((evaluate(mr, tok, ev, args.max_len).tolist(), list(mr.labels)))
                 save_ckpt(mr, f"{key}_AB_rep{r}"); del mr
-                mr = enrich(mB, ENRICH_A, A_rows, LB + [ENRICH_A], args.lr, seed + 100 + 1000 * r, f"B→A rep{r}")
+                mr = enrich(mB, NAME_A, A_rows, LB + [NAME_A], args.lr, seed + 100 + 1000 * r, f"B→A rep{r}")
                 reps["BA"].append((evaluate(mr, tok, ev, args.max_len).tolist(), list(mr.labels)))
                 save_ckpt(mr, f"{key}_BA_rep{r}"); del mr
                 if dev == "cuda": torch.cuda.empty_cache()

@@ -113,6 +113,61 @@ def N5(rows_kl, rows_zero):
     return "U", f"{mk:.2f}→{mz:.2f} ({ev['ratio']:.1f}×)", ev
 
 
+def pair_decomp(L, boot=300, seed=0):
+    """Per-cell split of entity-matched composite disagreement into within-order and cross-order.
+
+    within = mean pairwise disagreement among runs of the SAME order (run noise)
+    cross  = mean pairwise disagreement between runs of DIFFERENT orders (noise + order)
+    sys    = (cross - within) / cross, the systematic share, with a bootstrap over tokens
+
+    Uses every run of each order (recorded composite + replicates), so the estimate rests on
+    m(m-1) within-order and m^2 cross-order pairs instead of one of each. The ratio is
+    m-independent in expectation, so more replicates sharpen it without inflating it.
+    """
+    gold = np.array(L["gold"]); out = []
+    for key, c in sorted(L["cells"].items()):
+        lab = c["labels"]
+        AB = [names(c["P"]["AB"], lab["AB"])] + [names(r[0], r[1]) for r in c["replicates"].get("AB", [])]
+        BA = [names(c["P"]["BA"], lab["BA"])] + [names(r[0], r[1]) for r in c["replicates"].get("BA", [])]
+        if len(AB) < 2 or len(BA) < 2: continue
+        ent = (gold != "O") | (AB[0] != "O") | (BA[0] != "O")
+        W = np.array([(a != b)[ent] for R in (AB, BA) for i, a in enumerate(R) for b in R[i + 1:]])
+        C = np.array([(a != b)[ent] for a in AB for b in BA])
+        n = W.shape[1]; rng = np.random.default_rng(seed)
+        ex = [float(C[:, i].mean() - W[:, i].mean()) for i in (rng.integers(0, n, n) for _ in range(boot))]
+        lo, hi = np.percentile(ex, [2.5, 97.5])
+        w, cr = float(W.mean()), float(C.mean())
+        out.append(dict(cell=key, within=w, cross=cr, ratio=cr / max(w, 1e-9),
+                        sys=(cr - w) / max(cr, 1e-9), lo=float(lo), hi=float(hi)))
+    return out
+
+
+def N6(rows_treat, rows_null):
+    """Does the enrichment order effect need the two added distinctions to be DIFFERENT?
+
+    Sealed 2026-08-17 before the control battery was launched. The treatment adds ORG and MISC;
+    the matched control adds two arbitrary halves of ORG (entity-partitioned, so they are
+    consistent and mutually exclusive) with everything else identical. euh's analogous control
+    returned H — its order effect survived replacing the second operator with a second instance
+    of the first — so this is the same question asked where the project's positive result lives.
+    """
+    if len(rows_treat) < 3 or len(rows_null) < 3:
+        return "U", "needs both ctrl_treat and ctrl_nullswap with >=3 cells", {}
+    st = float(np.median([r["sys"] for r in rows_treat])); sz = float(np.median([r["sys"] for r in rows_null]))
+    ev = dict(treat_sys=st, nullswap_sys=sz, ratio=st / max(sz, 1e-9),
+              treat_ratio=float(np.median([r["ratio"] for r in rows_treat])),
+              nullswap_ratio=float(np.median([r["ratio"] for r in rows_null])),
+              treat_ci_above_0=float(np.mean([r["lo"] > 0 for r in rows_treat])),
+              nullswap_ci_above_0=float(np.mean([r["lo"] > 0 for r in rows_null])))
+    if st >= 2 * max(sz, 1e-9) and ev["treat_ci_above_0"] >= 2 / 3:
+        return "E", (f"distinct distinctions matter: treatment {st:.0%} vs matched null-swap {sz:.0%} "
+                     f"systematic ({ev['ratio']:.1f}×)"), ev
+    if st <= sz:
+        return "H", (f"null swap shows as much order effect as two distinct enrichments "
+                     f"({sz:.0%} vs {st:.0%} systematic) — the effect does not need them to differ"), ev
+    return "U", f"treatment {st:.0%} vs null-swap {sz:.0%} systematic — under the 2× bar", ev
+
+
 def main():
     B = sys.argv[1]
     ledgers = {}
@@ -133,9 +188,18 @@ def main():
     kl = next((s for s in rows if s == "base_strength"), None)
     z = next((s for s in rows if "klzero" in s), None)
     out["N5_anchor_causality"] = N5(rows.get(kl, []), rows.get(z, []))
+
+    t_st = next((s for s in ledgers if s.endswith("ctrl_treat")), None)
+    n_st = next((s for s in ledgers if s.endswith("ctrl_nullswap")), None)
+    if t_st and n_st:
+        dt, dn = pair_decomp(ledgers[t_st]), pair_decomp(ledgers[n_st])
+        out["N6_distinctions_must_differ"] = N6(dt, dn)
+        out["N6_cells"] = dict(ctrl_treat=dt, ctrl_nullswap=dn)
+
     for st, d in out.items():
-        if st == "N5_anchor_causality":
-            print(f"N5 -> {d[0]} | {d[1]}"); continue
+        if st in ("N5_anchor_causality", "N6_distinctions_must_differ"):
+            print(f"{st.split('_')[0]} -> {d[0]} | {d[1]}"); continue
+        if st == "N6_cells": continue
         print(f"== {st}")
         for k, v in d.items():
             if k != "cells": print(f"  {k} -> {v[0]} | {v[1]}")

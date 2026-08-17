@@ -202,6 +202,125 @@ def H_sign_consistency(L):
     return "U", f">1× in {ev['frac_gt1']:.0%} of cells", ev
 
 
+# ---- v3 power battery (pre-registered 2026-08-17, before the battery is launched).
+# ---- The v2 floor came from a SINGLE replicate pair per cell, so the ratio was badly
+# ---- estimated (sibling seeds gave 1.82x and 1.06x at the same alpha). With m runs per
+# ---- order the same quantity rests on m(m-1) within-order pairs and m^2 cross-order pairs.
+# ---- The pairwise ratio is m-independent in expectation, so raising m sharpens the
+# ---- estimate without inflating the statistic — unlike ensemble averaging, which would.
+def _order_runs(c, order):
+    """Every run of one order: the recorded composite plus its replicates."""
+    return [np.array(c["P"][order]).argmax(1)] + _rep_verdicts(c, order)
+
+
+def _pair_decomp(c, B=400, seed=0):
+    """Split item-level composite disagreement into within-order (noise) and cross-order.
+
+    within = mean pairwise disagreement among runs of the SAME order (pure run noise)
+    cross  = mean pairwise disagreement between runs of DIFFERENT orders (noise + order)
+    excess = cross - within, with a percentile bootstrap over items
+    sys_frac = excess / cross, the fraction of cross-order disagreement that is systematic
+    """
+    ST, TS = _order_runs(c, "ST"), _order_runs(c, "TS")
+    if len(ST) < 2 or len(TS) < 2:
+        return None
+    W = np.array([(a != b) for R in (ST, TS) for i, a in enumerate(R) for b in R[i + 1:]])
+    C = np.array([(a != b) for a in ST for b in TS])
+    if not len(W) or not len(C):
+        return None
+    n = W.shape[1]; rng = np.random.default_rng(seed)
+    ex = [float(C[:, i].mean() - W[:, i].mean())
+          for i in (rng.integers(0, n, n) for _ in range(B))]
+    lo, hi = np.percentile(ex, [2.5, 97.5])
+    w, cr = float(W.mean()), float(C.mean())
+    return dict(within=w, cross=cr, excess=cr - w, lo=float(lo), hi=float(hi),
+                ratio=cr / max(w, 1e-9), sys_frac=(cr - w) / max(cr, 1e-9))
+
+
+def H_systematic_component(L):
+    """H14: is any part of the cross-order difference systematic rather than run noise?"""
+    ds = [d for d in (_pair_decomp(c) for c in cells_of(L)) if d]
+    if len(ds) < 3:
+        return "U", "needs ≥3 cells with ≥2 runs per order (n_replicate ≥ 2)", {}
+    pos = float(np.mean([d["lo"] > 0 for d in ds]))
+    neg = float(np.mean([d["hi"] < 0 for d in ds]))
+    ev = dict(frac_ci_above_0=pos, median_sys_frac=float(np.median([d["sys_frac"] for d in ds])),
+              median_ratio=float(np.median([d["ratio"] for d in ds])), n=len(ds))
+    if pos >= 2 / 3:
+        return "E", (f"systematic component >0 (bootstrap CI excludes 0) in {pos:.0%} of cells; "
+                     f"{ev['median_sys_frac']:.0%} of cross-order disagreement is systematic "
+                     f"(median ratio {ev['median_ratio']:.2f}×)"), ev
+    if neg >= 2 / 3:
+        return "H", f"cross-order disagreement is BELOW within-order noise in {neg:.0%} of cells", ev
+    return "U", f"CI excludes 0 in only {pos:.0%} of cells (median {ev['median_sys_frac']:.0%} systematic)", ev
+
+
+# ---- battery-level rules: these compare stages, so they take the whole ledger dict ----
+PARAMS_M = {"google/bert_uncased_L-2_H-128_A-2": 4.4, "google/bert_uncased_L-4_H-256_A-4": 11.3,
+            "google/bert_uncased_L-4_H-512_A-8": 28.8, "google/bert_uncased_L-8_H-512_A-8": 41.4,
+            "bert-base-uncased": 110.0, "bert-large-uncased": 335.0}
+
+
+def _stage_sys(L):
+    return [d for d in (_pair_decomp(c) for c in cells_of(L)) if d]
+
+
+def H_nullswap_matched(ledgers):
+    """H15: does operator IDENTITY drive the order difference, against a matched control?
+
+    The null-swap arm runs the same objective on both passes, so its cross-order difference
+    is what two passes produce when order is semantically null — a floor matched in
+    perturbation structure, unlike a same-order replicate (which re-seeds a whole pass).
+    """
+    t = next((L for k, L in ledgers.items() if k.endswith("power_treat")), None)
+    z = next((L for k, L in ledgers.items() if k.endswith("power_nullswap")), None)
+    if t is None or z is None:
+        return "U", "needs both power_treat and power_nullswap stages", {}
+    dt, dz = _stage_sys(t), _stage_sys(z)
+    if len(dt) < 3 or len(dz) < 3:
+        return "U", "needs ≥3 cells per arm", {}
+    st = float(np.median([d["sys_frac"] for d in dt])); sz = float(np.median([d["sys_frac"] for d in dz]))
+    ev = dict(treat_sys_frac=st, nullswap_sys_frac=sz, n_treat=len(dt), n_null=len(dz),
+              treat_frac_ci_above_0=float(np.mean([d["lo"] > 0 for d in dt])))
+    if st >= 2 * max(sz, 1e-9) and ev["treat_frac_ci_above_0"] >= 2 / 3:
+        return "E", (f"two-operator order effect is {st / max(sz, 1e-9):.1f}× the matched null-swap "
+                     f"control ({st:.0%} vs {sz:.0%} systematic)"), ev
+    if st <= sz:
+        return "H", f"null swap shows as much order effect as the two-operator arm ({sz:.0%} vs {st:.0%})", ev
+    return "U", f"treatment {st:.0%} vs null-swap {sz:.0%} systematic — under the 2× bar", ev
+
+
+def H_scale_trend(ledgers):
+    """H16: does the order/noise ratio rise with model scale, as tiny→base suggested?"""
+    pts = []
+    for k, L in ledgers.items():
+        p = PARAMS_M.get(L["meta"].get("model"))
+        ds = _stage_sys(L)
+        if p and len(ds) >= 2 and "scale" in k:
+            pts.append((p, float(np.median([d["ratio"] for d in ds]))))
+    if len(pts) < 4:
+        return "U", f"needs ≥4 scale stages, have {len(pts)}", dict(points=pts)
+    x, y = np.log([p for p, _ in pts]), np.array([r for _, r in pts])
+    rho = float(sps.spearmanr(x, y).statistic)
+    sl, ic = np.polyfit(x, y, 1)
+    need = float(np.exp((2.0 - ic) / sl)) if sl > 0 else float("inf")
+    ev = dict(spearman=rho, slope_per_e_fold=float(sl), points=pts, params_M_for_2x=need)
+    if rho >= 0.6:
+        return "E", (f"ratio rises with scale (ρ={rho:+.2f}, {sl:+.2f} per e-fold); "
+                     f"extrapolates to 2× at ≈{need:,.0f}M params"), ev
+    if rho <= 0:
+        return "H", f"ratio does not rise with scale (ρ={rho:+.2f})", ev
+    return "U", f"weak scale trend (ρ={rho:+.2f})", ev
+
+
+BATTERY_HYPS = [
+    ("H15", "Operator identity drives the order difference (matched null-swap control)",
+     "median systematic fraction in power_treat ≥ 2× power_nullswap, with CI>0 in ≥2/3 of treat cells", H_nullswap_matched),
+    ("H16", "Order/noise ratio rises with model scale",
+     "Spearman(log params, pairwise ratio) ≥ 0.6 over ≥4 scale stages", H_scale_trend),
+]
+
+
 HYPS = [
     ("H1", "Order effect exceeds the composite's own seed noise", "disagreement(S→T,T→S) ≥ 2× same-order replicate disagreement in ≥2/3 of cells", H_order_effect),
     ("H2", "Γ_U sign: S→T ends more neutral than T→S, seed-stable", "mean Γ_U > 0, |mean| > 2·SE, positive in ≥80% cells", H_gamma_sign),
@@ -216,6 +335,8 @@ HYPS = [
     ("H11", "Calibrated non-lumpability: exceeds the replicate-noise statistic", "obs χ² ≥ 2× median replicate-composite χ² in ≥2/3 of cells", H_nonlumpable_cal),
     ("H12", "Calibrated localization: above-noise excess lies outside the overlap set", "≥90% of excess (obs − replicate-noise rate) outside, ≥3 cells with ≥0.5% excess", H_outside_overlap_cal),
     ("H13", "Sign consistency: order/floor ratio >1 almost everywhere", "ratio >1× floor in ≥90% of ≥6 cells", H_sign_consistency),
+    ("H14", "A systematic (non-noise) order component exists",
+     "cross-order minus within-order pairwise disagreement >0, bootstrap CI excluding 0, in ≥2/3 of cells", H_systematic_component),
 ]
 
 
@@ -314,6 +435,20 @@ def main():
             except Exception as e: v, why, ev = "U", f"error: {e}", {}
             row.append(f"{badge(v)}<br><sub>{html.escape(why)}</sub>"); ledger_json[hid]["verdicts"][st] = dict(verdict=v, why=why, evidence=ev)
         md.append("| " + " | ".join(row) + " |")
+    battery_json = {}
+    rows_b = []
+    for hid, name, rule, fn in BATTERY_HYPS:
+        try: v, why, ev = fn(ledgers)
+        except Exception as e: v, why, ev = "U", f"error: {e}", {}
+        battery_json[hid] = dict(name=name, rule=rule, verdict=v, why=why, evidence=ev)
+        rows_b.append(f"| **{hid}** | {name} | <sub>{rule}</sub> | {badge(v)}<br><sub>{html.escape(why)}</sub> |")
+    if rows_b:
+        md.append("\n## Battery-level hypotheses\n")
+        md.append("These compare stages against each other rather than scoring one stage, so they carry a "
+                  "single verdict per battery.\n")
+        md.append("| # | hypothesis | rule | verdict |\n|---|---|---|---|")
+        md += rows_b
+
     md.append("\n## Bayesian update over theories of the composite\n")
     md.append("Each theory predicts every item's verdict for S→T and T→S from base, S, T only; likelihood uses ε = the cell's "
               "measured replicate floor. Uniform prior; posterior after the last cell of each stage.\n")
@@ -349,7 +484,8 @@ def main():
             md.append(f"\n### {st}\n"); md += [f"![{os.path.basename(f)}]({os.path.relpath(f, out).replace(os.sep, '/')})" for f in figs]
     text = "\n".join(md)
     open(os.path.join(out, "report.md"), "w", encoding="utf-8").write(text)
-    json.dump(dict(hypotheses=ledger_json, bayes=bayes_json), open(os.path.join(out, "hypotheses.json"), "w"), indent=1)
+    json.dump(dict(hypotheses=ledger_json, battery_hypotheses=battery_json, bayes=bayes_json),
+              open(os.path.join(out, "hypotheses.json"), "w"), indent=1)
     # simple HTML
     try:
         import markdown  # optional

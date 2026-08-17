@@ -9,8 +9,21 @@ HF_REVISIONS = {  # snapshots used by the recorded batteries (see requirements.t
     "bert-base-uncased": "86b5e0934494",
     "google/bert_uncased_L-2_H-128_A-2": "30b0a37ccaaa",
     "stanfordnlp/snli": "cdb5c3d5eed6",
+    # scale curve: 11M / 29M / 41M fill the gap between bert-tiny (4.4M) and bert-base (110M).
+    # bert-large is pinned but does not fit this 8 GB card alongside the KL reference model.
+    "google/bert_uncased_L-4_H-256_A-4": "387825ce42db",
+    "google/bert_uncased_L-4_H-512_A-8": "606e4d552528",
+    "google/bert_uncased_L-8_H-512_A-8": "53b17ea0d907",
+    "bert-large-uncased": "6da4b6a26a18",
 }
-def hf_rev(name): return HF_REVISIONS.get(name)
+def hf_rev(name):
+    """Pinned snapshot for `name`. Raises rather than returning None: an unpinned load
+    silently tracks HEAD, which is the reproducibility hole the pins exist to close."""
+    try:
+        return HF_REVISIONS[name]
+    except KeyError:
+        raise KeyError(f"no pinned HF revision for {name!r}; add one to HF_REVISIONS "
+                       f"(known: {sorted(HF_REVISIONS)})") from None
 
 
 def set_seed(s):

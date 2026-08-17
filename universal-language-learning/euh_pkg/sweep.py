@@ -36,10 +36,14 @@ def main():
     ap.add_argument("--model", default="google/bert_uncased_L-2_H-128_A-2")
     ap.add_argument("--alphas", type=float, nargs="+", default=[0.25, 0.5, 0.75, 1.0, 1.25])
     ap.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
-    ap.add_argument("--mode", choices=["disjoint", "weighted"], default="disjoint",
+    ap.add_argument("--mode", choices=["disjoint", "weighted", "nullswap"], default="disjoint",
                     help="disjoint: S = binary E/H loss on E/H-labelled items, T = U-vs-notU loss on its own items; "
                          "data split into disjoint S and T pools with a controllable shared fraction. "
-                         "weighted: legacy — both objectives are class-weighted 3-way CE on the SAME pool (mostly one operator).")
+                         "weighted: legacy — both objectives are class-weighted 3-way CE on the SAME pool (mostly one operator). "
+                         "nullswap: MATCHED CONTROL — both passes carry the SAME objective (S's binary E/H loss) on two "
+                         "disjoint draws of the same pool, so swapping them is semantically null while the perturbation "
+                         "structure (two passes, same sizes, same lr, same anchor) is identical to disjoint. The floor it "
+                         "yields is matched to the treatment, unlike a same-order replicate, which re-seeds a whole pass.")
     ap.add_argument("--shared_frac", type=float, default=0.0, help="fraction of each pass's items shared with the other pass (disjoint mode)")
     ap.add_argument("--slider", choices=["strength", "shared"], default="strength",
                     help="what α controls in disjoint mode: 'strength' = T-pass LR multiplier; 'shared' = shared item fraction ∈[0,1]")
@@ -106,7 +110,9 @@ def main():
 
     dev = device(); log(f"device={dev}  model={args.model}")
     tok = BertTokenizerFast.from_pretrained(args.model, revision=hf_rev(args.model))
-    base_rows, pass_rows, ev = load_data(args.n_base, 3 * args.n_pass + 2000, args.n_eval, args.base_seed)
+    # nullswap draws two disjoint E/H pools of n_pass; E/H is ~2/3 of SNLI, so ask for more headroom
+    n_pool = (5 if args.mode == "nullswap" else 3) * args.n_pass + 2000
+    base_rows, pass_rows, ev = load_data(args.n_base, n_pool, args.n_eval, args.base_seed)
     gold = [r["label"] for r in ev]
     def build_pools(shared_frac):
         if args.mode == "disjoint":
@@ -128,6 +134,15 @@ def main():
                                    f"have U={len(U_own)}, own-EH={len(EH_own)}")
             T_rows = U_own[:n_U] + S_rows[:n_sh] + EH_own[: n_EH - n_sh]
             return S_rows, T_rows, "binEH", "binU", None, n_sh
+        if args.mode == "nullswap":
+            # Matched control: S' is S's objective on an independent draw of the same pool.
+            # Order between two instances of one operator is semantically null, so any
+            # cross-order disagreement here is the floor the treatment must beat.
+            EH = [r for r in pass_rows if r["label"] in (0, 2)]
+            np.random.default_rng(args.base_seed).shuffle(EH)
+            if len(EH) < 2 * args.n_pass:
+                raise RuntimeError(f"nullswap needs two disjoint E/H draws of {args.n_pass}; have {len(EH)}")
+            return EH[: args.n_pass], EH[args.n_pass: 2 * args.n_pass], "binEH", "binEH", None, 0
         S_rows = T_rows = pass_rows[: args.n_pass]
         return S_rows, T_rows, "ce3", "ce3", args.w_S, len(S_rows)
     S_rows, T_rows, kind_S, kind_T, wS_used, n_sh = build_pools(args.shared_frac)
