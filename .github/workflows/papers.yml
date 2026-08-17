@@ -17,7 +17,7 @@ jobs:
       - name: Install toolchain
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq pandoc \
+          sudo apt-get install -y -qq pandoc zip \
             texlive-latex-base texlive-latex-recommended texlive-latex-extra
 
       - name: Build all papers (HTML + PDF)
@@ -43,8 +43,32 @@ jobs:
           find _out -type f | sort
           test -n "$(find _out -type f)" || { echo 'no build outputs collected'; exit 1; }
 
+      - name: Package per-paper archives
+        run: |
+          mkdir -p _archives
+          # one zip per paper: the paper's html plus any pdf sharing its stem
+          find _out -type f -name '*.html' \
+            | while read -r html; do
+                stem="${html%.html}"
+                files="$html"
+                for pdf in "$stem".pdf "$stem"-twocol.pdf; do
+                  [ -f "$pdf" ] && files="$files $pdf"
+                done
+                zip -q -j "_archives/$(basename "$stem").zip" $files
+              done
+          # everything together, preserving the repo layout
+          (cd _out && zip -q -r ../_archives/all-papers.zip .)
+          ls -l _archives
+          test -n "$(find _archives -type f)" || { echo 'no archives packaged'; exit 1; }
+
       - uses: actions/upload-artifact@v4
         with:
           name: papers-${{ github.sha }}
           path: _out
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper-archives-${{ github.sha }}
+          path: _archives
           if-no-files-found: error
