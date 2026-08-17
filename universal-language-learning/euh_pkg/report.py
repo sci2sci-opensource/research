@@ -139,6 +139,69 @@ def H_join_loss(L):
     return ("E" if ev["median_bits"] >= 0.2 else "U"), f"publishing join(ST,TS) instead of the tuple destroys {ev['median_bits']:.2f} bits/item (median)", ev
 
 
+# ---- noise-calibrated hypotheses (sealed 2026-08-17, after the audit showed H3/H4/H6 fire on
+# ---- replicate noise; each statistic below is benchmarked against the same statistic computed
+# ---- on same-order replicate composites, so pure seed noise reads ~1x by construction)
+def _rep_verdicts(c, order):
+    return [np.array(p).argmax(1) for p in c["replicates"].get(order, [])]
+
+
+def H_nonlumpable_cal(L):
+    """Observed lumpability chi2 vs the same chi2 with a replicate composite as 'observed'."""
+    vb = np.array(L["base"]).argmax(1); ratios = []
+    for c in cells_of(L):
+        rr = []
+        for order in ("ST", "TS"):
+            reps = _rep_verdicts(c, order)
+            if not reps: continue
+            M = np.array(c["prediction"]["markov"][f"M_{order}"])
+            obs = c["score"]["lumpability"][order]["chi2"]
+            noise = [S.lumpability_chi2(vb, vr, M)[0] for vr in reps]
+            rr.append(obs / max(float(np.median(noise)), 1e-9))
+        if rr: ratios.append(float(np.mean(rr)))
+    if len(ratios) < 3: return "U", "needs replicates in ≥3 cells", {}
+    ev = dict(median_ratio=float(np.median(ratios)), frac_ge2=float(np.mean(np.array(ratios) >= 2)), n=len(ratios))
+    if ev["frac_ge2"] >= 2 / 3: return "E", f"observed non-lumpability ≥2× the replicate-noise statistic in {ev['frac_ge2']:.0%} of cells (median {ev['median_ratio']:.1f}×)", ev
+    if ev["median_ratio"] <= 1.2: return "H", f"observed non-lumpability ≈ noise level (median {ev['median_ratio']:.1f}×)", ev
+    return "U", f"median {ev['median_ratio']:.1f}× the noise statistic", ev
+
+
+def H_outside_overlap_cal(L):
+    """Localization of the ABOVE-NOISE excess: excess disagreement rate in/outside the overlap set."""
+    vb = np.array(L["base"]).argmax(1); fracs = []
+    for c in cells_of(L):
+        vS = np.array(c["P"]["S"]).argmax(1); vT = np.array(c["P"]["T"]).argmax(1)
+        vST = np.array(c["P"]["ST"]).argmax(1); vTS = np.array(c["P"]["TS"]).argmax(1)
+        ov = (vS != vb) & (vT != vb)
+        dis = vST != vTS
+        o_obs, i_obs = float(dis[~ov].mean()), float(dis[ov].mean()) if ov.any() else 0.0
+        no, ni = [], []
+        for order, vmain in (("ST", vST), ("TS", vTS)):
+            for vr in _rep_verdicts(c, order):
+                nd = vmain != vr
+                no.append(float(nd[~ov].mean())); ni.append(float(nd[ov].mean()) if ov.any() else 0.0)
+        if not no: continue
+        ex_out = max(o_obs - float(np.mean(no)), 0.0); ex_in = max(i_obs - float(np.mean(ni)), 0.0)
+        if ex_out + ex_in >= 0.005:
+            fracs.append(ex_out / (ex_out + ex_in))
+    if len(fracs) < 3: return "U", f"above-noise excess ≥0.5% in only {len(fracs)} cell(s) — nothing to localize", dict(n_eligible=len(fracs))
+    ev = dict(median_frac_outside=float(np.median(fracs)), n_eligible=len(fracs))
+    if ev["median_frac_outside"] >= 0.9: return "E", f"{ev['median_frac_outside']:.0%} of the above-noise excess lies outside the overlap set ({ev['n_eligible']} eligible cells)", ev
+    if ev["median_frac_outside"] <= 0.5: return "H", f"above-noise excess mostly inside the overlap set ({ev['median_frac_outside']:.0%} outside)", ev
+    return "U", f"{ev['median_frac_outside']:.0%} of excess outside", ev
+
+
+def H_sign_consistency(L):
+    """Weaker magnitude claim than H1: the order/floor ratio exceeds 1 almost everywhere."""
+    r = [c["score"]["floors"].get("disagreement_over_floor") for c in cells_of(L)]
+    r = [x for x in r if x is not None and np.isfinite(x)]
+    if len(r) < 6: return "U", "fewer than 6 cells with floors", {}
+    ev = dict(frac_gt1=float(np.mean(np.array(r) > 1)), n=len(r), median=float(np.median(r)))
+    if ev["frac_gt1"] >= 0.9: return "E", f"ratio >1× floor in {ev['frac_gt1']:.0%} of {ev['n']} cells (median {ev['median']:.1f}×)", ev
+    if ev["frac_gt1"] <= 0.5: return "H", f"ratio >1× floor in only {ev['frac_gt1']:.0%} of cells", ev
+    return "U", f">1× in {ev['frac_gt1']:.0%} of cells", ev
+
+
 HYPS = [
     ("H1", "Order effect exceeds the composite's own seed noise", "disagreement(S→T,T→S) ≥ 2× same-order replicate disagreement in ≥2/3 of cells", H_order_effect),
     ("H2", "Γ_U sign: S→T ends more neutral than T→S, seed-stable", "mean Γ_U > 0, |mean| > 2·SE, positive in ≥80% cells", H_gamma_sign),
@@ -150,6 +213,9 @@ HYPS = [
     ("H8", "Shared-fraction slider raises co-dependence", "Spearman(α_shared, overlap ratio) ≥ 0.6", H_shared_slider),
     ("H9", "Negative control: one operator ⇒ no order effect", "weighted mode: disagreement ≤ 1.5× floor", H_negative_control),
     ("H10", "The join destroys information", "H(tuple) − H(join) ≥ 0.2 bit/item", H_join_loss),
+    ("H11", "Calibrated non-lumpability: exceeds the replicate-noise statistic", "obs χ² ≥ 2× median replicate-composite χ² in ≥2/3 of cells", H_nonlumpable_cal),
+    ("H12", "Calibrated localization: above-noise excess lies outside the overlap set", "≥90% of excess (obs − replicate-noise rate) outside, ≥3 cells with ≥0.5% excess", H_outside_overlap_cal),
+    ("H13", "Sign consistency: order/floor ratio >1 almost everywhere", "ratio >1× floor in ≥90% of ≥6 cells", H_sign_consistency),
 ]
 
 

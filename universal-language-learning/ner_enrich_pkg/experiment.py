@@ -18,6 +18,11 @@ STAGES = {
                       "--seeds", "0", "1", "2", "--n_replicate", "3", "--n_base", "10000",
                       "--epochs_base", "2", "--n_pass", "2500", "--n_eval", "2500",
                       "--lr", "3e-5", "--kl_beta", "0.2"],
+    # ablation for the sealed anchor-causality hypothesis (N5): identical grid, no KL anchor
+    "base_klzero":   ["--model", "bert-base-uncased", "--alphas", "0.25", "0.5", "1.0", "2.0",
+                      "--seeds", "0", "1", "2", "--n_replicate", "3", "--n_base", "10000",
+                      "--epochs_base", "2", "--n_pass", "2500", "--n_eval", "2500",
+                      "--lr", "3e-5", "--kl_beta", "0.0"],
 }
 QUICK = {
     "tiny_strength": ["--alphas", "0.5", "1.0", "--seeds", "0", "1", "--n_replicate", "2",
@@ -63,7 +68,9 @@ def main():
         r = subprocess.run(cmd, cwd=here)
         if r.returncode != 0:
             print(f"[experiment] stage {st} FAILED (rc={r.returncode}); continuing with the rest", flush=True)
-    print(f"[experiment] battery done in {(time.time()-t0)/60:.1f} min; packaging", flush=True)
+    print(f"[experiment] battery done in {(time.time()-t0)/60:.1f} min; evaluating sealed hypotheses", flush=True)
+    subprocess.run([sys.executable, os.path.join(here, "hypotheses.py"), bdir], cwd=here)
+    print("[experiment] packaging", flush=True)
     z = os.path.join(here, f"results_{battery}.zip")
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
         for root, dirs, files in os.walk(bdir):
