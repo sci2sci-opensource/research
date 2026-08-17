@@ -5,6 +5,13 @@ from transformers import AutoModel, BertTokenizerFast
 
 LAB = ["E", "U", "H"]  # SNLI: 0 entail, 1 neutral, 2 contradiction
 
+HF_REVISIONS = {  # snapshots used by the recorded batteries (see requirements.txt)
+    "bert-base-uncased": "86b5e0934494",
+    "google/bert_uncased_L-2_H-128_A-2": "30b0a37ccaaa",
+    "stanfordnlp/snli": "cdb5c3d5eed6",
+}
+def hf_rev(name): return HF_REVISIONS.get(name)
+
 
 def set_seed(s):
     random.seed(s); np.random.seed(s); torch.manual_seed(s)
@@ -13,7 +20,7 @@ def set_seed(s):
 class NLI(nn.Module):
     def __init__(self, name):
         super().__init__()
-        self.enc = AutoModel.from_pretrained(name)
+        self.enc = AutoModel.from_pretrained(name, revision=hf_rev(name))
         self.head = nn.Linear(self.enc.config.hidden_size, 3)
 
     def forward(self, **b):
@@ -28,7 +35,7 @@ def device():
 
 def load_data(n_base, n_pass, n_eval, base_seed, pool=None):
     pool = pool or int((n_base + n_pass) * 1.05) + 500
-    ds = load_dataset("stanfordnlp/snli")
+    ds = load_dataset("stanfordnlp/snli", revision=hf_rev("stanfordnlp/snli"))
     tr = [r for r in ds["train"].shuffle(seed=base_seed).select(range(pool)) if r["label"] != -1]
     ev = [r for r in ds["validation"] if r["label"] != -1][:n_eval]
     return tr[:n_base], tr[n_base:n_base + n_pass], ev

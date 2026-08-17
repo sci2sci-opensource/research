@@ -25,7 +25,7 @@ if %errorlevel%==0 (
 ) else (
   "%PY%" -m pip install -q torch
 )
-"%PY%" -m pip install -q transformers datasets sentencepiece scipy numpy matplotlib
+"%PY%" -m pip install -q -r "%~dp0requirements.txt"
 "%PY%" -c "import torch; print('torch', torch.__version__, '| cuda:', torch.cuda.is_available())"
 
 if "%PROFILE%"=="experiment" (

@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # Windows consoles default to a legacy codepage that can't encode α/Γ/‖ — force UTF-8, degrade gracefully
 for _s in (sys.stdout, sys.stderr):
     if hasattr(_s, "reconfigure"): _s.reconfigure(encoding="utf-8", errors="replace")
-from euh.model import NLI, load_data, train_pass, evaluate, clone, set_seed, device, load_ckpt
+from euh.model import NLI, load_data, train_pass, evaluate, clone, set_seed, device, load_ckpt, hf_rev
 from euh import stats as S
 from transformers import BertTokenizerFast
 
@@ -105,7 +105,7 @@ def main():
             log(f"resume: could not read existing ledger ({e}) — starting fresh")
 
     dev = device(); log(f"device={dev}  model={args.model}")
-    tok = BertTokenizerFast.from_pretrained(args.model)
+    tok = BertTokenizerFast.from_pretrained(args.model, revision=hf_rev(args.model))
     base_rows, pass_rows, ev = load_data(args.n_base, 3 * args.n_pass + 2000, args.n_eval, args.base_seed)
     gold = [r["label"] for r in ev]
     def build_pools(shared_frac):
@@ -184,11 +184,20 @@ def main():
             save_ckpt(mS, f"{key}_S"); save_ckpt(mT, f"{key}_T")
             mS.cpu(); mT.cpu()
             if dev == "cuda": torch.cuda.empty_cache()
-            # 2. sealed prediction
+            # 2. sealed prediction — append-only: an existing seal is NEVER overwritten.
+            # A pre-existing seal means an earlier (aborted) attempt already ran composites
+            # for this cell; the new seal is written alongside and the cell marked resealed,
+            # excluding it from sealed-prediction claims.
             pred = S.predict_composites(P_base, P_S, P_T)
             sealed = dict(alpha=alpha, seed=seed, time=time.time(), prediction=pred)
             h = sha(sealed); sealed["sha256"] = h
-            json.dump(sealed, open(os.path.join(out, f"sealed_{key}.json"), "w"))
+            sealed_path = os.path.join(out, f"sealed_{key}.json")
+            resealed = os.path.exists(sealed_path)
+            if resealed:
+                sealed_path = os.path.join(out, f"sealed_{key}.reseal{int(time.time())}.json")
+                log(f"    WARNING: seal for {key} already exists — writing {os.path.basename(sealed_path)}; "
+                    f"cell marked resealed (excluded from sealed-prediction claims)")
+            json.dump(sealed, open(sealed_path, "w"))
             log(f"    SEALED prediction {h[:16]}…  Γ(alr)={np.round(pred['Gamma_alr'],3)} Γ(overlap)={np.round(pred['Gamma_overlap'],3)} "
                 f"pred-dis alr={pred['alr']['pred_disagreement']:.3f} overlap={pred['overlap']['pred_disagreement']:.3f} "
                 f"| flipS={pred['overlap']['flip_S']:.2f} flipT={pred['overlap']['flip_T']:.2f} overlap-ratio={pred['overlap']['overlap_ratio']:.2f} "
@@ -218,7 +227,7 @@ def main():
                 log(f"    FLOOR replicates: pair-dis ST={f['replicates']['ST']['pair_dis_mean']:.3f} TS={f['replicates']['TS']['pair_dis_mean']:.3f} "
                     f"σ_eff={f['replicates']['ST']['sigma_eff']:.3f}/{f['replicates']['TS']['sigma_eff']:.3f} "
                     f"| order-dis {sc['disagreement']:.3f} = {f['disagreement_over_floor']:.1f}× floor | loss-sd {np.round(list(f['loss_noise_sd'].values()),3)}")
-            ledger["cells"][key] = dict(alpha=alpha, seed=seed, w_T=wT, lr_T=lrT, shared_items=n_sh, mode=args.mode, slider=args.slider,
+            ledger["cells"][key] = dict(alpha=alpha, seed=seed, w_T=wT, lr_T=lrT, shared_items=n_sh, mode=args.mode, slider=args.slider, resealed=resealed,
                                        P=dict(S=P_S.tolist(), T=P_T.tolist(), ST=P_ST.tolist(), TS=P_TS.tolist()),
                                        replicates=reps, traces=traces,
                                        sealed_sha=h, prediction=pred, score=sc)

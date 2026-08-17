@@ -7,6 +7,13 @@ LABELS0 = ["O", "PER", "LOC"]            # base language Σ0 (ORG/MISC occluded 
 ENRICH_A, ENRICH_B = "ORG", "MISC"       # the two distinction-adding enrichments
 FINAL = ["O", "PER", "LOC", "ORG", "MISC"]   # canonical name order for comparisons
 
+HF_REVISIONS = {  # snapshots used by the recorded batteries (see requirements.txt)
+    "bert-base-uncased": "86b5e0934494",
+    "google/bert_uncased_L-2_H-128_A-2": "30b0a37ccaaa",
+    "eriktks/conll2003": "3f1cce917ab3",
+}
+def hf_rev(name): return HF_REVISIONS.get(name)
+
 
 def set_seed(s):
     random.seed(s); np.random.seed(s); torch.manual_seed(s)
@@ -21,7 +28,7 @@ def device():
 class Tagger(nn.Module):
     def __init__(self, name, labels):
         super().__init__()
-        self.enc = AutoModel.from_pretrained(name)
+        self.enc = AutoModel.from_pretrained(name, revision=hf_rev(name))
         self.labels = list(labels)
         self.head = nn.Linear(self.enc.config.hidden_size, len(self.labels))
 
@@ -67,7 +74,7 @@ def load_conll():
     Loaded from the HF parquet-converted branch (datasets>=3 no longer runs dataset scripts)."""
     from huggingface_hub import hf_hub_download
     files = {s: hf_hub_download("eriktks/conll2003", f"conll2003/{s}/0000.parquet",
-                                repo_type="dataset", revision="refs/convert/parquet")
+                                repo_type="dataset", revision=hf_rev("eriktks/conll2003"))
              for s in ("train", "validation")}
     ds = load_dataset("parquet", data_files=files)
     try:
@@ -147,7 +154,8 @@ def align_probs(P, labels, order):
 
 # ---------------------------------------------------------- training ---
 def kl_retracted(cur_logits, ref_logits, cur_labels, ref_labels, mask):
-    """Conservativity anchor: KL(ref || retract(cur)) on the OLD label space, over labelled tokens.
+    """Conservativity anchor: KL(retract(cur) || ref) on the OLD label space, over labelled tokens
+    (F.kl_div(input=log ref, target=retract(cur)) computes KL(target || input)).
     Retraction in probability space: new-category mass folds into O."""
     curp = F.softmax(cur_logits.float(), -1)
     idx_old = [cur_labels.index(t) for t in ref_labels]

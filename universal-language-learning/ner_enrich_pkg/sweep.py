@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 for _s in (sys.stdout, sys.stderr):
     if hasattr(_s, "reconfigure"): _s.reconfigure(encoding="utf-8", errors="replace")
 from enrich.model import (Tagger, widen, clone, save_state, load_ckpt, load_conll, pool_with,
-                          build_eval, train_pass, evaluate, set_seed, device,
+                          build_eval, train_pass, evaluate, set_seed, device, hf_rev,
                           LABELS0, ENRICH_A, ENRICH_B)
 from enrich import stats as S
 from transformers import BertTokenizerFast
@@ -92,7 +92,7 @@ def main():
             log(f"resume: could not read existing ledger ({e}) — starting fresh")
 
     dev = device(); log(f"device={dev}  model={args.model}")
-    tok = BertTokenizerFast.from_pretrained(args.model)
+    tok = BertTokenizerFast.from_pretrained(args.model, revision=hf_rev(args.model))
     train_rows, val_rows = load_conll()
     rng = np.random.default_rng(args.base_seed)
     base_rows = [train_rows[i] for i in rng.permutation(len(train_rows))[:args.n_base]]
@@ -155,11 +155,19 @@ def main():
             mB = enrich(base, ENRICH_B, B_rows, LB, lrB, seed, "B")
             P_B = evaluate(mB, tok, ev, args.max_len); save_ckpt(mB, f"{key}_B"); mB.cpu()
             if dev == "cuda": torch.cuda.empty_cache()
-            # 2. sealed prediction
+            # 2. sealed prediction — append-only: never overwrite an existing seal (a prior
+            # aborted attempt may already have run composites for this cell); write alongside
+            # and mark the cell resealed, excluding it from sealed-prediction claims.
             pred = S.predict_composites(P_base, list(base.labels), P_A, list(mA.labels), P_B, list(mB.labels))
             sealed = dict(alpha=alpha, seed=seed, time=time.time(), prediction=pred)
             h = sha(sealed); sealed["sha256"] = h
-            json.dump(sealed, open(os.path.join(out, f"sealed_{key}.json"), "w"))
+            sealed_path = os.path.join(out, f"sealed_{key}.json")
+            resealed = os.path.exists(sealed_path)
+            if resealed:
+                sealed_path = os.path.join(out, f"sealed_{key}.reseal{int(time.time())}.json")
+                log(f"    WARNING: seal for {key} already exists — writing {os.path.basename(sealed_path)}; "
+                    f"cell marked resealed (excluded from sealed-prediction claims)")
+            json.dump(sealed, open(sealed_path, "w"))
             cl = pred["claims"]
             log(f"    SEALED {h[:16]}…  claims A={cl['claim_A']:.3f} B={cl['claim_B']:.3f} "
                 f"overlap={cl['overlap']:.3f} (ratio {cl['overlap_ratio']:.2f}) conflict={cl['conflict']:.4f} "
@@ -197,7 +205,7 @@ def main():
             imp = sc["improvement"]
             log("    IMPROVE " + "  ".join(f"{k}: R0err={v['err_R0']:.3f} R1err={v['err_R1']:.3f}"
                                            for k, v in imp.items()))
-            ledger["cells"][key] = dict(alpha=alpha, seed=seed, lr_B=lrB,
+            ledger["cells"][key] = dict(alpha=alpha, seed=seed, lr_B=lrB, resealed=resealed,
                                         P=dict(A=P_A.tolist(), B=P_B.tolist(), AB=P_AB.tolist(), BA=P_BA.tolist()),
                                         labels=dict(A=list(mA.labels), B=list(mB.labels), AB=lab_AB, BA=lab_BA),
                                         replicates=reps, sealed_sha=h, prediction=pred, score=sc)

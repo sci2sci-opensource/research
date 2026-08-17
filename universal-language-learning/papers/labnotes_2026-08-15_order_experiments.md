@@ -134,19 +134,26 @@ of cells") returns **U — not resolved — on both bert-base stages** (median 1
 excess is positive in every cell, but it does not clear the bar the experiment set for itself
 before the data arrived, so the item-level *magnitude* claim is officially unresolved: a real
 effect smaller than the declared resolution, or noise the floor underestimates — the ledger does
-not say, and neither may we. What **is** established at sealed bars:
+not say, and neither may we.
 
-- **Non-lumpability (H3: E, 100% of cells).** The Markov "verdict marginal is a sufficient
-  statistic" composite is rejected at p<0.01 in every cell of every stage.
-- **Localization (H4: E).** 98% of whatever order disagreement exists lies *outside* the sealed
-  overlap set — the verdict-level nulls predict the effect in the wrong place. Conditional on the
-  disagreement being signal, the second pass reacted to representation changes no verdict showed.
-- **Marginal-level asymmetry (H2: E)** — Γ_U positive in 100% of base-stage cells — and
-  **boundary concentration (H6: E, AUC ≈ 0.89)**.
+A further audit finding cuts deeper (all numbers reproducible from the committed ledgers):
+**the H3/H4/H6 rules as sealed do not discriminate signal from noise.** H3's χ² rejects the
+Markov composite even when the "observed composite" is replaced by a *same-order replicate* —
+pure seed noise — in 19/19 tested cells; H4's outside-overlap fraction is **identical for
+observed disagreement and replicate noise** (0.92 vs 0.92 on base_strength; 0.86 vs 0.86 on the
+control); H6's boundary AUC fires on the control too (0.88). These rules therefore establish
+that the *fitted predictors are rejected* — which noise alone suffices to do — not that the
+revision dynamics are context-dependent. The euh claim that survives with a discriminating rule
+is **H2 (Γ_U marginal-sign: E on base stages, correctly U on control and tiny)**. Properly
+noise-calibrated versions of H3/H4 (test statistics benchmarked against replicate-pair nulls)
+belong in the next battery's sealed set — added now, after seeing this data, they would be
+post-hoc.
 
-So the honest headline is not "the order effect is established above noise"; it is "the
-*sufficiency failure* is established; the item-level order-effect magnitude is U at the
-pre-registered threshold." The distinction is exactly the one the papers demand.
+One seal is restart-contaminated: for `base_strength/a0.25_s0` the committed seal was rewritten
+on a resume (18:13) after an aborted first attempt had already trained that cell's composites
+(sealed 17:21, hash `63250a6b…`, surviving in `log.txt` with near-identical headline statistics).
+That cell is excluded from sealed-prediction claims; sweep.py now refuses to overwrite seals
+(append-only, cells marked `resealed`).
 - **The negative control reads zero.** One operator in two costumes produces order differences fully
   explained by training noise. The instrument doesn't invent effects.
 - **With the confound removed, sharing data *increases* order sensitivity** — the pilot's opposite
@@ -219,17 +226,23 @@ actually happens in real models.
 
 Reading:
 
-- **Order matters here too, above floor — but now the sealed bookkeeping largely *works*.** The
-  conflict set, sealed before any composite existed, localizes the effect at ~28× enrichment and
-  accounts for most of its magnitude. Inversion of experiment 1: weighting-type interventions
-  interact through hidden representation; **category acquisition interacts mostly out in the open**,
-  through visible label competition. Same protocol, two regimes — and the difference between the
-  two experiments is itself a measurement of *how opaque* an intervention type is.
-- **The old language survives both acquisition paths identically** — to within noise. Whatever order
-  you learn ORG and MISC in, what the model says in {O, PER, LOC} terms is the same. The
-  conservativity anchor genuinely confines path-dependence to the acquired categories. As
-  engineering advice this stands alone: *KL-anchor on the retracted distribution if you want
-  order-robust continual learning of new classes.*
+- **The entity-matched magnitude is the strongest result in either experiment.** With floor and
+  effect measured in the same unit (entity-relevant tokens for both), the order/floor ratio has
+  **median ~2.0–2.2 with 8–9 of 12 bert-base cells at or above 2×** — this clears the bar the
+  euh effect failed. (No hypothesis ledger is ported to this package, so this is a reported
+  ratio, not a sealed verdict; porting the ledger is queued.)
+- **The conflict set strongly localizes a minority of the effect.** Sealed before any composite
+  existed, it captures **17–31% (median 25%) of observed disagreement at ~28× enrichment** — a
+  sharp beacon, not an account of the magnitude; most of the disagreement lies outside it.
+  Directionally this still inverts experiment 1 (language-level order effects are far more
+  label-visible than weighting-level ones), with the same caveat as euh's H4: outside-fraction
+  comparisons need replicate-noise calibration before they carry weight.
+- **With the KL anchor in place, the old language does not clear the order-effect bar.** Retracted
+  to Σ₀ and floored in the matched unit, the two acquisition paths differ at median 1.4× the
+  replicate floor with **no cell reaching 2×** — "does not clear the 2× threshold," not "below the
+  noise floor." Whether the anchor *causes* this confinement is untested: the β=0 ablation has not
+  been run and is queued. (Implementation note: the penalty is KL(retract(current) ‖ reference) —
+  an earlier docstring stated the reverse direction.)
 - **The improvement-verdict flip is real, floored, and graded by capacity.** First the floor
   (proposed by V): could replicate jitter manufacture a flip? No — across 192 replicate pairs
   (same intervention, different seed), the flip signature occurs **zero** times. The reason is
@@ -335,13 +348,15 @@ the papers' relativity-to-readout theme reappearing one level up.
 
 ## 4. What we think this adds up to
 
-1. **Benchmark readouts are not sufficient records of training interventions** — established at the
-   experiment's own sealed bars by non-lumpability (H3: E, every cell) and localization (H4: E,
-   98% of order disagreement outside the verdict-predictable set), with a clean negative control.
-   The item-level *magnitude* of the NLI order effect is, by the same sealed rules, **U** —
-   consistently positive (1.2–1.6× floor in all 23 cells) but below the pre-registered 2×
-   resolution threshold. The NER experiment's ratios (1.8–2.2×) sit at that bar; it has no ported
-   hypothesis ledger yet, so its magnitude claim is likewise reported as ratios, not as a verdict.
+1. **The honest scoreboard, after auditing our own rules.** The NLI item-level order effect is
+   **U** (1.2–1.6× floor, positive in all 23 cells, below the sealed 2× bar). H3/H4/H6, though
+   formally E, turned out to be **non-discriminating as sealed** — their statistics fire equally
+   on replicate noise and on the control — so they establish rejection of the fitted predictors,
+   not context dependence; the discriminating euh positive is H2 (Γ_U sign). The strongest
+   magnitude result is the **NER entity-matched order effect (median ≈2.0–2.2×, 8–9/12 cells
+   ≥2×)**, reported as a ratio pending a ported hypothesis ledger. Sufficiency-failure claims
+   await noise-calibrated re-tests in the next sealed battery; the case for them is currently
+   suggestive, not established.
 2. **Intervention types differ in *transparency*.** Category acquisition (NER) is mostly label-visible
    and its conflicts are predictable in advance; loss-reweighting (EUH) is representation-opaque.
    The protocol measures where on that spectrum an intervention sits — which is exactly what you'd
