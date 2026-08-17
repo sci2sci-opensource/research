@@ -29,8 +29,13 @@ jobs:
           { git ls-files -o --exclude-standard; git diff --name-only; } \
             | grep -E '\.(html|pdf)$' \
             | while read -r f; do
-                mkdir -p "_out/$(dirname "$f")"
-                cp "$f" "_out/$f"
+                # artifact paths may not contain '*' (and friends); encode as '@'
+                safe="${f//\*/@}"
+                if [ "$safe" != "$f" ]; then
+                  echo "asterisks in repository paths are encoded as '@' in this artifact" > _out/PATHS.txt
+                fi
+                mkdir -p "_out/$(dirname "$safe")"
+                cp "$f" "_out/$safe"
               done
           find _out -type f | sort
 
