@@ -10,7 +10,7 @@ follow these rules; they are not optional.
 - **Never push to `master`.** Work on a feature branch and let the owner review and merge.
   Confirm every push with the owner before it happens: exact ref, target branch, content.
 - Never commit: `runs/`, checkpoints (`ckpt/`, `*.pt`), `results_*.zip`, `__pycache__/`, venvs,
-  IDE folders.
+  IDE folders, or generated build artifacts (`*.html`, `*.pdf` produced by paper-tools).
 
 ## Windows checkout hazard
 
@@ -19,10 +19,13 @@ on Windows. A full checkout, `reset --hard`, or `read-tree -u` on Windows will f
 leave **phantom staged deletions of that directory in the index. Never commit an index in that
 state.** Use a sparse checkout that excludes it (e.g. `git sparse-checkout set <your-dirs>`), or
 build commits at the object level (`write-tree` / `mktree` / `commit-tree`) so untouched
-directories are preserved by hash.
+directories are preserved by hash. Full worktrees are fine inside WSL's own filesystem.
 
 ## Layout
 
+- `paper-tools/` — the single markdown build pipeline (PDF/HTML/arXiv) for every paper in the
+  repo. Extend its shared assets (`header-extra.tex` next to a paper); never fork per-paper
+  copies of the tooling. See `paper-tools/README.md`.
 - `universal-language-learning/` — the language-learning trilogy:
   - `papers/` — *On Learning Languages*, *Perfect Theory*, *Universal Language Learning Machine*,
     plus lab notes for the sealed-prediction experiments.
