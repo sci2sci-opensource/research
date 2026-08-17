@@ -137,16 +137,17 @@ def compile_pdf(paper: Path, meta: dict, twocol: bool = False) -> bool:
 def compile_html(paper: Path, meta: dict) -> bool:
     out = paper.with_name(out_stem(paper) + ".html")
     print(f"  html -> {out.name}")
-    # self-containment flag renamed in pandoc 2.19
-    embed = "--embed-resources" if pandoc_version() >= (2, 19) else "--self-contained"
+    # asset embedding only on pandoc >= 2.19 (--embed-resources); older pandoc's
+    # --self-contained tries to inline a system MathJax and fails on stock installs
+    embed = ["--embed-resources"] if pandoc_version() >= (2, 19) else []
     cmd = ["pandoc", "-f", FROM_FORMAT, str(paper), "-o", str(out),
            "--standalone", "--mathjax", "--number-sections",
            "--resource-path", str(paper.parent),
-           "--css", str(CSS), embed,
+           "--css", str(CSS), *embed,
            *metadata_args(meta)]
     if not run(cmd):
         # embedding needs every asset readable; fall back to a plain css link
-        return run([c for c in cmd if c != embed])
+        return run([c for c in cmd if c != "--embed-resources"]) if embed else False
     return True
 
 

@@ -4,6 +4,11 @@ function Table(tbl)
     return tbl
   end
 
+  -- pandoc < 2.10 uses the legacy SimpleTable AST without .head; skip bolding there
+  if not (tbl.head and tbl.head.rows) then
+    return tbl
+  end
+
   -- Make header cells bold using \bfseries
   for _, row in ipairs(tbl.head.rows) do
     for _, cell in ipairs(row.cells) do

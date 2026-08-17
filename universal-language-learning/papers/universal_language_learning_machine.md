@@ -351,7 +351,6 @@ Let \(\eta\) be an effective continuation procedure. It may emit a simulated con
 
 $$
 \operatorname{Fork}_e(c_{e,0},E_t,k,\eta)
-
 $$
 
 to allocate a new branch, install
