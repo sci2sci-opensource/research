@@ -26,8 +26,11 @@ jobs:
       - name: Collect build outputs
         run: |
           mkdir -p _out
-          { git ls-files -o --exclude-standard; git diff --name-only; } \
-            | grep -E '\.(html|pdf)$' \
+          # find built html/pdf directly (they are gitignored, so git listings would miss them);
+          # skip _out itself and any committed results report.html
+          find . -type d -name _out -prune -o -type f \( -name '*.html' -o -name '*.pdf' \) -print \
+            | sed 's|^\./||' \
+            | grep -viE '/results/.*report\.html$' \
             | while read -r f; do
                 # artifact paths may not contain '*' (and friends); encode as '@'
                 safe="${f//\*/@}"
@@ -38,6 +41,7 @@ jobs:
                 cp "$f" "_out/$safe"
               done
           find _out -type f | sort
+          test -n "$(find _out -type f)" || { echo 'no build outputs collected'; exit 1; }
 
       - uses: actions/upload-artifact@v4
         with:
