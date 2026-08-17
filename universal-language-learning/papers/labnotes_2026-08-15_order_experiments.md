@@ -2,6 +2,7 @@
 
 **Date:** 15 August 2026
 **Companion to:** *On Learning Languages* (OLL) and *Perfect Theory* (PT), drafts of 14 Aug 2026
+**Archived:** Zenodo, *Universal Language Learning series* — DOI [10.5281/zenodo.21971310](https://doi.org/10.5281/zenodo.21971310) (concept, latest version)
 **Code:** `euh_pkg/` (experiment 1), `ner_enrich_pkg/` (experiment 2)
 **Data artifacts:** `runs/exp_full_20260815_151503` (euh), `runs/exp_full_20260815_213139` (ner), checkpoints on `D:\model_checkpoints\`
 
@@ -127,13 +128,25 @@ data composition of an operator changes the operator.*
 | negative control (one operator) | 3.3–3.5% | **0.7× — at/below floor** | — |
 | bert-tiny | 3.9–10.2% | 0.7–0.8× — swamped by noise | — |
 
-Reading:
+Reading — and first, what the project's own sealed verdict rules say, because they outrank this
+prose. The pre-registered hypothesis ledger (H1: "order disagreement ≥ 2× replicate floor in ≥ ⅔
+of cells") returns **U — not resolved — on both bert-base stages** (median 1.4× and 1.3×). The
+excess is positive in every cell, but it does not clear the bar the experiment set for itself
+before the data arrived, so the item-level *magnitude* claim is officially unresolved: a real
+effect smaller than the declared resolution, or noise the floor underestimates — the ledger does
+not say, and neither may we. What **is** established at sealed bars:
 
-- **Order matters, above noise, and in the wrong place for the sufficiency story.** The verdict-level
-  nulls don't just underpredict the effect; they predict it in the wrong location. Nearly all
-  disagreement occurs on items where at most one pass had visibly moved the verdict — the second
-  pass was reacting to invisible representation changes. This is the experiment's core exhibit:
-  what benchmarks record is not what training acts on.
+- **Non-lumpability (H3: E, 100% of cells).** The Markov "verdict marginal is a sufficient
+  statistic" composite is rejected at p<0.01 in every cell of every stage.
+- **Localization (H4: E).** 98% of whatever order disagreement exists lies *outside* the sealed
+  overlap set — the verdict-level nulls predict the effect in the wrong place. Conditional on the
+  disagreement being signal, the second pass reacted to representation changes no verdict showed.
+- **Marginal-level asymmetry (H2: E)** — Γ_U positive in 100% of base-stage cells — and
+  **boundary concentration (H6: E, AUC ≈ 0.89)**.
+
+So the honest headline is not "the order effect is established above noise"; it is "the
+*sufficiency failure* is established; the item-level order-effect magnitude is U at the
+pre-registered threshold." The distinction is exactly the one the papers demand.
 - **The negative control reads zero.** One operator in two costumes produces order differences fully
   explained by training noise. The instrument doesn't invent effects.
 - **With the confound removed, sharing data *increases* order sensitivity** — the pilot's opposite
@@ -322,11 +335,13 @@ the papers' relativity-to-readout theme reappearing one level up.
 
 ## 4. What we think this adds up to
 
-1. **Benchmark readouts are not sufficient records of training interventions** — demonstrated with
-   sealed predictions, above noise floors, with a clean negative control. For the evals/audit
-   world: two checkpoints with matching scores are *not* interchangeable objects; they can respond
-   differently to identical further training, and ~98% of that divergence (for weighting-type
-   interventions) is invisible to any verdict-level account.
+1. **Benchmark readouts are not sufficient records of training interventions** — established at the
+   experiment's own sealed bars by non-lumpability (H3: E, every cell) and localization (H4: E,
+   98% of order disagreement outside the verdict-predictable set), with a clean negative control.
+   The item-level *magnitude* of the NLI order effect is, by the same sealed rules, **U** —
+   consistently positive (1.2–1.6× floor in all 23 cells) but below the pre-registered 2×
+   resolution threshold. The NER experiment's ratios (1.8–2.2×) sit at that bar; it has no ported
+   hypothesis ledger yet, so its magnitude claim is likewise reported as ratios, not as a verdict.
 2. **Intervention types differ in *transparency*.** Category acquisition (NER) is mostly label-visible
    and its conflicts are predictable in advance; loss-reweighting (EUH) is representation-opaque.
    The protocol measures where on that spectrum an intervention sits — which is exactly what you'd
