@@ -1,3 +1,8 @@
+---
+title: "Critical Volatility Threshold for Log-Normal to Power-Law Transition: Iterated Options Model"
+lang: en
+---
+
 # Critical Volatility Threshold for Log-Normal to Power-Law Transition: Iterated Options Model
 
 ## Abstract

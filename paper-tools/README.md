@@ -49,8 +49,8 @@ Windows checkout caveat about the `critical-volatility-and-v*` directory).
 ## Migration status
 
 - [x] `universal-language-learning/papers/` — built with paper-tools
-- [ ] `oracles-axioms-paper/` — still on its local `compile_paper.py` fork
-- [ ] `critical-volatility-and-v*/` — still on its local fork (edit from WSL/Linux only)
+- [x] `oracles-axioms-paper/` — front matter added, local fork removed
+- [x] `critical-volatility-and-v*/` — front matter added, local fork removed (edit from WSL/Linux only)
 
-When migrating the older projects: build with both pipelines, compare outputs, then delete the
-local fork (`compile_paper.py`, `latex-header.tex`, `paper-style.css`, `*-filter.lua`).
+Legacy `.latex.md` names are supported: outputs strip the inner `.latex` so historical artifact
+names are preserved.

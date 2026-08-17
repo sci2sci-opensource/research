@@ -1,3 +1,8 @@
+---
+title: "Axiomatic Extensions of Turing Machines are Equivalent to Oracles"
+lang: en
+---
+
 > "Let us suppose we are supplied with some unspecified means of solving number-theoretic problems; a kind of oracle as it were. We shall not go any further into the nature of the oracle apart from saying it cannot be a machine."
 >
 > - A. M. Turing, 1939 [2]

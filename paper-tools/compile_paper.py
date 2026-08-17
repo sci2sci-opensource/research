@@ -59,6 +59,12 @@ def read_front_matter(path: Path) -> dict:
     return meta
 
 
+def out_stem(paper: Path) -> str:
+    """Output basename: strips a legacy `.latex` inner extension (foo.latex.md -> foo.*)."""
+    s = paper.stem
+    return s[:-6] if s.endswith(".latex") else s
+
+
 def discover_figures(path: Path) -> list:
     """Image references in the markdown, resolved relative to the paper."""
     text = path.read_text(encoding="utf-8")
@@ -114,7 +120,7 @@ def run(cmd: list, timeout: int = 180) -> bool:
 
 def compile_pdf(paper: Path, meta: dict, twocol: bool = False) -> bool:
     suffix = "-twocol.pdf" if twocol else ".pdf"
-    out = paper.with_name(paper.stem + suffix)
+    out = paper.with_name(out_stem(paper) + suffix)
     print(f"  pdf  -> {out.name}" + (" (two-column)" if twocol else ""))
     cmd = ["pandoc", "-f", FROM_FORMAT, str(paper), "-o", str(out),
            "--pdf-engine=pdflatex",
@@ -129,7 +135,7 @@ def compile_pdf(paper: Path, meta: dict, twocol: bool = False) -> bool:
 
 
 def compile_html(paper: Path, meta: dict) -> bool:
-    out = paper.with_suffix(".html")
+    out = paper.with_name(out_stem(paper) + ".html")
     print(f"  html -> {out.name}")
     # self-containment flag renamed in pandoc 2.19
     embed = "--embed-resources" if pandoc_version() >= (2, 19) else "--self-contained"
@@ -148,7 +154,7 @@ def arxiv_bundle(paper: Path, meta: dict, figures: list) -> bool:
     """Source bundle: paper .tex + figures + header, zipped for arXiv upload."""
     outdir = paper.parent / "arxiv_submission" / "source"
     outdir.mkdir(parents=True, exist_ok=True)
-    tex = outdir / (paper.stem + ".tex")
+    tex = outdir / (out_stem(paper) + ".tex")
     print(f"  arxiv -> {outdir.relative_to(paper.parent)}/")
     cmd = ["pandoc", "-f", FROM_FORMAT, str(paper), "-o", str(tex),
            "--standalone", "--resource-path", str(paper.parent),
@@ -159,7 +165,7 @@ def arxiv_bundle(paper: Path, meta: dict, figures: list) -> bool:
     for ref in figures:
         src = paper.parent / ref
         shutil.copy2(src, outdir / Path(ref).name)
-    zpath = paper.parent / "arxiv_submission" / (paper.stem + "-arxiv.zip")
+    zpath = paper.parent / "arxiv_submission" / (out_stem(paper) + "-arxiv.zip")
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as zf:
         for f in outdir.iterdir():
             zf.write(f, f.name)
