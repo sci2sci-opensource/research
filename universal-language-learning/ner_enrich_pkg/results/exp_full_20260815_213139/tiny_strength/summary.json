@@ -1,0 +1,199 @@
+{
+ "alphas": [
+  0.25,
+  0.5,
+  1.0,
+  2.0
+ ],
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "per_alpha": {
+  "0.25": {
+   "disagreement": [
+    0.0053,
+    0.0006
+   ],
+   "disagreement_ent": [
+    0.0341,
+    0.0041
+   ],
+   "floor": [
+    0.0044,
+    0.0008
+   ],
+   "over_floor": [
+    1.2597,
+    0.2665
+   ],
+   "pred_dis_claims": [
+    0.0003,
+    0.0001
+   ],
+   "dis_in_conflict": [
+    0.2056,
+    0.0342
+   ],
+   "dis_outside_conflict": [
+    0.0053,
+    0.0007
+   ],
+   "retraction_AB_vs_BA": [
+    0.995,
+    0.0007
+   ],
+   "old_lang_order_dis": [
+    0.005,
+    0.0007
+   ],
+   "conflict_rate": [
+    0.0003,
+    0.0001
+   ],
+   "overlap_ratio": [
+    49.796,
+    4.2442
+   ]
+  },
+  "0.5": {
+   "disagreement": [
+    0.0073,
+    0.0009
+   ],
+   "disagreement_ent": [
+    0.0468,
+    0.0054
+   ],
+   "floor": [
+    0.0068,
+    0.0006
+   ],
+   "over_floor": [
+    1.1016,
+    0.2063
+   ],
+   "pred_dis_claims": [
+    0.0002,
+    0.0
+   ],
+   "dis_in_conflict": [
+    0.3,
+    0.1414
+   ],
+   "dis_outside_conflict": [
+    0.0073,
+    0.0009
+   ],
+   "retraction_AB_vs_BA": [
+    0.9941,
+    0.0008
+   ],
+   "old_lang_order_dis": [
+    0.0059,
+    0.0008
+   ],
+   "conflict_rate": [
+    0.0002,
+    0.0
+   ],
+   "overlap_ratio": [
+    49.4865,
+    5.3023
+   ]
+  },
+  "1.0": {
+   "disagreement": [
+    0.0164,
+    0.002
+   ],
+   "disagreement_ent": [
+    0.1038,
+    0.0128
+   ],
+   "floor": [
+    0.0119,
+    0.0009
+   ],
+   "over_floor": [
+    1.3781,
+    0.1622
+   ],
+   "pred_dis_claims": [
+    0.0003,
+    0.0
+   ],
+   "dis_in_conflict": [
+    0.4722,
+    0.2972
+   ],
+   "dis_outside_conflict": [
+    0.0162,
+    0.002
+   ],
+   "retraction_AB_vs_BA": [
+    0.9917,
+    0.0007
+   ],
+   "old_lang_order_dis": [
+    0.0083,
+    0.0007
+   ],
+   "conflict_rate": [
+    0.0003,
+    0.0
+   ],
+   "overlap_ratio": [
+    38.7797,
+    4.5734
+   ]
+  },
+  "2.0": {
+   "disagreement": [
+    0.0311,
+    0.0031
+   ],
+   "disagreement_ent": [
+    0.1934,
+    0.0189
+   ],
+   "floor": [
+    0.0183,
+    0.0027
+   ],
+   "over_floor": [
+    1.7625,
+    0.4033
+   ],
+   "pred_dis_claims": [
+    0.0057,
+    0.0001
+   ],
+   "dis_in_conflict": [
+    0.6674,
+    0.0892
+   ],
+   "dis_outside_conflict": [
+    0.0274,
+    0.0027
+   ],
+   "retraction_AB_vs_BA": [
+    0.9906,
+    0.0007
+   ],
+   "old_lang_order_dis": [
+    0.0094,
+    0.0007
+   ],
+   "conflict_rate": [
+    0.0057,
+    0.0001
+   ],
+   "overlap_ratio": [
+    22.8065,
+    2.1337
+   ]
+  }
+ }
+}
