@@ -358,18 +358,18 @@ the papers' relativity-to-readout theme reappearing one level up.
 The *Universal Language Learning Machine* draft formalizes, almost clause for clause, the
 infrastructure these experiments forced us to build — before the draft existed:
 
-- **Conservatization (ULLM Thm 5.1)** is what the checkpoint + append-only-ledger + deterministic-pool
+- **Conservatization (ULLM Thm 4.1)** is what the checkpoint + append-only-ledger + deterministic-pool
   design implements: every exogenous input to a training cell (seeds, configs, data selection) is
   logged, so any cell state is reconstructible by re-simulation. The cell-level *resume* is
   literally the Replay map — the dry-run that resumed a live battery's ledger and skipped three
   finished cells without training a step was `Replay(c₀, E_t, k)` executing on real hardware.
-- **The Forgetting Theorem (ULLM Thm 4.1) was lived before it was read**: the first quick battery,
+- **The Forgetting Theorem (ULLM Thm 2.1) was lived before it was read**: the first quick battery,
   killed before resume logic existed, left four hours of states that no amount of further
   computation could re-enter — the ledger retained too little. The same afternoon we implemented
   the conservatization that makes the theorem's converse available. Cost of the lesson: ~2.5 GPU-hours.
 - **Fork** = every replicate (same prefix, fresh reply stream) and the interference grid (continuations
   θ(a,b) attached beneath a replayed node).
-- **"Itineraries, not endpoints" (ULLM §9.1)** now has numbers: ~75% of any single pass's
+- **"Itineraries, not endpoints" (ULLM §8.1)** now has numbers: ~75% of any single pass's
   weight-direction is reply-stream-specific (the seed-cosine null), and in the NER experiment two
   acquisition paths that *retract to the same old language* remain different enriched states. The
   node must be (P, h, E); the experiments measure how much of the state is h.
