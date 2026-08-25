@@ -24,8 +24,9 @@ Files without front matter (READMEs, notes) are ignored by `build_all`.
 
 Pandoc markdown with `tex_math_single_backslash` and `tex_math_dollars`: inline math as
 `\( ... \)` or `$...$`, display math as `$$ ... $$` (with `\tag{}` supported via MathJax/amsmath).
-Horizontal rules become page breaks in PDF. Figures are auto-discovered from image references —
-no hardcoded lists; missing figures are reported.
+Horizontal rules become page breaks in PDF; the table of contents and top-level References
+section each start on a separate page. Figures are auto-discovered from image references — no
+hardcoded lists; missing figures are reported.
 
 ## Shared assets — extend, don't fork
 

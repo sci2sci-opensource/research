@@ -1,6 +1,6 @@
 ---
 title: "Axioms as Compiled Oracle Answers"
-date: "17 August 2026 — Revised Draft 3"
+date: "25 August 2026 — Revised Draft 4"
 lang: en
 ---
 
@@ -10,7 +10,7 @@ lang: en
 
 # Abstract
 
-Computer algebra systems are Turing machines, yet they manipulate expressions whose semantic equality is not uniformly decidable. How, then, should one describe a rule that the machine can apply mechanically but cannot itself obtain as the result of a general validity procedure? I distinguish the computable application of a rule from the provision of the Boolean judgment that licenses it. An externally supplied axiom or rewrite rule is a compiled oracle answer: after the answer has been installed, matching and substitution are ordinary computation, but selecting the correct answer uniformly over an undecidable class remains oracle-equivalent. I prove this in two forms. A finite oracle transcript can be compiled into an ordinary machine that reproduces every continuation using only the recorded queries, while the uniform map that constructs correctly signed rule packages is Turing-equivalent to the underlying semantic-validity oracle. I then make the obstruction concrete for equality of Cauchy-represented computable reals and connect it to Richardson's undecidability theorem for elementary expressions. The result separates an oracle from its finite compiled traces and clarifies what a computer algebra or AI system does when it reuses externally acquired rules that it cannot uniformly verify.
+Computer algebra systems are Turing machines, yet they manipulate expressions whose semantic equality is not uniformly decidable. How, then, should one describe a rule that the machine can apply mechanically but cannot itself obtain as the result of a general validity procedure? I distinguish the computable application of a rule from the provision of the Boolean judgment that licenses it. An externally supplied axiom or rewrite rule is a compiled oracle answer: after the answer has been installed, matching and substitution are ordinary computation, but selecting the correct answer uniformly over an undecidable class remains oracle-equivalent. I prove this in two forms. A finite oracle transcript can be compiled into an ordinary machine that reproduces every continuation using only the recorded queries. For Richardson's \(\Pi^0_1\)-complete validity class, finite-stage rule provisioning is computable, its exact limiting status map has degree \(\emptyset'\), and Barzdiņš's bound limits the non-computable information in the first \(n\) verdicts to \(\lceil\log_2(n+1)\rceil\) bits plus fixed computation. I make the obstruction concrete for equality of Cauchy-represented computable reals. The result separates an oracle from its finite compiled traces and clarifies what a computer algebra or AI system does when it reuses externally acquired rules that it cannot uniformly verify.
 
 \tableofcontents
 
@@ -18,7 +18,7 @@ Computer algebra systems are Turing machines, yet they manipulate expressions wh
 
 # 1. The question
 
-A computer algebra system receives a finite expression and performs a finite sequence of machine operations. It parses symbols, matches patterns, substitutes terms, invokes algorithms, and returns another finite expression. Nothing in this operational description exceeds Turing computation.
+A computer algebra system receives a finite expression and performs a finite sequence of machine operations. It parses symbols, matches patterns, substitutes terms, invokes algorithms, and returns another finite expression. A CAS performs ordinary Turing computation.
 
 The semantic claims carried by some of those operations are different. A rewrite
 
@@ -47,6 +47,8 @@ The second operation can be computable even when no internal procedure performs 
 This paper calls such information a **compiled oracle answer**. The phrase is meant literally but locally. A finite collection of installed rules is not a complete oracle for every equality question. It is a finite or partial record of answers that an oracle could have returned. The full oracle reappears in the uniform operation that constructs the correct record for arbitrary candidate rules.
 
 The distinction matters because pointwise computability is cheap. For every fixed Boolean question there is a machine that prints the correct bit: one may simply hard-code that bit. What may fail is the existence of a computable procedure that, given the question, constructs the machine containing the correct answer. The information is present in the completed program but absent from the process that was supposed to produce it.
+
+The argument proceeds in three steps. First, I separate the semantic question that licenses a rule from the mechanical operation that applies it. Second, I show how finitely many answers to such questions can be compiled into an ordinary machine, and then examine the staged process by which a rule library grows through derived, refuted, and still-open candidates. Third, I locate that process at the boundary of decidability: exact equality and Richardson-class identities admit effective refutation, but not uniform positive certification. The result is a model of how ordinary computation can reuse judgments whose uniform provision has strictly greater computational content.
 
 ---
 
@@ -91,7 +93,7 @@ $$
 
 is an **oracle transcript**. Once \(\tau\) has been supplied, an ordinary Turing machine can reproduce every oracle lookup whose query lies in \(\operatorname{dom}(\tau)\). This does not decide \(O\) on any query absent from the table.
 
-## 2.2 Pointwise answers are not a uniform decider
+## 2.2 Pointwise solvability does not imply a uniform decider
 
 For each fixed \(q\), there exists an ordinary machine \(C_q\) that returns \(\chi_O(q)\). The machine contains one bit and prints it. Hence
 
@@ -117,7 +119,7 @@ Otherwise a machine could decide \(O\) by computing \(F(q)\), running the result
 
 Thus a hundred correct constant machines do not decide an undecidable set. They record one hundred answers. Even an enumerable collection of positive answers need not decide the set: absence from the enumeration is not a negative verdict. A decision procedure appears only when the answers are supplied uniformly, with both signs, for every query in the declared domain.
 
-This is the form of non-uniformity relevant to axioms. After an answer has been incorporated into code, the resulting code remains a Turing machine. What the machine could not necessarily do was select the correct code from the original semantic question.
+This is the standard non-uniformity quantifier swap: \(\forall q\,\exists C_q\) does not imply \(\exists F\,\forall q\). Karp--Lipton advice is its complexity-theoretic form [6]. After an answer has been incorporated into code, the resulting code remains a Turing machine. What the machine could not necessarily do was select the correct code from the original semantic question.
 
 ---
 
@@ -177,73 +179,53 @@ From the perspective of later ground equalities, the rule pre-answers an infinit
 
 For a fixed true sentence there always exists a constant machine that prints “true.” It would therefore be misleading to call an individual truth absolutely uncomputable. The issue is whether the machine currently under study contains, or can construct, the correct answer.
 
-Let \(M\) be a particular machine before a candidate rule is provided. On a declared query class \(Q\), semantic validity is **internally accessible** to \(M\) when \(M\) already contains a procedure that halts on every \(q\in Q\) with the correct bit \(\chi_{V_{\mathcal D}}(q)\). A verdict is **externally provided** when the bit enters through the machine's input, rule table, training record, proof package, or another declared interface rather than being generated by that procedure.
+Let \(M\) be a particular machine before a candidate rule is provided. A verdict is **internally accessible** when \(M\) can regenerate it by execution: either a finite witness is accepted by an implemented checker, or an implemented procedure decides the declared fragment. The prior-free floor is \(\Sigma^0_1\): existential truths require no supplied semantic bit once their witnesses are run and checked. Above that floor sit the stronger decision and proof procedures actually implemented by \(M\). A verdict is **supplied** when it enters through the machine's input, rule table, training record, proof package, or another declared interface and \(M\) cannot regenerate it by those resources.
 
-This is an architectural and provenance-sensitive distinction. Two completed machines may have identical behaviour even though one computed an answer and the other received it. Compiling the supplied bit into the second machine erases the operational difference after provision; it does not show that the pre-provision machine could have produced the correct bit.
+This is an architectural and provenance-sensitive distinction. Two completed machines may have identical behaviour even though one regenerated an answer and the other received it. Compiling the supplied bit into the second machine erases the operational difference after provision; it does not show that the pre-provision machine could have regenerated the verdict.
 
 ---
 
 # 4. The compiled-oracle theorems
 
-## 4.1 Signed rule packages
+## 4.1 Rule packages
 
-For a candidate rule \(r\), define its signed package
+For a candidate rule \(r\) with guard \(\phi_r\), define the stage-\(s\) package
 
 $$
-P_{V_{\mathcal D}}(r)
+P_s(r)
 =
-\bigl(r,\chi_{V_{\mathcal D}}(q_r)\bigr).
+\bigl(r,\phi_r,\operatorname{status}_s(r)\bigr),
+\qquad
+\operatorname{status}_s(r)\in
+\{\mathsf{derived},\mathsf{refuted},\mathsf{open}\}.
 \tag{4.1}
 $$
 
-The positive package \((r,1)\) installs the rewrite. The negative package \((r,0)\) records that the rewrite is not licensed as a valid equality. A positive-only rule library omits the second kind of record; in such a library, failure to find a rule is silence rather than “no.”
+Here \(\mathsf{derived}\) means that the implemented system has accepted a finite derivation, \(\mathsf{refuted}\) that it has accepted a finite counterexample or refutation, and \(\mathsf{open}\) that neither event has occurred by stage \(s\). The guard records the domain on which the rule is licensed; real CAS rules are generally conditional. For an open item the positive sign is never delivered: it is inferred from survival and, if the rule is installed, compiled as if delivered. A positive-only rule library therefore turns failure to refute into provision, although silence is not a positive verdict.
 
 ## 4.2 Finite transcript compilation
 
-**Theorem 4.1 (Finite oracle compilation).** Let \(M^{V_{\mathcal D}}\) be an oracle machine, and let \(\tau\) be a finite transcript of its validity queries. There is an ordinary Turing machine \(M_\tau\) such that every computation of \(M^{V_{\mathcal D}}\) whose queries lie in \(\operatorname{dom}(\tau)\) is reproduced exactly by \(M_\tau\).
+**Theorem 4.1 (Finite oracle compilation).** Let \(M^{V_{\mathcal D}}\) be an oracle machine. For each run on input \(x\), let \(\tau_x\) be its finite transcript of validity queries. There is an ordinary Turing machine \(M_{\tau_x}\) that reproduces that run exactly whenever its queries lie in \(\operatorname{dom}(\tau_x)\).
 
-**Proof.** Construct \(M_\tau\) from the finite control of \(M\) together with a finite lookup table containing \(\tau\). Ordinary transition steps are copied unchanged. When \(M\) would query \(q\in\operatorname{dom}(\tau)\), the compiled machine searches the finite table and enters the same response state that \(M^{V_{\mathcal D}}\) enters after receiving \(\chi_{V_{\mathcal D}}(q)\).
+**Proof.** Construct \(M_{\tau_x}\) from the finite control of \(M\) together with a finite lookup table containing \(\tau_x\). Ordinary transition steps are copied unchanged. When \(M\) would query \(q\in\operatorname{dom}(\tau_x)\), the compiled machine searches the finite table and enters the same response state that \(M^{V_{\mathcal D}}\) enters after receiving \(\chi_{V_{\mathcal D}}(q)\).
 
 An induction on the number of computation steps shows that the two machines have the same configuration after every step: the initial configurations agree; ordinary steps preserve agreement; and query steps use the same recorded bit. Hence they halt together with the same output, or diverge together, for every computation restricted to the recorded queries. \(\square\)
 
-The theorem does not turn \(V_{\mathcal D}\) into a decidable set. The compiled machine is undefined, silent, or forced to request new information when a query falls outside \(\operatorname{dom}(\tau)\). It reproduces a finite part of oracle behaviour, not the unbounded oracle.
+The theorem does not turn \(V_{\mathcal D}\) into a decidable set. The transcript is per run because it depends on the input. The compiled machine is undefined, silent, or forced to request new information when a query falls outside \(\operatorname{dom}(\tau_x)\). It reproduces a finite part of oracle behaviour, not the unbounded oracle. Its specialization step is an instance of Kleene's \(s\)-\(m\)-\(n\) theorem [20]; Futamura and Jones supply the compilation and binding-time interpretation, with the explicit bisimulation clause supplied by the induction above [7, 8].
 
-For rewrite systems, \(\tau\) may be compiled as signed rule packages. After a positive package has been installed, each matching application is an ordinary transition of \(M_\tau\). The external Boolean answer is no longer requested because it is already present in the rule table.
+For rewrite systems, \(\tau_x\) may be compiled as rule packages. After a package has been installed, each guarded matching application is an ordinary transition of \(M_{\tau_x}\). The status is no longer requested because it is already present in the rule table.
 
-## 4.3 Uniform provisioning
+## 4.3 Provisioning by finite stages
 
-**Theorem 4.2 (Provisioning equivalence).** The uniform provisioning map \(P_{V_{\mathcal D}}\) is Turing-equivalent to the semantic-validity oracle:
+**Theorem 4.2 (Status-map theorem).** Suppose that the derivation and refutation procedures implemented by \(M\) are sound, so no rule is both derived and refuted. Relative to those procedures, the sets of derived and refuted candidate rules are c.e.; open is their complement, and every finite-stage map \(P_s\) is computable. If, on the Richardson class of Section 6, the refutation procedure is also complete for \(Q_{\mathcal R}\), then the exact limiting status map has Turing degree \(\emptyset'\). Moreover, each rule's status changes at most once, from \(\mathsf{open}\) to \(\mathsf{derived}\) or from \(\mathsf{open}\) to \(\mathsf{refuted}\).
 
-$$
-P_{V_{\mathcal D}}
-\equiv_T
-V_{\mathcal D}.
-\tag{4.2}
-$$
+**Proof.** Dovetail the implemented derivation and refutation searches. Acceptance of a finite derivation enumerates a rule into \(\mathsf{derived}\); acceptance of a finite counterexample or refutation enumerates it into \(\mathsf{refuted}\). Soundness makes these events disjoint. At any finite stage, the rules accepted by neither search are computably labelled \(\mathsf{open}\), and a first acceptance fixes the status permanently. Thus \(P_s\) is a computable approximation in which each status changes at most once. This places it at the one-mind-change level of the Ershov hierarchy, a sharper classification than \(\Delta^0_2\) limit-computability. Under completeness of refutation, \(\mathsf{refuted}\) in the limit is exactly \(Q_{\mathcal R}\). The limiting map therefore computes \(\chi_{\mathsf{Zero}_{\mathcal R}}\); conversely, \(\emptyset'\) decides the two c.e. acceptance events and computes the limiting status. Section 6 gives \(\Pi^0_1\)-completeness, so the degree is \(\emptyset'\). \(\square\)
 
-**Proof.** First,
+**Corollary 4.3 (No uniform exact provisioner).** No ordinary Turing machine computes the limiting status of every candidate rule in the Richardson class.
 
-$$
-V_{\mathcal D}
-\leq_T
-P_{V_{\mathcal D}}.
-$$
+Since each finite stage is mechanically usable while exact provisioning is limit-computable but not computable, this marks the precise boundary of computability. Turing's ordinal logics already exhibit the same form for \(\Pi^0_1\) sentences: completeness is recovered only through a non-computable choice of notation [2]. Feferman's progressions make that non-uniform step precise [9, 10].
 
-Given a semantic query \(q_r\), request the package \(P_{V_{\mathcal D}}(r)\) and inspect its sign. The sign is \(1\) exactly when \(q_r\in V_{\mathcal D}\).
-
-Conversely,
-
-$$
-P_{V_{\mathcal D}}
-\leq_T
-V_{\mathcal D}.
-$$
-
-Given \(r\), compute \(q_r\), submit it to the \(V_{\mathcal D}\)-oracle, and attach the returned bit to the finite code of \(r\). This produces \(P_{V_{\mathcal D}}(r)\). Therefore each interface computes the other. \(\square\)
-
-**Corollary 4.3 (No uniform compiler without a decider).** If \(V_{\mathcal D}\) is undecidable, no ordinary Turing machine can construct the correctly signed package \(P_{V_{\mathcal D}}(r)\) for every candidate rule \(r\).
-
-This is the precise boundary. Each completed package is finite and mechanically usable. The uniform selection of correct packages has the degree of the validity problem itself.
+**Remark.** Under the soundness and completeness hypotheses of Theorem 4.2, the exact status map determines \(\chi_{V_{\mathcal D}}\), and that characteristic function determines the exact status map together with the two c.e. procedures. Thus uniform exact rule provision is Turing-equivalent to the semantic-validity oracle. Without completeness of refutation, its degree is some c.e. degree below \(\emptyset'\), fixed by the implemented procedures.
 
 ## 4.4 Rules as cached answers
 
@@ -252,9 +234,9 @@ The operational correspondence can now be stated without identifying semantic eq
 $$
 \boxed{
 \begin{gathered}
-\text{oracle query }q_r\text{ plus returned Boolean}\
+\text{semantic query }q_r\text{ plus returned status}\
 \longleftrightarrow\
-\text{signed provision of the rule }r;\\[2mm]
+\text{status provision of the guarded rule }r;\\[2mm]
 \text{later rule application}
 =
 \text{mechanical reuse of the cached answer.}
@@ -262,7 +244,7 @@ $$
 \tag{4.3}
 $$
 
-An installed rule is therefore oracle-like in provenance, not in the complexity of its subsequent pattern match. The distinction survives compilation even though it is no longer visible in the transition function of the completed machine.
+An installed rule is therefore oracle-like in provenance, while its subsequent pattern matching remains an ordinary computable operation. The distinction survives compilation even though it is no longer visible in the transition function of the completed machine.
 
 ---
 
@@ -312,6 +294,8 @@ A total equality decider applied to the names of \(x_e\) and \(0\) would therefo
 
 Inequality may reveal itself at finite precision: disjoint rational enclosures certify that two represented reals differ. Exact equality need not do so. If every computed enclosure remains compatible with zero, no finite stage distinguishes exact zero from a nonzero value smaller than the present resolution.
 
+The construction also locates the problem arithmetically in the Type-2 sense. Relative to promised fast Cauchy names, refutation is \(\Sigma^0_1\): a finite interval computation eventually witnesses separation from zero. Equality is therefore \(\Pi^0_1\) relative to those names, has degree \(\emptyset'\) for the uniformly total family \(x_e\), and is decidable in the limit. As a set of arbitrary program-index pairs it is not \(\Pi^0_1\), because the promise that an index denotes a fast Cauchy name includes a \(\Pi^0_2\) totality condition. Numerical testing that begins with “equal” and retracts that verdict when an interval excludes zero is thus a Putnam trial-and-error procedure, not an approximation to an oracle [11].
+
 ## 5.3 The trigonometric identity
 
 Consider
@@ -325,9 +309,9 @@ $$
 
 Given a computable Cauchy name for \(\alpha\), a machine can compute increasingly precise rational enclosures for \(s(\alpha)\). Each requested precision may terminate. Numerical refinement alone nevertheless supplies no finite equality verdict when the value is exactly zero: every enclosure remains compatible with a sufficiently small nonzero value.
 
-A symbolic derivation can terminate if the machine has already been given a formal theory containing suitable definitions and inference rules for trigonometric functions, real arithmetic, convergence, and the relation between formal expressions and their denotations. A proof checker for that theory may itself be a Turing machine. But the accepted axioms and inference rules are part of the checker's supplied program; their semantic authority does not follow from the bare transition function of a Turing machine.
+A symbolic derivation can terminate if the machine contains a formal theory with suitable definitions and inference rules for trigonometric functions, real arithmetic, convergence, and the relation between formal expressions and their denotations. In particular, (5.4) is derivable from the power-series definitions of sine and cosine; relative to a machine containing those definitions and the required analysis, it is derived rather than supplied. A proof checker for that theory may itself be a Turing machine. But the accepted axioms and inference rules are part of the checker's program; their semantic authority does not follow from the bare transition function of a Turing machine.
 
-Under the deliberately austere boundary considered here---no analytic identity, proof package, or semantic decision procedure beyond the current machine---there is no numerical equality procedure that reaches “yes” in finite time. Installing
+The deliberately austere boundary considered here---no analytic definitions, proof package, or semantic decision procedure beyond the current machine---is therefore a choice about which material counts as supplied. Under that boundary there is no numerical equality procedure that reaches “yes” in finite time. Installing
 
 $$
 \sin^2(x)+\cos^2(x)\longrightarrow 1
@@ -351,16 +335,23 @@ $$
 \tag{6.1}
 $$
 
-Richardson's theorem implies that \(\mathsf{Zero}_{\mathcal R}\) is undecidable [1]. The theorem is uniform: it excludes a total algorithm that correctly classifies every submitted expression in the class. It does not say that no individual identity can be proved or installed. Caviness developed the corresponding obstruction for canonical forms and simplification in symbolic mathematics [5].
+Richardson's theorem gives the sharper classification
+
+$$
+\mathsf{Zero}_{\mathcal R}\ \text{is }\Pi^0_1\text{-complete}.
+\tag{6.2}
+$$
+
+Its complement \(Q_{\mathcal R}\) is \(\Sigma^0_1\): if an expression is not identically zero, continuity gives a rational point and a finite interval evaluation that eventually excludes zero. This \(\Sigma^0_1\) membership is the formal statement that refutation requires no supplied semantic verdict beyond execution of its witness checker. Richardson's reduction from exponential Diophantine unsolvability supplies the separate hardness fact; Matiyasevich's theorem sharpens the source problem to Hilbert's tenth [1, 12]. Hence \(Q_{\mathcal R}\) is \(\Sigma^0_1\)-complete and \(\mathsf{Zero}_{\mathcal R}\) is \(\Pi^0_1\)-complete. Thus the relevant oracle is exactly \(\emptyset'\), not an arbitrary non-computable set. The theorem remains uniform: it excludes a total algorithm that classifies every submitted expression, not proofs of individual identities. Caviness developed the corresponding obstruction for canonical forms and simplification [5].
 
 This is exactly the distinction of Section 2. For each fixed expression \(E\), one can imagine a constant program containing the correct bit. What cannot be computed is a uniform constructor that selects the correct bit for every \(E\). A total semantic simplifier for this class would realize the oracle
 
 $$
 \chi_{\mathsf{Zero}_{\mathcal R}}(E).
-\tag{6.2}
+\tag{6.3}
 $$
 
-Actual computer algebra systems therefore combine complete decision procedures on restricted domains with incomplete rule libraries, proof methods, assumptions, heuristics, and unevaluated outputs.
+Because \(\Pi^0_1\) sets are decidable in the limit, a CAS that provisionally accepts an identity and retracts it when numerical evaluation finds a witness is a Putnam trial-and-error procedure [11]. It converges pointwise without ever certifying an open positive case. Actual systems combine such tests with complete decision procedures on restricted domains, incomplete rule libraries, proof methods, assumptions, heuristics, and unevaluated outputs. For the zero-existence problem, Wang removed absolute value from Richardson's language [13], and Laczkovich later removed \(\pi\) [21]. By contrast, Macintyre and Wilkie proved conditional decidability of the real exponential field assuming Schanuel's conjecture [14]: unrestricted sine is what permits the integers to be encoded in Richardson's class.
 
 ## 6.2 Three operational cases
 
@@ -369,18 +360,32 @@ The resulting behaviour should not be divided merely into “computable rules”
 | Case | What the machine possesses | Meaning of a result |
 |---|---|---|
 | Decidable fragment | A total internal procedure on a declared class | The machine computes the verdict uniformly on that class |
-| Compiled answer | A signed axiom, proof package, or installed rule | The machine reuses a verdict already supplied for this schema |
+| Compiled answer | A status-labelled axiom, proof package, or installed rule | The machine reuses a verdict already supplied for this schema |
 | Silence | No procedure or package returns a verdict | The query remains unresolved; silence is neither falsehood nor a negative oracle answer |
 
 Polynomial normalization and decision procedures for real closed fields are examples of the first pattern on their respective domains. A stored trigonometric identity illustrates the second pattern relative to a machine that lacks a derivation of it. An arbitrary Richardson-class expression may fall into the third.
 
 Accordingly, an unevaluated CAS expression does not mean that the proposed identity is false, that no proof exists, or even that the implementation contains no relevant information. It means only that the invoked procedures produced no licensed transformation or verdict under the current assumptions and resources.
 
+Guards matter operationally. If a package installs \(\sqrt{x^2}\to x\) without the required guard \(x\geq 0\), then it simplifies \(\sqrt{x^2}-x\) to \(0\). At \(x=-2\), however, the original expression is \(4\). The error is a mis-guarded package propagated by perfectly mechanical application.
+
 ## 6.3 Why a finite rule library remains a Turing machine
 
 There is no contradiction between Theorems 4.1 and 4.2. After any finite collection of oracle answers has been compiled, the resulting CAS is an ordinary Turing machine. Its rule table contains only finitely many additional bits and schemas.
 
 The oracle appears in the counterfactual question: can the system construct the correct extension for every new candidate? If it could uniformly install or reject every rule in an undecidable semantic class, it would decide that class. A fixed CAS does not acquire this power merely because some of its existing rules originated in external mathematical judgment.
+
+Barzdiņš's bound quantifies the missing content. For any list \(\bar E_n=(E_1,\ldots,E_n)\) of \(n\) candidate queries to a c.e. or co-c.e. set, the characteristic string is determined, conditional on that list, by the number of eventual enumerations among its members---one of \(n+1\) possibilities---together with the fixed enumerator. Hence
+
+$$
+C\!\left(\chi_{\mathsf{Zero}_{\mathcal R}}(E_1),\ldots,
+\chi_{\mathsf{Zero}_{\mathcal R}}(E_n)\mid \bar E_n\right)
+\leq
+\left\lceil\log_2(n+1)\right\rceil+O(1).
+\tag{6.4}
+$$
+
+A library of \(n\) open identities therefore carries at most logarithmically many bits that the machine could not generate; those bits are precisely the stopping information the library does not contain [15].
 
 The appropriate comparison is therefore:
 
@@ -416,6 +421,8 @@ In each case, three questions remain separate:
 
 A machine may answer the first without answering the second or third. A finite proof can move an assertion from “supplied without derivation” to “derivable in this formal system,” but this is still relative to the system's axioms and inference rules. Mechanical proof checking establishes formal derivability; it does not generate the semantic soundness of the entire proof system from nothing.
 
+Joint consistency is another non-local status. For a recursively axiomatized library, inconsistency is \(\Sigma^0_1\), witnessed by a finite derivation of contradiction; consistency is therefore \(\Pi^0_1\). Mechanical application of the installed rules never certifies that joint property.
+
 It is therefore useful to distinguish two senses of “oracle.” A **computational oracle** is a total external interface for a set such as \(V_{\mathcal D}\). An **epistemic oracle event** is the arrival of one or more answers whose correctness the current machine could not uniformly establish. The second can be compiled into finite code without making the first computable.
 
 The relation is summarized by
@@ -434,13 +441,13 @@ $$
 
 The same distinctions apply to systems that acquire rules from training data, demonstrations, retrieval, or tools.
 
-A trained model and its finite weights remain a finite machine description. They may encode many claims, transformations, and regularities that the deployed system did not derive from an internal validity procedure. Reusing those commitments does not by itself produce hypercomputation. It does show that the system's operational competence may depend on compiled answers whose provenance and mutual consistency are not recoverable from application alone.
+A trained model and its finite weights remain a finite machine description. Its installed rules partition by regenerability: the \(\Sigma^0_1\) floor and the procedures it implements; supplied and so far unrefuted rules; and refuted rules. Reusing a supplied commitment does not by itself produce hypercomputation. It does show that operational competence may depend on answers whose provenance and mutual consistency are not recoverable from application alone.
 
-An AI system may verify particular rules through formal proofs or decision procedures defined on restricted domains. The limitation is uniform: when validity over the full candidate class is undecidable, no internal procedure can halt with the correct verdict for every candidate rule in that class.
+Learning can move a rule from supplied to derived without changing its truth value or Turing degree. Grokking is the observable version of that transition [22]: a memorized table is replaced by a circuit that regenerates the rule off-distribution [23]. This gives a testable provenance discipline for each installed rule: does the system regenerate it on inputs outside the corpus, or only reproduce it inside? An AI system may also verify particular rules through formal proofs or decision procedures on restricted domains. The limitation is uniform: when validity over the full candidate class is undecidable, no internal procedure can halt with the correct verdict for every candidate rule in that class.
 
 Tool access should also be described relatively. If an external service answers a declared semantic query class, then it functions as an oracle for the agent with respect to that interface. It is a genuinely noncomputable oracle only if the response set itself is noncomputable, rather than merely expensive, hidden, or unavailable to the agent. The formal model should not infer physical hypercomputation from epistemic dependence.
 
-What the model does establish is simpler: an agent may receive a correct Boolean commitment, compile it into its own transition structure, and later experience its use as ordinary internal computation. The disappearance of the query boundary does not imply that the answer was internally generated.
+What the model does establish is simpler: an agent may receive a status or commitment, compile it into its own transition structure, and later experience its use as ordinary internal computation. The disappearance of the query boundary does not imply that the status was internally generated.
 
 ---
 
@@ -454,6 +461,8 @@ Uniform correct provisioning is different. A procedure that signs every candidat
 
 The formal conclusion is therefore not that every axiom turns a machine into a hypercomputer. It is that an externally supplied axiom can be a compiled answer to a question that the pre-provision machine could not decide uniformly. After compilation, the machine can use the answer indefinitely while losing sight of its source.
 
+The source of that answer is outside the scope of the formal results and remains a free parameter of the framework. The provision/application distinction and Theorems 4.1--4.2 are unchanged whether the boundary object is a physically realized oracle, a non-computable or logically deep invariant of computable dynamics, or a strong heuristic filtered by survivorship. Finite records are observationally equivalent at this level, with Barzdiņš's bound describing their information class. Even an unbounded record with no retractions does not discriminate: a c.e. source may enumerate a c.e. subset of \(\Pi^0_1\) truths. The cases separate only in principle, on verdicts independent of every formal system the source could embody. The computable-dynamics literature shows the shape of this parameter space: non-computable Julia sets at computable parameters, generalized shifts, non-computable physical measures, and Bennett's logically deep finite objects [16--19].
+
 We use the word *oracle* when we emphasize that a Boolean judgment crossed the computational boundary. We use the word *axiom* when the judgment has been installed deeply enough that subsequent reasoning begins from it.
 
 If reality were Turing machines all the way down, the remaining question would not be how supplied answers are used. That part is mechanical. The question would be where the uniformly unavailable answers came from.
@@ -465,3 +474,21 @@ If reality were Turing machines all the way down, the remaining question would n
 3. K. Weihrauch, *Computable Analysis: An Introduction*, Springer, 2000.
 4. F. Baader and T. Nipkow, *Term Rewriting and All That*, Cambridge University Press, 1998.
 5. B. F. Caviness, “On Canonical Forms and Simplification,” *Journal of the ACM* 17(2), 1970, 385--396.
+6. R. M. Karp and R. J. Lipton, “Some Connections Between Nonuniform and Uniform Complexity Classes,” *Proceedings of STOC*, 1980, 302--309.
+7. Y. Futamura, “Partial Evaluation of Computation Process---An Approach to a Compiler-Compiler,” *Systems, Computers, Controls* 2(5), 1971, 45--50.
+8. N. D. Jones, C. K. Gomard, and P. Sestoft, *Partial Evaluation and Automatic Program Generation*, Prentice Hall, 1993.
+9. S. Feferman, “Turing in the Land of O(z),” in *The Universal Turing Machine: A Half-Century Survey*, Oxford University Press, 1988, 113--147.
+10. S. Feferman, “Transfinite Recursive Progressions of Axiomatic Theories,” *The Journal of Symbolic Logic* 27(3), 1962, 259--316.
+11. H. Putnam, “Trial and Error Predicates and the Solution to a Problem of Mostowski,” *The Journal of Symbolic Logic* 30(1), 1965, 49--57.
+12. Y. Matiyasevich, *Hilbert's Tenth Problem*, MIT Press, 1993.
+13. P. S. Wang, “The Undecidability of the Existence of Zeros of Real Elementary Functions,” *Journal of the ACM* 21(4), 1974, 586--589.
+14. A. Macintyre and A. J. Wilkie, “On the Decidability of the Real Exponential Field,” in *Kreiseliana*, A K Peters, 1996, 441--467.
+15. J. M. Barzdin, “Complexity of Programs to Determine Whether Natural Numbers Not Greater Than \(n\) Belong to a Recursively Enumerable Set,” *Soviet Mathematics Doklady* 9, 1968, 1251--1254.
+16. M. Braverman and M. Yampolsky, *Computability of Julia Sets*, Springer, 2009.
+17. C. Moore, “Generalized Shifts: Unpredictability and Undecidability in Dynamical Systems,” *Nonlinearity* 4(2), 1991, 199--230.
+18. S. Galatolo, M. Hoyrup, and C. Rojas, “Dynamics and Abstract Computability: Computing Invariant Measures,” *Discrete and Continuous Dynamical Systems* 29(1), 2011, 193--212.
+19. C. H. Bennett, “Logical Depth and Physical Complexity,” in *The Universal Turing Machine: A Half-Century Survey*, Oxford University Press, 1988, 227--257.
+20. S. C. Kleene, *Introduction to Metamathematics*, North-Holland, 1952.
+21. M. Laczkovich, “The Removal of \(\pi\) from Some Undecidable Problems Involving Elementary Functions,” *Proceedings of the American Mathematical Society* 131(7), 2003, 2235--2240.
+22. A. Power, Y. Burda, H. Edwards, I. Babuschkin, and V. Misra, “Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets,” arXiv:2201.02177, 2022.
+23. N. Nanda, L. Chan, T. Lieberum, J. Smith, and J. Steinhardt, “Progress Measures for Grokking via Mechanistic Interpretability,” *International Conference on Learning Representations*, 2023.
