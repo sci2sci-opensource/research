@@ -11,7 +11,7 @@ function RawBlock(elem)
   if FORMAT:match 'latex'
       and elem.format == 'tex'
       and elem.text:match('^%s*\\tableofcontents%s*$') then
-    return pandoc.RawBlock('latex', '\\clearpage\n\\tableofcontents')
+    return pandoc.RawBlock('latex', '\\clearpage\n\\tableofcontents\n\\clearpage')
   end
   return elem
 end

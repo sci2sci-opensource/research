@@ -9,19 +9,23 @@ lang: en
 
 Learning theory usually fixes a hypothesis language and studies inference within it. But agents can also learn by changing the language in which hypotheses are formed. I model this process as Bayesian updating over candidate language presentations and the bounded procedures that search and verify within them. A presentation specifies a language, a partial map by which opaque internal encodings become expressions in that language, and an interpreter that runs expressions to produce further expressions. Candidates receive the same opaque packets but construct their likelihoods through their own expressions and generative theories. I also extend the comparison to phase-sensitive reference operations, which can distinguish presentation states that every block-diagonal classical comparison identifies, but only when the required reference resources are available. Finally, I instantiate the generative layer using presentation-relative resource-bounded Kolmogorov complexity, \(\mathrm{KT}\). Within the resulting decidable syntactic class, comparing two presentations on any fixed finite target is decidable, while deciding whether one dominates the other on every finite target is \(\Pi^0_1\)-complete.
 
-This paper also has a companion, *Perfect Theory* [1], in which I investigate the conditions under which the optimality of a language for a particular representation can be certified, and how agents can act optimally when such certification is not computable.
+This paper is the first in a trilogy. Its two extensions, *Perfect Theory* [1] and *Universal Language Learning Machine* [53], ask, respectively, when a language-learning process may stop and call a theory complete, and what such a machine must preserve to remain universal over its possible continuations.
+
+\tableofcontents
 
 # 1. Introduction: The problem of language expressiveness
 
-The analysis in this paper is deliberately agent-relative. I ask not only whether a representation exists or whether two languages are equivalent in principle, but what a finite agent can express, construct, run, and verify with the resources available to it. Asymptotic treatments often suppress additive constants and translation costs; here they may decide whether a representation is accessible at all. Universal encodings allow agents to exchange the same bytes in principle, but they do not make the compiler, interpreter, search, or verification required to use those bytes free. Universality guarantees transmissibility, not practical intelligibility. For an unbounded observer, the difference may disappear into a constant; for a bounded agent, life is too short to follow every impractical idealisation [7–10,45].
+Asymptotic analyses of universal computation and description length often suppress additive constants and translation costs. In the real world, under finite resource bounds, those costs may determine whether a representation is accessible at all. Universal encodings allow agents to exchange the same bytes in principle, but they do not make the compiler, interpreter, search, or verification required to use those bytes free. Put simply, universality guarantees transmissibility, not practical intelligibility.
+
+Hence, the analysis in this paper is deliberately agent-relative. When analysing languages and their representations, I ask not only whether a representation exists or whether two languages are equivalent in principle, but what a finite agent can express, construct, run, and verify with the resources available to it. For an unbounded observer, the difference may disappear into a constant; for a bounded agent, life is too short to follow every impractical idealisation [7–10,45].
 
 ## 1.1 Semantic occlusion
 
-Agents often encounter phenomena they cannot yet represent or express. Languages do not all make the same distinctions available. Pirahã, for example, has no general system of exact number words, while languages also differ in whether they use an absolute spatial frame of reference as a basic way of describing location [37–40]. Such differences affect what speakers can encode, preserve, and recover.
+Agents often encounter phenomena they cannot yet represent or express. Languages do not all make the same distinctions available. If we reach for real-world examples, Pirahã has no general system of exact number words, while languages also differ in whether they use an absolute spatial frame of reference as a basic way of describing location [37–40]. Such differences affect what speakers can encode, preserve, and recover.
 
 Scientific languages also reach their limits. Greek mathematicians encountered incommensurable magnitudes before those magnitudes had a settled theory. Sixteenth-century algebraists manipulated square roots of negative numbers while solving cubic equations before complex numbers had a stable interpretation [47]. Most readers know a more ordinary version of the problem from learning a second language: searching for words to say what one already means.
 
-These cases are not identical, but they have the same formal structure. The problem is not simply uncertainty about which statement is true within a fixed language. The existing language or theory lacks some of the representations or operations needed to formulate what has been encountered. Yet these limits move. Individuals learn new languages, communities develop new concepts, and scientific theories acquire new objects and operations.
+While these cases are not identical, they admit a shared formal description. The problem is not simply uncertainty about which statement is true within a fixed language. In each case, the current language or theory lacks a distinction, object, or operation required to represent the phenomenon in question. Yet these limits move. Individuals learn new languages, communities develop new concepts, and scientific theories acquire new objects and operations.
 
 I call the phenomenon of being unable to express a concept in one's current language **semantic occlusion**. This can happen for various reasons. To examine its nature more closely, I first distinguish the external generator, the apparatus through which an agent observes it, the language in which an observation becomes available, and the operations that can be performed once an expression has been formed. The decomposition resembles a communication system, but the question here is semantic rather than merely transmissive: receiving a signal does not by itself supply a language in which its significance can be expressed [43,44].
 
@@ -148,9 +152,11 @@ The first two are **extensional** relative to the presentation: the required exp
 
 The distinction between failure at \(D_e\) and failure under \(U_e\) matters. In the first case the agent has no adequate linguistic object with which to begin. In the second it possesses an expression of the observation, can run its current theory, and can detect a divergence between internally generated expressions and expressions formed from later signals. The divergence does not by itself provide the missing theory. It exposes a demand on the language: construct a presentation in which the sequence becomes generatively addressable in the sense defined in §2.2.
 
-This gives the central problem of the paper. How can a bounded agent compare candidate presentations using a shared observation when the candidates may decode and interpret that observation differently? And what can such a comparison establish about which presentation should be retained? The construction requires packet-level evidential commensurability, not prior linguistic commensurability: candidates may form different, mutually untranslated expressions from the same opaque packet and remain comparable because their likelihoods are defined on a shared packet space. Sections 2–5 give a typed classical construction: candidate presentations receive the same opaque packet, form their own linguistic expressions, generate further expressions internally, and update their weights at the common evidential boundary. Section 6 extends the comparison to phase-sensitive reference structures. Sections 7 and 8 isolate the generative layer in resource-bounded Kolmogorov complexity. Every fixed finite comparison is decidable there, while uniform dominance over all targets is \(\Pi^0_1\)-complete.
+This gives the central problem of the paper. How can a bounded agent compare candidate presentations using a shared observation when the candidates may decode and interpret that observation differently? And what can such a comparison establish about which presentation should be retained? The construction requires packet-level evidential commensurability: candidates may form different, mutually untranslated expressions from the same opaque packet and remain comparable because their likelihoods are defined on a shared packet space. This contrasts with prior linguistic commensurability, which would require the candidates to share expressions or translations before comparison. Sections 2–5 give a typed classical construction: candidate presentations receive the same opaque packet, form their own linguistic expressions, generate further expressions internally, and update their weights at the common evidential boundary. Section 6 extends the comparison to phase-sensitive reference structures. Sections 7 and 8 isolate the generative layer in resource-bounded Kolmogorov complexity. Every fixed finite comparison is decidable there, while uniform dominance over all targets is \(\Pi^0_1\)-complete.
 
 # 2. Language presentations for bounded agents
+
+Unless a section says otherwise, all measurable spaces are standard Borel, candidate families are countable, kernels are Markov, and the displayed maps have the stated measurability or computability properties. Sections 1–5 are classical. Phase-sensitive operator-algebraic structure enters in Section 6.
 
 ## 2.1 Presentations and bounded realizations
 
@@ -211,9 +217,9 @@ The quantifier over \(q\) is deliberately unrestricted. Thus \(\operatorname{Gen
 
 This is not the same as successful perceptual decoding. The map \(D_e\) determines whether an observation becomes an expression. Generative addressability asks what the presentation can subsequently produce from expressions available within it.
 
-## 2.3 Description and accessibility
+## 2.3 Description length and accessibility
 
-Fix the declared task readout \(R_{e,o}\), which I suppress in the notation below. Let \(\ell_e(q)\) be the length of an expression in the code of \(\mathcal L_e\). The presentation-relative description length of a target is
+I fix the task readout \(R_{e,o}\) and omit it from the notation below. Let \(\ell_e(q)\) be the length of an expression in the code of \(\mathcal L_e\). The presentation-relative description length of a target is
 
 $$
 \mathsf K_{P_e}(x\mid h,z)
@@ -266,7 +272,7 @@ The reverse of the first implication need not hold: an adequate expression may e
 
 A target may be addressable only through a long expression; it may have a short expression that the agent's proposal law never finds; or it may not be generatively addressable at all. When budgets are nested and later searches retain earlier discoveries, \(\mathsf A_{\mathcal B_{e,a}}^B\) is nonincreasing in \(B\). No general identification of \(\mathsf K_{P_e}\) with \(\mathsf A_{\mathcal B_{e,a}}^B\) is available. Levin search couples length and runtime under a particular universal schedule [8]; an arbitrary bounded apparatus does not inherit that guarantee.
 
-## 2.4 Presentation costs and constants
+## 2.4 Presentation costs under finite budgets
 
 A language with a primitive for every target would trivialize description length. I therefore charge for the presentation itself. Let \(W\) denote the agent's current epistemic theory, defined formally in §3, and suppose its current presentation is \(P_{e_0}\). When the argument of \(\mathsf K_{P_{e_0}}\) is a finitely specified presentation, readout, verifier, or proposal procedure rather than an ordinary task target, the notation refers to the same description construction under a declared effective meta-level readout for such finite objects; it does not introduce a universal reference machine.
 
@@ -306,8 +312,6 @@ $$
 $$
 
 For universal computational presentations, the invariance theorem gives an additive simulation constant. That constant contains a compiler and is directional: in general, \(c(e_0,e_1)\neq c(e_1,e_0)\). Although asymptotically harmless, it may dominate a finite task. A compiler that exists but cannot be described, found, run, or verified within the available budget does not remove operational occlusion [7–10].
-
-Unless a section says otherwise, all measurable spaces are standard Borel, candidate families are countable, kernels are Markov, and the displayed maps have the stated measurability or computability properties. Sections 1–5 are classical. Phase-sensitive operator-algebraic structure enters in Section 6.
 
 # 3. Epistemic theories and representational change
 
@@ -353,7 +357,7 @@ $$
 \tag{3.2}
 $$
 
-be the basic verdict carrier. The local classifier is
+be the basic verdict carrier. Here \(\mathsf E\), \(\mathsf U\), and \(\mathsf H\) denote **exemplified**, **unknown**, and **hallucinated**, respectively. The local classifier is
 
 $$
 c_{e,B^{\mathrm v}}:
@@ -378,18 +382,18 @@ s\in\Sigma.
 \tag{3.4}
 $$
 
-Thus \(\mathcal C^{\mathsf E}\), \(\mathcal C^{\mathsf U}\), and \(\mathcal C^{\mathsf H}\) are respectively the witnessed, unknown, and refuted regions.
+Thus \(\mathcal C^{\mathsf E}\), \(\mathcal C^{\mathsf U}\), and \(\mathcal C^{\mathsf H}\) are the regions producing witnessed, unobservable, and refuted observations—and hence exemplified, unknown, and hallucinated verdicts—respectively.
 
 The linguistic outcome is therefore either silence or a classified expression:
 
-| Observation | Linguistic condition | Classifier | Verdict | What the agent observes |
+| Verdict | Observation | Condition | Classifier | Interpretation |
 |---|---|---|---|---|
-| **Silence** | No new expression is available | Not invoked | No verdict | There is no linguistic object to compare with \(\widehat{\Phi}\). |
-| **Witnessed** | \(\varphi\in\mathcal C_{e,\widehat{\Phi}}^{\mathsf E,B^{\mathrm v}}\) | Invoked | \(\mathsf E\) | The newly formed expression is locally witnessed or exemplified relative to the theory-generated expressions. |
-| **Unknown** | \(\varphi\in\mathcal C_{e,\widehat{\Phi}}^{\mathsf U,B^{\mathrm v}}\) | Invoked | \(\mathsf U\) | Non-resolution under the current epistemic regime is the definite observed result. |
-| **Refuted** | \(\varphi\in\mathcal C_{e,\widehat{\Phi}}^{\mathsf H,B^{\mathrm v}}\) | Invoked | \(\mathsf H\) | The new expression locally refutes or exposes an incoherence or hallucination in the candidate theory. |
+| No verdict | **Silence** | No new expression is available | Not invoked | No linguistic object is available for comparison with \(\widehat{\Phi}\). |
+| **Exemplified** (\(\mathsf E\)) | **Witnessed** | \(\varphi\in\mathcal C_{e,\widehat{\Phi}}^{\mathsf E,B^{\mathrm v}}\) | Invoked | The expression is witnessed relative to the theory-generated expressions. |
+| **Unknown** (\(\mathsf U\)) | **Unobservable** | \(\varphi\in\mathcal C_{e,\widehat{\Phi}}^{\mathsf U,B^{\mathrm v}}\) | Invoked | The comparison is proven unresolved under the declared verification budget. |
+| **Hallucinated** (\(\mathsf H\)) | **Refuted** | \(\varphi\in\mathcal C_{e,\widehat{\Phi}}^{\mathsf H,B^{\mathrm v}}\) | Invoked | The expression exposes a certified incoherence in the candidate theory. |
 
-Silence is the absence of a signal, carrier, expression, or response at some boundary of the process. It may occur whether or not it is measured. When an observation procedure detects and records silence, I denote the resulting observational record by \(\bot\). Unrecorded silence supplies no observation and prompts no epistemic update. Recorded silence is not a verdict: no linguistic expression is available for the classifier to witness, leave unresolved, or refute. Thus
+Silence is the absence of a signal, carrier, expression, or response at some boundary of the process. It may occur whether or not it is measured. When an observation procedure detects and records silence, I denote the resulting observational record by \(\bot\). Unrecorded silence supplies no observation and prompts no epistemic update. Recorded silence is not a verdict: no linguistic expression is available for the classifier to classify as witnessed, unobservable, or refuted. Thus
 
 $$
 \bot\notin\Sigma.
@@ -465,11 +469,11 @@ $$
 
 This monotonicity is an assumption about the verification regime, not a general property of epistemic revision. It excludes defeasible regimes in which later evidence can withdraw an earlier certificate.
 
-A structurally unknown comparison may remain in the unknown region at every finite budget. A budget-relative unknown may later move into either the witnessed or the refuted region.
+A structurally unobservable comparison may remain in the unknown region at every finite budget. A budget-relative unknown verdict may later become exemplified or hallucinated when the comparison becomes witnessed or refuted.
 
 The derivation budget \(B^{\mathrm d}\) is separate. It limits the construction of generative expressions and candidate certificates. The verification budget \(B^{\mathrm v}\) limits how far an obtained linguistic comparison can be checked.
 
-## 3.3 Observation Joins and Epistemic Algebra
+## 3.3 Observation joins and epistemic algebra
 
 The classifier above supplies individual verdicts. I now define the epistemic states in which those verdicts may be represented and the algebra by which several linguistic observations are joined.
 
@@ -567,7 +571,7 @@ s\vee s=s.
 \tag{3.14}
 $$
 
-[^kleene]: Restricted to realized verdicts, this operation has the same table as strong Kleene conjunction under the correspondence \(\mathsf E\leftrightarrow\mathrm{true}\), \(\mathsf U\leftrightarrow\mathrm{indeterminate}\), and \(\mathsf H\leftrightarrow\mathrm{false}\) [51]. The coincidence is algebraic, not semantic: here \(\mathsf U\) is a definite observed verdict of non-resolution, not an indeterminate truth value. The prospective, probabilistic, and partially observed constructions in (3.10) and (3.15)–(3.22) are additional structure, not part of that truth table.
+[^kleene]: Restricted to realized verdicts, this operation has the same table as strong Kleene conjunction under the correspondence \(\mathsf E\leftrightarrow\mathrm{true}\), \(\mathsf U\leftrightarrow\mathrm{indeterminate}\), and \(\mathsf H\leftrightarrow\mathrm{false}\) [51]. The coincidence is algebraic, not semantic: here \(\mathsf U\) is a definite observed verdict of non-resolution, not an indeterminate truth value. The prospective, probabilistic, and partially observed constructions in (3.10) and (3.15)–(3.21) are additional structure, not part of that truth table.
 
 ### Joinability before observation
 
@@ -614,7 +618,7 @@ $$
 
 be the state of an unobserved comparison.
 
-If an already observed constituent is witnessed, it leaves the state of the aggregate unchanged:
+If an already observed constituent has verdict \(\mathsf E\), it leaves the state of the aggregate unchanged:
 
 $$
 \delta_{\mathsf E}\vee\mu
@@ -623,7 +627,7 @@ $$
 \tag{3.17}
 $$
 
-If an observed constituent is unknown, the aggregate can no longer be witnessed. The probability formerly assigned to \(\mathsf E\) is absorbed into \(\mathsf U\):
+If an observed constituent has verdict \(\mathsf U\), the aggregate can no longer have verdict \(\mathsf E\). The probability formerly assigned to \(\mathsf E\) is absorbed into \(\mathsf U\):
 
 $$
 \delta_{\mathsf U}\vee\mu
@@ -632,7 +636,7 @@ $$
 \tag{3.18}
 $$
 
-If an observed constituent is refuted, the absorbing element fixes the aggregate immediately:
+If an observed constituent has verdict \(\mathsf H\), the absorbing element fixes the aggregate immediately:
 
 $$
 \delta_{\mathsf H}\vee\mu
@@ -669,7 +673,7 @@ For a finite family, let \(r_k\) be the join of the first \(k\) observed verdict
 
 The join therefore states both the current aggregate and whether further observation can still change it.
 
-### Complete state table
+### Complete join table
 
 Embed each realized verdict \(s\) into \(\Delta(\Sigma)\) as \(\delta_s\). For arbitrary unobserved states
 
@@ -690,14 +694,7 @@ the observation-join algebra acts as follows:
 
 Here \(\pi_{\mu,\nu}\) is the joint state of the two unobserved comparisons and \(\vee_*\pi_{\mu,\nu}\) is its pushforward under the deterministic join. The lower-right entry covers the only case in which neither constituent has yet supplied a realized value.
 
-The table exhibits the central feature of the construction:
-
-$$
-\boxed{
-\text{joinability is defined before observation, and contamination may determine the aggregate before observation is complete.}
-}
-\tag{3.22}
-$$
+The table shows that joinability is defined before observation and that contamination may determine the aggregate before observation is complete.
 
 Silence remains outside the observation-join algebra. Without a linguistic expression, the classifier is not invoked and supplies no verdict-valued operand to the join.
 
@@ -707,7 +704,7 @@ Let \(e\) be a candidate extension of \(W\). It supplies a successor presentatio
 
 $$
 \iota_e:\mathcal E_W\hookrightarrow\mathcal E_e
-\tag{3.23}
+\tag{3.22}
 $$
 
 and an admissible retraction \(r_e:\mathcal E_e\rightharpoonup\mathcal E_W\) with \(r_e\circ\iota_e=\operatorname{id}\) on the old language. It also supplies a projection \(\pi_e:\Omega_e\to\Omega_W\).
@@ -718,14 +715,14 @@ $$
 \llbracket\iota_e(\varphi)\rrbracket_e(\omega')
 =
 \llbracket\varphi\rrbracket_W(\pi_e\omega'),
-\tag{3.24}
+\tag{3.23}
 $$
 
 and
 
 $$
 (\pi_e)_*\nu_e=\mu_W.
-\tag{3.25}
+\tag{3.24}
 $$
 
 The new presentation must also preserve what the old linguistic boundary and interpreter could already do. For the linguistic map I require
@@ -742,7 +739,7 @@ r_e(D_e(\tau))=D_W(\tau),
 \qquad
 \tau\in\operatorname{dom}(D_W).
 \end{gathered}
-\tag{3.26}
+\tag{3.25}
 $$
 
 For the interpreter I require
@@ -764,19 +761,12 @@ U_W(\varphi),
 \qquad
 \varphi\in\operatorname{dom}(U_W).
 \end{gathered}
-\tag{3.27}
+\tag{3.26}
 $$
 
 These conditions allow the new language to make finer distinctions and generate additional expressions while recovering the old behaviour under projection. Proof-theoretic conservativity remains separate: preservation of consequences, existence of an effective proof translation, and a genuine proof retraction do not follow from one another without additional assumptions.
 
-A nonconservative candidate is not a malformed conservative one. It may revise, split, merge, or forget old distinctions, alter the old generative cycle, or change old marginals. It must state how old queries and commitments are transformed. Bayesian comparison remains available as long as candidates assign likelihoods on the same public packet space:
-
-$$
-\boxed{
-\text{nonconservativity changes the theory transition, not Bayes' rule}.
-}
-\tag{3.28}
-$$
+A nonconservative candidate is not a malformed conservative one. It may revise, split, merge, or forget old distinctions, alter the old generative cycle, or change old marginals. It must state how old queries and commitments are transformed. Bayesian comparison remains available as long as candidates assign likelihoods on the same public packet space. Nonconservativity changes the theory transition, not Bayes' rule.
 
 ## 3.5 Priors, proposals, and commitment
 
@@ -788,7 +778,7 @@ $$
 \bigsqcup_e\{e\}\times\Omega_e,
 \qquad
 \Pi_0=q\otimes\nu.
-\tag{3.29}
+\tag{3.27}
 $$
 
 **Remark (belief-neutral entertainment).** Let \(\mathcal C\) be a conservative candidate family on which the prior is supported:
@@ -797,7 +787,7 @@ $$
 \sum_{e\in\mathcal C}q(e\mid W,o)=1.
 $$
 
-If every \(e\in\mathcal C\) satisfies (3.25), then merely entertaining those extensions does not alter beliefs about the old world. For every \(A\in\mathcal F_W\),
+If every \(e\in\mathcal C\) satisfies (3.24), then merely entertaining those extensions does not alter beliefs about the old world. For every \(A\in\mathcal F_W\),
 
 $$
 \sum_{e\in\mathcal C}
@@ -805,7 +795,7 @@ q(e\mid W,o)\,
 \nu_e(\pi_e^{-1}A)
 =
 \mu_W(A).
-\tag{3.30}
+\tag{3.28}
 $$
 
 An absent candidate cannot acquire posterior mass by conditioning. Let
@@ -822,10 +812,10 @@ $$
 W_{\alpha+1}
 =
 \mathsf{Commit}_{W_\alpha}(e,\varphi,s).
-\tag{3.31}
+\tag{3.29}
 $$
 
-I retain a double ledger \(\mathcal H_\alpha=(\mathcal H_\alpha^{\mathrm{sem}},\mathcal H_\alpha^{\mathrm{ev}})\). The semantic ledger records admitted meanings and preserved invariants. The evidential ledger records packets, decoded expressions, generated expressions, claims, verdicts, rejections, silences, and superseded states. Their overlap permits audit; their nonidentity prevents a later linguistic commitment from rewriting the evidence on which it was based. This separation supplies the argument behind (3.28): a nonconservative commitment may change the executable semantics recorded in \(\mathcal H^{\mathrm{sem}}\), while Bayesian conditioning remains attached to public evidential records in \(\mathcal H^{\mathrm{ev}}\) that the commitment cannot retrospectively alter.
+I retain a double ledger \(\mathcal H_\alpha=(\mathcal H_\alpha^{\mathrm{sem}},\mathcal H_\alpha^{\mathrm{ev}})\). The semantic ledger records admitted meanings and preserved invariants. The evidential ledger records packets, decoded expressions, generated expressions, claims, verdicts, rejections, silences, and superseded states. Their overlap permits audit; their nonidentity prevents a later linguistic commitment from rewriting the evidence on which it was based. This separation explains why a nonconservative commitment may change the executable semantics recorded in \(\mathcal H^{\mathrm{sem}}\), while Bayesian conditioning remains attached to public evidential records in \(\mathcal H^{\mathrm{ev}}\) that the commitment cannot retrospectively alter.
 
 # 4. Public evidence and local semantics
 
@@ -937,7 +927,7 @@ $$
 m_e(\,\cdot\mid\tau,\omega,z,h_e)\in\Delta(\widehat\Sigma).
 $$
 
-The kernel \(\rho_e\) is the candidate's model of the carrier produced by the external process and observation apparatus. The report channel \(m_e\) models testimony or another public classification attached to that carrier. The factorization is optional; the common packet kernel is fundamental. Integrating out the candidate's world state gives its predictive measure
+In (4.6), \(\eta_e\) is the probability of silence, \(\rho_e\) is the conditional distribution of the carrier when a non-silent observation occurs, and \(m_e\) is the conditional distribution of the public report attached to that carrier. This decomposition is only one way to construct \(K_e\); the subsequent comparison requires only that every candidate define a kernel on the shared packet space \(\mathcal Y_o\). Integrating out the candidate's world state gives its predictive measure
 
 $$
 \mathbb P_e(\mathrm dy\mid W,o,z)
@@ -985,13 +975,13 @@ m_e(\widehat{\mathsf H}\mid\tau,\omega,z,h_e)&=0
 \tag{4.8}
 $$
 
-With a noisy or strategically unreliable reporter, these zeros are replaced by declared error probabilities. An unresolved verdict imposes no hard zero. Neither does a timeout: failure to find a proof within budget is not a proof of failure.
+With a noisy or strategically unreliable reporter, these zeros are replaced by declared error probabilities. An unknown verdict imposes no hard zero. Neither does a timeout: failure to find a proof within budget is not a proof of failure.
 
 The same discipline applies when several agents or instruments report on one packet. Their ordered verdict tuple contains more information than its join in the contamination order. If only \(s_1\vee\cdots\vee s_k\) is published, the identities and disagreements of the reporters have been discarded. The Bayesian model must use the statistic that was actually observed and account for that loss. Silence remains a separate public outcome, not a synonym for \(\mathsf U\).
 
 A recorded public silence has its own likelihood \(K_e(\{\bot\}\mid\omega,z,h_e)\). Silence that occurs but is not measured produces no packet; whether its absence from the data may be ignored depends on the observation protocol and requires an explicit missingness condition [18]. Candidate-local failure to form an expression is different again: it affects the local linguistic route, but becomes public evidence only if the failure is publicly reported.
 
-## 4.5 What is and is not shared
+## 4.5 Shared packets and candidate-local languages
 
 The construction separates three levels:
 
@@ -1007,7 +997,7 @@ The shared likelihood boundary is deliberately thin. It allows Bayesian comparis
 
 ## 5.1 The posterior
 
-On the disjoint successor space (3.29), the prior and candidate kernels define the joint measure
+On the disjoint successor space (3.27), the prior and candidate kernels define the joint measure
 
 $$
 \Gamma(\mathrm de,\mathrm d\omega,\mathrm dy\mid W,o,z)
@@ -1068,69 +1058,58 @@ The histories \(h_{e,k}\) are candidate-relative and evolve through their own li
 
 Evidence may affect a candidate in two distinct ways. Ordinary predictive evidence changes its weight by a finite likelihood ratio. A checkable certificate of incompatibility may set its likelihood to zero. The second operation is stronger and requires an explicit proof object or finite computation that the declared verifier accepts.
 
-This gives a simple rule:
+This distinction prevents a bounded absence of discovery from being silently promoted into an extensional impossibility. It also makes the role of verification budgets visible: enlarging \(B^{\mathrm v}\) may convert \(\mathsf U\) into \(\mathsf E\) or \(\mathsf H\), but nested verification does not reverse an already retained certificate.
 
-$$
-\boxed{
-\text{hard elimination requires a checkable incompatibility certificate;}
-\quad
-\text{search failure receives a likelihood, not a theorem.}
-}
-\tag{5.4}
-$$
-
-The rule prevents a bounded absence of discovery from being silently promoted into an extensional impossibility. It also makes the role of verification budgets visible: enlarging \(B^{\mathrm v}\) may convert \(\mathsf U\) into \(\mathsf E\) or \(\mathsf H\), but nested verification does not reverse an already retained certificate.
-
-## 5.3 A finite update
+## 5.3 Example: a finite Bayesian update
 
 For a finite discrete example, consider three candidate presentations with prior weights
 
 $$
 q_0=(0.5,0.3,0.2).
-\tag{5.5}
+\tag{5.4}
 $$
 
 Suppose the first public packet has likelihoods
 
 $$
 p(y_1\mid e_1,e_2,e_3)=(0.9,0.285,0.23).
-\tag{5.6}
+\tag{5.5}
 $$
 
 The unnormalised weights are \((0.45,0.0855,0.046)\), giving
 
 $$
 q_1\approx(0.774,0.147,0.079).
-\tag{5.7}
+\tag{5.6}
 $$
 
-Now all three candidates receive the same second packet. Each forms its own expression, runs its own generative theory, and compares the resulting predicted expressions with the newly formed expression. Suppose \(e_1\) obtains a certified contradiction, while \(e_2\) and \(e_3\) remain unresolved under their present budgets. Under the declared reporting model, let
+Now all three candidates receive the same second packet. Each forms its own expression, runs its own generative theory, and compares the resulting predicted expressions with the newly formed expression. Suppose \(e_1\) obtains a refuted observation and hence a hallucinated verdict, while \(e_2\) and \(e_3\) obtain unobservable observations and hence unknown verdicts under their present budgets. Under the declared reporting model, let
 
 $$
 p(y_2\mid e_1,e_2,e_3)=(0,0.405,1).
-\tag{5.8}
+\tag{5.7}
 $$
 
 Then
 
 $$
 q_2\approx(0,0.430,0.570).
-\tag{5.9}
+\tag{5.8}
 $$
 
-The initially favoured presentation is eliminated by a certificate, not merely outvoted by an unexplained label. The unresolved candidates are not treated equally: their weights still depend on the likelihoods they assigned to the public packet. The example is deliberately small, but it contains the whole architecture—shared evidence, candidate-local expressions, bounded linguistic comparison, and a common Bayesian update.
+The example is deliberately small, but it contains the whole architecture—shared evidence, candidate-local expressions, bounded linguistic comparison, and a common Bayesian update. Its outcome also shows how the update treats different forms of evidence. The initially favoured presentation is eliminated because the contradiction is certified, rather than merely being displaced by an unexplained classification. The two unresolved candidates retain different weights because they assigned different likelihoods to the public packet.
 
 ## 5.4 Selection, commitment, and path dependence
 
-Posterior concentration does not itself alter the current language. A decision rule must select a candidate, after which \(\mathsf{Commit}_W\) changes the executable presentation and records the change in both ledgers. The choice may depend on posterior risk, presentation cost, accessibility, reversibility, or the value of further exploration.
+We separate posterior concentration from language updates. The posterior changes candidate weights; a decision rule selects a candidate, after which \(\mathsf{Commit}_W\) changes the executable presentation and records the change in both ledgers. The choice may depend on posterior risk, presentation cost, accessibility, reversibility, or the value of further exploration.
 
 Because commitment changes what can later be expressed and proposed, representational learning is generally path-dependent. Two agents who receive the same public packets may adopt different presentations, form different later expressions, and consequently entertain different successor families. Bayesian coherence at each step does not imply convergence when proposal and commitment policies differ.
 
 # 6. Phase-sensitive comparison and reference resources
 
-## 6.1 What a classical mixture omits
+## 6.1 Classical mixtures and cross-presentation operators
 
-The classical successor space introduced in (3.29),
+The classical successor space introduced in (3.27),
 
 $$
 \Omega^+_{W,o}
@@ -1254,7 +1233,7 @@ is an admissible state-relative retraction when it is normal, positive, unital, 
 
 This matters for representational change. An inclusion \(\mathcal N\subseteq\mathcal M\) does not by itself guarantee that the old theory is recoverable without disturbing the relevant state. Conservativity is conditional on the state and on the available reference algebra.
 
-## 6.5 Why phases matter for *Perfect Theory*
+## 6.5 Phase-sensitive comparison in *Perfect Theory*
 
 *Perfect Theory* studies the limitations imposed by a language and asks under what conditions a learning process can nevertheless be optimal. Commensurability is central to both questions: any certificate comparing two presentations requires a reference structure in which their outputs, predictions, and revisions can be compared. Phase-sensitive resources enlarge that structure. They can distinguish presentations that agree under every classical packet statistic and may therefore support relative-optimality certificates unavailable to block-diagonal comparison.
 
@@ -1335,7 +1314,7 @@ A positive certificate consists of one successful pair \((d,t)\) and its finite 
 
 Both hard EUH outcomes are therefore eventually certifiable on a fixed instance. A temporary \(\mathsf U\) records unfinished finite work, not inexpressibility of the target.
 
-## 7.3 Decidability does not imply bounded accessibility
+## 7.3 Presentation-relative accessibility under bounded search
 
 Pointwise decidability does not make the successful description equally accessible under every presentation.
 
@@ -1793,3 +1772,4 @@ The equations are ordered to emphasize the boundary on which the paper depends: 
 50. R. Uola, T. Moroder, O. Gühne, “Joint Measurability of Generalized Measurements Implies Classicality,” *Physical Review Letters* 113, 2014, 160403.
 51. S. C. Kleene, *Introduction to Metamathematics*, North-Holland, 1952.
 52. S. Popa, “Relative Dimension, Towers of Projections and Commuting Squares of Subfactors,” *Pacific Journal of Mathematics* 137(1), 1989, 181–207.
+53. *Universal Language Learning Machine*, companion manuscript, current draft.
