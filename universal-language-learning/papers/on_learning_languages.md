@@ -1,7 +1,7 @@
 ---
 title: "On Learning Languages"
 subtitle: "Bayesian Updating of Epistemic Theories and the Meta-Complexity of Representational Choice"
-date: "14 August 2026 — revised draft v31"
+date: "25 August 2026 — Revised Draft v32"
 lang: en
 ---
 

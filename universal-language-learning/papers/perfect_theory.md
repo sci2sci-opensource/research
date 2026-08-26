@@ -1,6 +1,6 @@
 ---
 title: "Perfect Theory"
-date: "14 August 2026 — Revised Draft 21"
+date: "26 August 2026 — Revised Draft v22"
 lang: en
 ---
 
@@ -409,6 +409,44 @@ Finite, fully enumerated contracts admit exhaustive decision.
 
 **Proposition 4.5 (finite perfection).** If $\mathcal Q$ and $\mathcal X$ are finite and completely enumerated, $\operatorname{Cmp}_{\mathcal R}$ is decidable and total on $\{P\}\times\mathcal Q\times\mathcal X$, and every pointwise loss comparison is decidable, then $\operatorname{Perfect}_{\mathfrak F}(P)$ is decidable by exhaustion. $\square$
 
+**Proposition 4.6 (certified uniform finite-core extraction).** Let $\mathcal K$ be a decidable class of pairs $(\mathfrak F,P)$, where each $\mathfrak F$ is comparison-complete for $P$ and has decidable pointwise scalar-loss comparisons. Suppose there is a total computable extractor
+
+$$
+f:(\mathfrak F,P)\longmapsto F_{\mathfrak F,P},
+$$
+
+where $F_{\mathfrak F,P}\subseteq\mathcal Q\times\mathcal X$ is finite, and a finite certificate $\Pi_f$ accepted by the declared meta-verifier such that
+
+$$
+V^\star(\mathcal K,f,\Pi_f)=1
+\Longrightarrow
+\forall(\mathfrak F,P)\in\mathcal K,
+\left[
+\begin{aligned}
+&\exists Q\in\mathcal Q\;\exists x\in\mathcal X\;
+[L_Q^{\mathcal R}(x)<L_P^{\mathcal R}(x)]\\
+&\qquad\iff
+\exists(Q,x)\in F_{\mathfrak F,P}\;
+[L_Q^{\mathcal R}(x)<L_P^{\mathcal R}(x)]
+\end{aligned}
+\right].
+\tag{4.9}
+$$
+
+Then $\mathsf{PERFECT}$ restricted to $\mathcal K$ is decidable.
+
+**Proof.** On input $(\mathfrak F,P)\in\mathcal K$, compute the finite set $F_{\mathfrak F,P}=f(\mathfrak F,P)$ and exhaust its decidable comparisons. The certificate $\Pi_f$ establishes uniformly that every violation of Perfection appears in this set. Hence $P$ is Perfect exactly when no pair in $F_{\mathfrak F,P}$ defeats it. $\square$
+
+When the finite check finds no defeat, the uniform certificate $\Pi_f$ together with the finite comparison transcript forms a **Done as Perfect** certificate in the sense of (2.11). The extractor does not lower the complexity of unrestricted Perfection. It identifies a declared contract class in which a certified tail argument has already discharged the universal quantifier.
+
+A simple example has a finite candidate class, target domain $\mathbb N_{\geq1}$, and losses
+
+$$
+L_Q(x)=a_Q+\frac{b_Q}{x},
+$$
+
+where $a_Q$ and $b_Q$ are computable rationals. For each $Q$, the difference $L_Q(x)-L_P(x)$ is monotone in $x$. Its eventual sign is determined by $a_Q-a_P$, with $b_Q-b_P$ resolving the case of an asymptotic tie. Rational arithmetic therefore computes either a finite target witnessing $L_Q(x)<L_P(x)$ or a certificate that no such target exists. Taking the union over the finite candidate class gives a uniform finite-core extractor. More general examples arise from effective tail bounds, branch-and-bound certificates, and coercive losses with certified finite sublevel searches.
+
 Finiteness must occur in the right places:
 
 | Candidate class | Target domain | Comparison | Perfection |
@@ -417,6 +455,7 @@ Finiteness must occur in the right places:
 | finite | finite but partially observed | pointwise decidable | empirical best decidable; true best unidentified |
 | finite, even two | infinite effective | total decidable pointwise | $\Pi^0_1$-complete |
 | effectively bounded | finite | total decidable | decidable by bounded exhaustion |
+| decidable class with certified uniform finite-core extractor | infinite allowed | decidable on each extracted core | decidable by finite exhaustion |
 | effectively enumerable, unbounded | finite | total decidable | generally co-c.e.; the candidate quantifier remains |
 | effective | infinite effective | total decidable pointwise | generally $\Pi^0_1$-complete |
 | any | any | operationally incomplete | only comparison-relative claims are licensed |
@@ -431,14 +470,16 @@ $$
 \forall x\in\{0,1\}^*,
 \qquad
 L_{e_0}(x)\leq L_{e_1}(x)
-\tag{4.9}
+\tag{4.10}
 $$
 
-is $\Pi^0_1$-complete over the declared effective presentation class [1, Thm. 8.2]. Equation (4.9) is precisely the two-presentation fragment of perfection. The literal branch makes every local comparison terminate, while uniform dominance over the infinite target domain remains $\Pi^0_1$-complete.
+is $\Pi^0_1$-complete over the declared effective presentation class [1, Thm. 8.2]. Equation (4.10) is the two-presentation fragment of Perfection. The literal branch makes every local comparison terminate, while uniform dominance over the infinite target domain remains $\Pi^0_1$-complete.
+
+Proposition 4.6 does not apply to the unbounded $\mathrm{KT}$ realization of [1]. In [1, Lem. 8.1], a comparison may first reverse in the tail on targets $x_n=1^{2^n}$, with the relevant $n$ controlled by an arbitrary halting time. Consequently, no computable uniform cutoff contains every possible defeat in that class. Imposing a hard target-length ceiling makes the target set finite and returns to Proposition 4.5; it does not supply a finite-core theorem for unbounded $\mathrm{KT}$ dominance.
 
 ## 4.6 Indexed completion claims
 
-A system may prove that its theory is Perfect within a finite declared class, that it reaches a computable lower bound, or that no successor with proof length at most $L$ improves the declared objective. It may stop because the expected value of further search lies below its cost. Each result licenses completion only within its declared candidate class, target domain, resource bound, or stopping rule. The unrestricted claim that no effective future enlargement can improve the theory remains stronger.
+A system may prove that its theory is Perfect within a finite declared class or within an infinite contract class equipped with a certified uniform finite-core extractor. It may also prove that the theory reaches a computable lower bound, or that no successor with proof length at most $L$ improves the declared objective. It may stop because the expected value of further search lies below its cost. Each result licenses completion only within its declared candidate class, target domain, resource bound, or stopping rule. The unrestricted claim that no effective future enlargement can improve the theory remains stronger.
 
 Completion is therefore indexed. Theorems 4.1--4.4 show that moving from a finite contract to an unbounded effective one changes the logical type of the claim.
 
@@ -892,7 +933,7 @@ $$
 
 and a classical coin may carry the same degree in its bias. Neither mathematical embedding provides the interface assumed in (7.6).
 
-One specimen does not expose arbitrarily many digits [12]. Repeatable exact preparation and ordinary sampling can recover any fixed separated digit with arbitrarily high confidence at rapidly growing cost, but never with zero-error certainty from a finite sample. A genuine oracle contract requires the noncomputable preparation, the addressable operations, and the certified-precision readout together. The extra computability belongs to that apparatus, not to superposition or continuity.
+A single specimen yields only finite information [12]. With repeatable exact preparation and ordinary sampling, an agent can estimate any chosen separated digit with arbitrarily high confidence, although the cost grows rapidly and finite sampling never gives zero-error certainty. Oracle access requires more: the noncomputable state preparation must be combined with addressable operations and certified-precision readout. The resulting computational power belongs to this complete interface, rather than to superposition or continuity alone.
 
 This observation links the two resource axes without conflating them. Phase-sensitive reference structure may provide a representational location for distinctions absent from a classical mixture. If a noncomputable parameter is installed there with an exact readout contract, the apparatus also supplies computational power. The phase degree of freedom alone supplies neither.
 
@@ -954,18 +995,7 @@ $$
 
 The upper bounds follow by searching with oracle $S$ for finite counterexamples. Certificate-complete Finality uses the same finite-witness argument. Relativizing the totality construction of Theorem 4.3 gives $S''$-completeness for extensional pointwise Finality. Finally, the relativized jump theorem gives $S<_T S'<_T S''$. $\square$
 
-The theorem is uniform in the granted resource. An oracle strong enough to decide the old completion problem becomes part of the effective base from which new presentations and searches can be constructed. The resulting completion problem therefore lies one jump above the grant.
-
-$$
-\boxed{
-\begin{gathered}
-\text{Granting }S\text{ closes an old horizon}\\
-\text{by making }S'\text{ the next completion boundary.}
-\end{gathered}}
-\tag{7.10}
-$$
-
-> // **Author's comment.** This is the paper's version of *Omnipotence*: granting god mode solves the old game, but the grant itself becomes part of the agent's constructive language. It enlarges what the agent can propose, compare, and ask to certify, and thereby creates the next completion problem. In learning, god mode is therefore omnipotence only relative to the position from which it was granted, not relative to the position the grant creates.
+The theorem is uniform in the granted resource $S$. Once installed, a resource capable of deciding the previous completion problem becomes available to proposal, verification, comparison, and construction. The resulting $S$-effective completion problems have degrees $S'$ and $S''$, as stated in (7.9). The grant can therefore close the previous contract while inducing a stronger completion problem over the enriched base.
 
 Full measurement access is likewise full only relative to the declared physical model and comparison task. Enlarging the admissible operations, targets, or presentations produces a new contract. Thus even the strongest combined resource not excluded by the framework may license Done for a fixed theory and domain, but it cannot license an unindexed claim that no computational or representational improvement remains.
 
@@ -1042,13 +1072,13 @@ $$
 
 The map $e\mapsto\mathfrak F_e$ is computable. $\square$
 
-**Corollary 7.6 (no uniform limit diagnosis).** No computable binary approximation converges on every effective contract to the correct answer about whether that contract contains a Perfect presentation.
+**Corollary 7.6 (Perfection availability is not limit-computable).** No computable procedure can, for every effective contract, produce binary guesses that eventually stabilize to whether the contract contains a Perfect presentation.
 
 **Proof.** Any predicate admitting such an approximation is $\Delta^0_2$, while $\mathsf{HASPERFECT}$ is $\Sigma^0_2$-complete. $\square$
 
 The corollary marks the limit of the one-retraction discipline. For a supplied presentation, Perfection is co-c.e. and may be presumed until a finite counterexample appears. For the existential question, an agent may successively find and lose plausible candidates without converging to whether the class contains a Perfect member.
 
-**Remark 7.7 (natural nonexistence through speedup).** The reduction above is exact but deliberately constructed. Blum speedup supplies natural fixed-contract instances with no Perfect element [6]. For a suitable Blum complexity measure $\Phi$, there are total computable functions $f$ such that every program $i$ computing $f$ has another program $j$ computing $f$ with a prescribed computable speedup on almost all inputs. If the candidates are programs computing $f$, targets are inputs, and $L_{P_i}(x)=\Phi_i(x)$, then no $P_i$ is Perfect: some $P_j$ is locally better at a target. This conclusion concerns Perfection. Almost-everywhere speedup need not give pointwise dominance on the finitely many exceptional inputs, so it does not by itself show that $P_i$ is non-Final under (2.8). If the contract charges additional components such as description length, the verdict must be recomputed under its declared order.
+**Remark 7.7 (natural nonexistence through speedup).** The reduction above is exact but deliberately constructed. Blum speedup supplies natural fixed-contract instances with no Perfect element [6]. For a suitable Blum complexity measure $\Phi$, there are total computable functions $f$ such that every program $i$ computing $f$ has another program $j$ computing $f$ with a prescribed computable speedup on almost all inputs. If the candidates are programs computing $f$, targets are inputs, and $L_{P_i}(x)=\Phi_i(x)$, then no $P_i$ is Perfect: some $P_j$ is locally better at a target. Thus the class has no Perfect member. Finality remains a separate question: the finitely many exceptional inputs may prevent the faster $P_j$ from pointwise dominating $P_i$ under (2.8). Any additional charged component, such as description length, must also enter the declared order before the verdict is assigned.
 
 # 8. Acting without certified completion
 
@@ -1088,11 +1118,13 @@ When the comparison structure is adequate but the universal claim is not decidab
 - strengthening the proof system or verification budget;
 - testing candidate lower bounds that could yield a positive perfection certificate.
 
+The agent may also seek a contract class for which its genuine resource and extension constraints support a certified uniform finite-core extractor. Hard construction ceilings, structured scalar losses, and effective tail bounds can support such a certificate. The extractor and its tail proof must apply uniformly across the declared class; choosing a finite core separately for each instance would provide no decision procedure.
+
 For Good, Perfect, and certificate-complete Final, the co-c.e. structure privileges refutation. A finite witness establishes failure under the declared contract; elapsed search time supplies no completion certificate. Generic extensional Finality is different: refuting it requires establishing that an entire successor loss vector dominates the current one, which may itself require a universal certificate.
 
 For the co-c.e. grades, the one-retraction approximation of Section 5 supplies a disciplined default: act provisionally as if the present theory satisfied the grade and retract on an accepted counterexample. The unretracted state remains a working presumption. This policy minimizes uniform mind changes for the logical objective considered here, while other economic objectives may favour different policies.
 
-Strengthening the computational resource base is another possible response. A stronger resource may decide completion claims formulated under the previous contract. Once that resource becomes available to proposal, verification, and construction, the resulting claims are indexed by the enriched base, and the next completion problem moves to the corresponding higher degree. Resource acquisition may therefore close a declared inquiry while generating a stronger completion problem.
+Strengthening the computational resource base is one response; constraining the effective comparison domain is another. A stronger resource may decide claims under the previous contract. A certified finite-core extractor may instead make Perfection decidable on the present contract class without a jump. In the latter case, the extractor certificate and the finite comparison transcript jointly provide the warrant for Done.
 
 ## 8.3 Search for comparison resources
 
@@ -1129,7 +1161,9 @@ Calling a theory Perfect without stating the path in a dynamically incommensurab
 
 A bounded agent may rationally stop a logically open search. Given a proposal law, a posterior over improvement sizes and discovery times, and the cost of another search allocation, it may stop when the expected value of continued exploration falls below its cost.
 
-Such a rule certifies that continued search is not worthwhile under the current distribution and budget. Finality and Perfection remain separate claims. New evidence, a new proposal law, or a new reference resource may rationally restart the search without contradicting the earlier decision.
+Such a rule licenses pausing search under the current distribution and budget. Changes in evidence, the proposal law, or the available reference resources may license its resumption.
+
+When stable task constraints support a certified uniform finite-core extractor, the agent may decide Perfection for that restricted contract class. This is stronger than pausing search under an expected-value rule: the extractor certificate discharges the tail uniformly, and the finite transcript checks the remaining instance.
 
 The strongest useful reports are consequently typed:
 
@@ -1138,6 +1172,7 @@ The strongest useful reports are consequently typed:
 | **Good under $(g,V,B)$** | no accepted improvement is reachable through the declared realization |
 | **Final in $(\mathcal Q,\leadsto,\mathcal X,\mathcal R,\preceq)$** | no admissible successor is a strict improvement under the declared comparison contract |
 | **Perfect on $(\mathcal Q,\mathcal X,\mathcal R,\preceq)$** | all relevant comparisons are adequate and $P$ is nowhere locally worse |
+| **Done as Perfect on certified core $F_{\mathfrak F,P}$** | a uniform extractor certificate covers the tail and the finite core contains no defeating pair |
 | **Done as Perfect under $S$, certificate $\Pi$** | the $S$-enabled meta-verifier accepts a sound perfection certificate |
 | **Resource base extended to $S$** | earlier questions may become decidable, but completion claims must be re-indexed by $S$ |
 | **Reference structure enriched to $\mathcal R'$** | comparisons have changed and the earlier Final or Perfect verdict must be recomputed |
@@ -1149,7 +1184,7 @@ For a reflective learning system, every installed resource becomes part of the n
 
 A well-designed system should expose the contract behind its claims. It may report that no better candidate exists in an enumerated class, that no proof below a declared length defeats the current theory, that the current presentation attains a certified lower bound, or that search has been paused by an expected-value rule. Each report should retain the candidate class, target domain, resource base, and stopping rule under which it was obtained.
 
-A controlled ascent architecture uses proof-carrying local improvements, explicit comparison resources, typed stopping claims, and separate strategies for computational, representational, and dynamical obstruction. Every resource grant re-indexes the completion problem, and every distinction-adding enrichment requires its verdicts to be recomputed. Exploration searches for new candidates and comparison apparatus; refutation removes false completion claims; certification identifies the contracts under which search may close.
+A controlled ascent architecture uses proof-carrying local improvements, explicit comparison resources, computable contract restrictions, typed stopping claims, and separate strategies for computational, representational, and dynamical obstruction. Every resource grant re-indexes the completion problem, every distinction-adding enrichment requires its verdicts to be recomputed, and every certified finite-core extractor records the constraints and tail argument that make exhaustion possible. Exploration searches for new candidates and comparison apparatus; contract design turns genuine limits into decidable domains; refutation removes false completion claims; certification identifies the contracts under which search may close.
 
 # 9. Relations and scope
 
@@ -1162,6 +1197,8 @@ Turing supplies the base obstruction and the oracle hierarchy [2,3]; Post organi
 Putnam's trial-and-error predicates, the limit lemma, and the Ershov hierarchy locate Theorem 5.1 [15,16,22,23]. Gold studies identification in the limit [5], and Kelly develops the corresponding logic of reliable inquiry [17]. Good, Perfect, and certificate-complete Final are co-c.e., so one retraction suffices and zero does not suffice uniformly. Generic extensional Finality occupies the next arithmetical level.
 
 The finite-schema theorem is adjacent to meta-complexity. MCSP and MKtP ask whether a supplied finite object has a short bounded description [18--21]. The $\mathrm{KT}$ presentation-dominance result of [1] moves one quantifier upward: every supplied target remains decidable, while uniform pointwise dominance throughout the unbounded serialization domain is not.
+
+Proposition 4.6 gives the complementary uniform bounded-domain principle. Decidability does not follow from the pointwise existence of finite cores; such cores exist trivially for every fixed instance. It follows from a computable extractor whose coverage is certified uniformly over a declared contract class. Branch-and-bound and effective tail estimates have exactly this form.
 
 ## 9.2 Commensurability
 
@@ -1202,6 +1239,7 @@ The results depend on declared contracts. In particular:
 12. A resource that decides an earlier completion problem need not decide the completion problems constructible from that resource; those claims must be relativized to the enriched base.
 13. Resource-relative incompleteness does not establish any claim about metaphysically unrestricted agency.
 14. Expected-value stopping is a rational action under a model, not a certificate of perfection.
+15. An infinite target domain may admit decidable Perfection when a certified computable extractor uniformly reduces every possible violation to a finite core. Pointwise core existence, soft resource penalties, and Pareto trade-offs do not provide that uniform reduction.
 
 # 10. Conclusion
 
@@ -1219,6 +1257,8 @@ $$
 and neither converse holds. A **Done** announcement records that the required grade has been certified.
 
 Good, certificate-complete Finality, and pointwise Perfection are $\Pi^0_1$-complete and require the first Turing jump. Generic extensional Finality is $\Pi^0_2$-complete and requires the second. Quantifying over candidates raises a different question: whether the contract contains any Perfect presentation is $\Sigma^0_2$-complete and is not computably identifiable in the limit. Thus the one-retraction policy for a supplied candidate does not decide whether Perfection is available somewhere in the class. In the co-enumerable cases, an effective learner can achieve the optimal limit behaviour: presume completion, retract once when a finite counterexample arrives, and never announce convergence without a certificate.
+
+These classifications concern classes without a certified computable reduction of all counterexamples to finite cores. When a uniform extractor and its coverage certificate are available, Perfection on the declared class is decidable by finite exhaustion. The tail certificate and the finite comparison transcript then provide the corresponding Done warrant.
 
 Before any such universal claim can be evaluated, however, the alternatives must be comparable. In the sharp canonical regime, joint measurability, commuting projections, a common Boolean refinement, and order-independent revision align. Outside that regime they separate. A neutral statistical language may exist while revision remains path-dependent; locally compatible comparisons may have no global noncontextual description; and a new reference resource may change, rather than merely reveal, the existing Final or Perfect verdict. Perfection is therefore conditional on the right to compare as well as the power to decide.
 
@@ -1241,19 +1281,9 @@ $$
 
 The grant may solve every completion problem in the earlier contract. Once a reflective agent can use it in proposal, comparison, and construction, the resulting completion problems are computed relative to $S$ and lie at $S'$ or $S''$. God mode is therefore omnipotent relative to the position from which it was granted, while the grant creates a stronger position.
 
-The remaining strategies are typed. Computational obstruction calls for counterexample search, limit-correct presumption, stronger proof resources, or rationally bounded stopping. Missing commensurability calls for new readouts, calibrations, reference structures, or restricted comparison domains. Dynamical incommensurability calls for path-indexed states or an explicitly declared revision protocol. Reports of these actions should retain the contract and warrant under which they were taken.
+These results support three kinds of response. A certified uniform finite-core extractor turns genuine resource and extension limits into a finite decision procedure. Completion claims outside such classes require counterexample search, limit-correct presumption, stronger proof resources, or bounded stopping. Incomplete comparison structures require new reference resources or a restricted comparison domain, while order-dependent revision requires path-indexed states or a declared revision protocol. Every resulting claim remains indexed by its contract, constraints, and warrant.
 
-$$
-\boxed{
-\begin{gathered}
-\text{A theory is Perfect only under a complete comparison contract;}\\
-\text{it is Done only under an accepted certificate;}\\
-\text{and no fixed usable resource closes every completion problem it enables.}
-\end{gathered}}
-\tag{10.3}
-$$
-
-*Perfect Theory* identifies the conditions under which a particular inquiry may close, the resources required to close it, and the new boundary created when those resources become part of what the agent can express and construct.
+*Perfect Theory* gives a contract-relative account of closure: it identifies when an inquiry may be certified complete, which resources and evidence support that certificate, and how newly available resources change the next completion problem.
 
 # References
 
