@@ -6,7 +6,13 @@ lang: en
 
 # Abstract
 
-Learning theory usually asks how an agent selects the best hypothesis from a fixed class. This paper asks when an agent that can also revise its language may stop searching and call a theory done. Under closed candidate and target domains, and where the alternatives admit an operationally adequate comparison, I call a theory **Perfect** when no admissible alternative is better at any target. I show that the simplicity of an improvement gives no computable bound on when even an exhaustive proposer will find it. Deciding that the declared search can never produce a certified improvement, and deciding Perfection over an unbounded effective domain, are $\Pi^0_1$-complete; deciding that no successor improves the current theory uniformly over that domain is $\Pi^0_2$-complete. Existence adds a further quantifier: deciding whether an effective comparison contract contains any Perfect presentation is $\Sigma^0_2$-complete, and unlike fixed-candidate Perfection this availability question is not computably identifiable in the limit. The co-enumerable cases nevertheless admit an exact one-retraction strategy: presume completion until a finite counterexample appears, without mistaking continued survival for a certificate. Completion also has representational preconditions. A shared statistical description may exist while revision remains order-dependent, and compatible local comparisons need not glue into a neutral global language. Finally, the **Omnipotence Theorem** considers an agent granted an arbitrarily strong computational oracle together with the full measurement interface permitted by its declared physical model. Such resources may close the earlier problems for which they were introduced. Once the grant becomes available for constructing new presentations and completion problems, however, the same hierarchy reappears relative to the enriched resource base. Even "magical" resources therefore yield only relative completion: they solve the old game while making a stronger game expressible. Where certification remains unavailable, the appropriate responses are bounded stopping, continued exploration for theories and comparison resources, and refutation.
+Learning theory usually asks how an agent selects the best hypothesis from a fixed class. *On Learning Languages* [1] extends that problem to agents that can revise the language in which hypotheses are formed. This paper asks when such an agent may stop searching and call a theory done.
+
+We would call a theory **Perfect** when no admissible alternative is better at any target. Making that judgment requires closed candidate and target domains and an operationally adequate comparison among the alternatives. I show that the simplicity of an improvement gives no computable bound on when even an exhaustive proposer will find it. Deciding that the declared search can never produce a certified improvement, and deciding Perfection over an unbounded effective domain, are $\Pi^0_1$-complete; deciding that no successor improves the current theory uniformly over that domain is $\Pi^0_2$-complete. Existence adds a further quantifier: deciding whether an effective comparison contract contains any Perfect presentation is $\Sigma^0_2$-complete, and unlike fixed-candidate Perfection this availability question is not computably identifiable in the limit. The co-enumerable completion claims still support an exact one-retraction procedure: treat the theory as complete unless a finite counterexample appears, but do not treat its continued survival as a certificate of completion. Computability is not the only obstacle. Completion also requires an adequate comparison structure. A shared statistical description may exist even when revisions remain order-dependent, and locally compatible comparisons may fail to combine into a neutral global language.
+
+Finally, the **Omnipotence Theorem** considers an agent granted an arbitrarily strong computational oracle together with the full measurement interface permitted by its declared physical model. Such resources may close the earlier problems for which they were introduced. Once the grant becomes available for constructing new presentations and completion problems, however, the same hierarchy reappears relative to the enriched resource base. Even "magical" resources therefore yield only relative completion: they solve the old game while making a stronger game expressible. Where certification remains unavailable, the appropriate responses are bounded stopping, continued exploration for theories and comparison resources, and refutation.
+
+\tableofcontents
 
 # 1. When is a theory done?
 
@@ -26,14 +32,14 @@ The resulting theory of perfection has two independent boundaries. The first is 
 
 ## 2.1 Presentations, targets, and comparisons
 
-Let $\mathcal Q$ be a declared class of candidate presentations, and let $P\in\mathcal Q$ denote the current presentation under evaluation. A presentation may be taken in the form used in [1],
+Let $\mathcal Q$ be a declared class of candidate presentations, and let $P\in\mathcal Q$ denote the current presentation under evaluation. I use the presentation model introduced in *On Learning Languages* [1]:
 
 $$
 P_e=(\mathcal L_e,D_e,U_e),
 \tag{2.1}
 $$
 
-with a language $\mathcal L_e$, a partial linguistic decoder $D_e$, and an interpreter $U_e$ that runs expressions to produce further expressions. Proposal and verification procedures belong to a bounded realization of the presentation rather than to the presentation itself.
+where $\mathcal L_e$ is a language, $D_e$ is a partial linguistic decoder, and $U_e$ is an interpreter that runs expressions to produce further expressions. As in [1], proposal and verification procedures belong to a bounded realization of the presentation rather than to the presentation itself.
 
 Let $\mathcal X$ be the declared target domain. Its elements may be finite serializations, contexts, prediction tasks, proof obligations, or other public comparison objects. A reference structure $\mathcal R$ supplies the readouts, translations, calibrations, and admissible operations by which the behaviour of two presentations is placed in a common comparison space. I write
 
@@ -74,7 +80,7 @@ $$
 \operatorname{Cmp}_{\mathcal R}(P,R;x),
 $$
 
-the relation $\preceq_{\mathcal R,\mathcal X}$ is a preorder. I do not assume these closure properties globally; where they fail, $\preceq_{\mathcal R,\mathcal X}$ remains a typed dominance relation. For vector-valued objectives, the scalar inequality in (2.3) is replaced by the declared product or Pareto order. Nothing below requires a universal utility function, but every perfection claim requires an explicit order.
+the relation $\preceq_{\mathcal R,\mathcal X}$ is a preorder. These closure properties are imposed only where stated; elsewhere, $\preceq_{\mathcal R,\mathcal X}$ remains a typed dominance relation. For vector-valued objectives, the scalar inequality in (2.3) is replaced by the declared product or Pareto order. Nothing below requires a universal utility function, but every perfection claim requires an explicit order.
 
 ## 2.2 The finality contract
 
@@ -112,7 +118,7 @@ $$
 \tag{2.6}
 $$
 
-This is a coverage claim about the declared comparison apparatus. It does not say that every pair $Q,Q'$ must be mutually ordered. For establishing that $P$ is perfect it is enough that every admissible $Q$ can be adequately compared with $P$. A search procedure that ranks the whole class may require the stronger pairwise condition.
+Thus $\operatorname{Adeq}_{\mathfrak F}(P)$ requires every admissible $Q$ to be adequately comparable with $P$ at every target. Comparisons among alternatives $Q,Q'$ remain unspecified; they are required only by procedures that rank the candidate class as a whole.
 
 ## 2.3 Good, Final, and Perfect
 
@@ -142,7 +148,7 @@ $$
 \tag{2.8}
 $$
 
-Finality is independent of whether the realized proposer reaches the successor. It remains weaker than perfection. A Final theory may coexist with incomparable alternatives, or with alternatives that trade gains on one target for losses on another. Finality is therefore only as informative as the domain of the declared comparison: an admissible successor outside that domain cannot witness nonfinality. Section 6.1 treats this possible vacuity explicitly; it is precisely why Perfection also requires comparison completeness.
+Finality is independent of whether the realized proposer reaches the successor. It remains weaker than perfection. A Final theory may coexist with incomparable alternatives, or with alternatives that trade gains on one target for losses on another. Finality therefore excludes improving successors only within the domain of the declared comparison. An otherwise admissible successor outside that domain does not count against it. Section 6.1 treats this possible vacuity explicitly; it is precisely why Perfection also requires comparison completeness.
 
 **Definition 2.3 (Perfect).** A presentation $P$ is Perfect for $\mathfrak F$ when the comparison is adequate and $P$ is nowhere locally worse than any admissible alternative:
 
@@ -175,7 +181,7 @@ Neither converse holds. A proposer may never emit an available improvement, maki
 
 ## 2.4 When the agent may say Done
 
-Done is not a fourth quality of presentation. It is an epistemic status assigned to a claim. Let $V^\star$ be a declared meta-verifier for finality contracts. The agent may call $P$ **Done as Perfect** when it possesses a finite certificate $\Pi$ such that
+The status **Done as Perfect** records a certified Perfection claim. Let $V^\star$ be a declared meta-verifier for finality contracts. The agent may assign this status to $P$ when it possesses a finite certificate $\Pi$ such that
 
 $$
 V^\star(\mathfrak F,P,\Pi)=1
@@ -223,11 +229,9 @@ $$
 
 for all sufficiently large $m$. But $\tau_A(z_m)>\bar b(m)\geq \bar b(K_{\mathrm{univ}}(z_m))$. $\square$
 
-The theorem does not say that simple objects are usually difficult to find, nor that distributions favouring short descriptions are useless. Levin search couples program length and runtime under a particular universal schedule [8]. What fails is a universally valid computable passage from shortest description to a discovery deadline for an arbitrary finite proposer.
+The bound is uniform over arbitrary exhaustive effective proposers. Particular schedules may still relate description length to runtime: Levin search does so under a specified universal schedule, and distributions favouring short descriptions may remain useful [8]. The theorem rules out a computable discovery deadline determined solely by shortest description.
 
-In the language of the hierarchy, simplicity cannot promote Good to Final. Before the relevant proposal arrives, the current theory may remain undefeated under every performed search even though a short improving successor exists. The gap is not in evaluation but in construction:
-
-> It can be very complex to construct a simple thing.
+In the language of the hierarchy, simplicity cannot promote Good to Final. Before the relevant proposal arrives, the current theory may remain undefeated under every performed search even though a short improving successor exists. The difficulty lies in constructing the proposal, not in evaluating it once it arrives. Simply put, it can be very complex to construct a simple thing.
 
 ## 3.3 Certificates do not close their own search space
 
@@ -252,7 +256,7 @@ is different. More search can provide a counterexample to (3.4); no finite impro
 
 # 4. The computability boundary of completion
 
-With the search process explicit, the completion grades become decision problems. Their complexity is governed not by the difficulty of each local comparison alone, but by what must be exhausted: proposal stages, admissible successors, or target points. This section locates those boundaries and shows that even a candidate class containing only two presentations can yield an undecidable completion claim when its target domain is unbounded.
+With the search process explicit, the completion grades become decision problems. Their complexity is governed by the domain that must be exhausted: proposal stages, admissible successors, or target points. This section locates those boundaries and shows that even a candidate class containing only two presentations can yield an undecidable completion claim when its target domain is unbounded.
 
 ## 4.1 Operational goodness
 
@@ -287,7 +291,7 @@ $$
 
 The construction is effective. $\square$
 
-The delayed branch is not an artefact of a malicious proposer. Any universal proposal system that executes arbitrary programs contains branches of this form.
+Every universal proposal system that executes arbitrary programs contains delayed branches of this form.
 
 **Corollary 4.2 (no complete Good certificate).** No effective verifier is both sound for Good and complete on all Good instances. Such a verifier would computably enumerate a $\Pi^0_1$-complete set whose complement is already computably enumerable, and would therefore decide it. $\square$
 
@@ -397,11 +401,11 @@ $$
 
 Thus the displayed family problem is $\Pi^0_1$-hard. Membership follows because failure of perfection is witnessed by a finite pair $(Q,n)$ with $L_Q(n)<L_A(n)$. $\square$
 
-The theorem locates exactly what “no locally better on $\mathcal X$” costs. Every supplied local comparison terminates. What cannot be exhausted effectively is the assertion that no future target reverses the pointwise order. The candidate class has only two members; the unbounded quantifier lies in $\mathcal X$.
+The reduction uses only two candidates, and every comparison at a fixed target is decidable. The $\Pi^0_1$ complexity arises from universal quantification over the unbounded target domain $\mathcal X$: non-perfection has a finite witness, whereas perfection requires the pointwise order to hold at every target.
 
 ## 4.4 The finite boundary
 
-The positive result is equally exact.
+Finite, fully enumerated contracts admit exhaustive decision.
 
 **Proposition 4.5 (finite perfection).** If $\mathcal Q$ and $\mathcal X$ are finite and completely enumerated, $\operatorname{Cmp}_{\mathcal R}$ is decidable and total on $\{P\}\times\mathcal Q\times\mathcal X$, and every pointwise loss comparison is decidable, then $\operatorname{Perfect}_{\mathfrak F}(P)$ is decidable by exhaustion. $\square$
 
@@ -417,7 +421,7 @@ Finiteness must occur in the right places:
 | effective | infinite effective | total decidable pointwise | generally $\Pi^0_1$-complete |
 | any | any | operationally incomplete | only comparison-relative claims are licensed |
 
-The last row is not a harder case of the preceding theorem. It is a different failure: before asking whether the universal order is decidable, one must establish that the relevant order has been operationally defined.
+The last row represents operational incompleteness. Decidability of the universal order can be considered only after the relevant order has been operationally defined.
 
 ## 4.5 The $\mathrm{KT}$ realization
 
@@ -430,21 +434,21 @@ L_{e_0}(x)\leq L_{e_1}(x)
 \tag{4.9}
 $$
 
-is $\Pi^0_1$-complete over the declared effective presentation class [1, Thm. 8.2]. Equation (4.9) is precisely the two-presentation fragment of perfection. The literal branch makes every local comparison terminate; it does not make the infinite target domain disappear.
+is $\Pi^0_1$-complete over the declared effective presentation class [1, Thm. 8.2]. Equation (4.9) is precisely the two-presentation fragment of perfection. The literal branch makes every local comparison terminate, while uniform dominance over the infinite target domain remains $\Pi^0_1$-complete.
 
-## 4.6 What the results permit
+## 4.6 Indexed completion claims
 
-A system may prove that its theory is Perfect within a finite declared class, that it reaches a computable lower bound, or that no successor with proof length at most $L$ improves the declared objective. It may stop because the expected value of further search lies below its cost. None of these claims licenses the unrestricted sentence “no effective future enlargement can improve this theory.”
+A system may prove that its theory is Perfect within a finite declared class, that it reaches a computable lower bound, or that no successor with proof length at most $L$ improves the declared objective. It may stop because the expected value of further search lies below its cost. Each result licenses completion only within its declared candidate class, target domain, resource bound, or stopping rule. The unrestricted claim that no effective future enlargement can improve the theory remains stronger.
 
-The correct conclusion is not that theories cannot be completed. Completion is indexed. Theorems 4.1--4.4 show that moving from a finite contract to an unbounded effective one changes the logical type of the claim.
+Completion is therefore indexed. Theorems 4.1--4.4 show that moving from a finite contract to an unbounded effective one changes the logical type of the claim.
 
 # 5. Limit completion and its boundary
 
-The boundary results do not leave the agent without a strategy; they determine which strategies remain available. I now turn from classifying completion claims to acting when those claims cannot be decided or certified: convergence to a defeasible verdict, acquisition of stronger computational or reference resources, bounded stopping, continued exploration, and refutation. I begin with the co-enumerable cases, where failure has a finite witness even though truth cannot be uniformly certified.
+The boundary results determine which strategies remain available to the agent. I now turn from classifying completion claims to acting when those claims cannot be decided or certified: convergence to a defeasible verdict, acquisition of stronger computational or reference resources, bounded stopping, continued exploration, and refutation. I begin with the co-enumerable cases, where failure has a finite witness even though truth cannot be uniformly certified.
 
 ## 5.1 A one-retraction approximation
 
-The negative results have an exact positive counterpart. For Good, define
+The co-enumerable completion claims admit a one-retraction approximation. For Good, define
 
 $$
 \gamma(P,g,t)=
@@ -463,7 +467,7 @@ For comparison-complete contracts with total decidable pointwise loss, define th
 
 **Lemma 5.2 (optimality of one retraction).** No total computable zero-mind-change approximation decides any $\Pi^0_1$-complete completion set. Such an approximation would be a decider. Hence one retraction is sufficient and zero is not sufficient uniformly. $\square$
 
-The policy *presume completion until refuted* is therefore mind-change optimal for these contracts. The statement is about the number of revisions, not the reliability of an early announcement. While the approximation remains at $1$, its value is a defeasible working stance rather than a certificate.
+The policy *presume completion until refuted* minimizes mind changes for these contracts. While the approximation remains at $1$, its value is a defeasible working stance rather than a certificate.
 
 ## 5.2 The announcement asymmetry
 
@@ -475,21 +479,21 @@ This yields a strict separation:
 2. its epistemic status may remain unresolved under the current theory, proof system, and computational horizon;
 3. an accepted counterexample refutes the completion claim and closes that particular inquiry.
 
-The unresolved status is not ordinary probabilistic uncertainty. It records that the declared carrier and verifier cannot determine the universal claim. Stronger proof systems may certify particular true instances, but no fixed sound effective verifier certifies all of them.
+The unresolved status records the inability of the declared carrier and verifier to determine the universal claim. Stronger proof systems may certify particular true instances, but no fixed sound effective verifier certifies all of them.
 
-## 5.3 Extensional Finality lies higher
+## 5.3 Extensional Finality is not limit-computable
 
 The one-retraction result does not apply to generic extensional Finality under pointwise dominance. By Theorem 4.3 that problem is $\Pi^0_2$-complete. A set admitting an ordinary convergent computable approximation lies in $\Delta^0_2$ by the limit lemma, whereas a $\Pi^0_2$-complete set does not. Thus generic Finality has no uniformly convergent computable approximation at the base level, let alone a one-retraction approximation.
 
 Relative to $0'$, the problem becomes co-c.e. and again admits a one-retraction approximation. The hierarchy of grades and the hierarchy of epistemic resources therefore cross: Perfect is a stronger property than Final, but its failure is locally witnessed and its decision problem lies one jump lower in the present pointwise model.
 
-## 5.4 Where limit completion does not apply
+## 5.4 The finite-witness requirement
 
-The one-retraction result presupposes that failures have effective finite witnesses. It does not repair a missing comparison apparatus. If $P$ and $Q$ cannot be placed in a common operational frame, waiting longer need not produce either a comparison or a counterexample. In that case the agent must search not only for an improving presentation but also for the reference resources that make the comparison meaningful. This is the second boundary of perfection.
+The one-retraction result requires effective finite witnesses of failure. A missing comparison apparatus instead requires the construction of a common operational frame. If $P$ and $Q$ cannot be placed in such a frame, waiting longer need not produce either a comparison or a counterexample. In that case the agent must search not only for an improving presentation but also for the reference resources that make the comparison meaningful. This is the second boundary of perfection.
 
 # 6. Commensurability and the right to compare
 
-The limit strategies of §5 presuppose that candidate presentations can be compared at all. That presupposition is substantive: a shared byte encoding does not itself provide a neutral language of comparison, and an undefined comparison cannot count as evidence that no improvement exists. I therefore turn to commensurability at three levels: whether presentations admit an operationally adequate joint readout, whether their local statistics glue into a global description, and whether revision through the resulting structure is independent of order. The first is required for a presentation to be Perfect; the latter two determine how far the comparison can be treated as neutral.
+The limit strategies of §5 presuppose that candidate presentations can be compared. Comparability requires more than a shared byte encoding: it requires a neutral operational structure in which an improvement relation is defined. I therefore turn to commensurability at three levels: whether presentations admit an operationally adequate joint readout, whether their local statistics glue into a global description, and whether revision through the resulting structure is independent of order. The first is required for a presentation to be Perfect; the latter two determine how far the comparison can be treated as neutral.
 
 ## 6.1 Finality without comparison is vacuous
 
@@ -513,9 +517,9 @@ $$
 \tag{6.2}
 $$
 
-Without (6.2), $P$ may still be Good or Final relative to the comparisons already available, but it is not Perfect under Definition 2.3. This convention prevents an absent reference operation from being counted as a victory.
+Without (6.2), $P$ may still be Good or Final relative to the comparisons already available, but it is not Perfect under Definition 2.3.
 
-Commensurability is therefore not the assertion that two languages translate word for word. It is the availability of enough shared operational structure to evaluate the distinctions declared by the finality contract. Two presentations may remain linguistically incommensurable while their predictions are commensurable through a public packet space. Conversely, two theories may exchange bytes while lacking any adequate operation that preserves the distinctions on which their relative quality depends.
+Commensurability is the availability of enough shared operational structure to evaluate the distinctions declared by the finality contract. It may hold without word-for-word translation between the languages. Two presentations may remain linguistically incommensurable while their predictions are commensurable through a public packet space. Conversely, two theories may exchange bytes while lacking any adequate operation that preserves the distinctions on which their relative quality depends.
 
 ## 6.2 Representational commensurability
 
@@ -576,9 +580,7 @@ $$
 \tag{6.6}
 $$
 
-The same holds outcome by outcome for the corresponding selective operations. Thus, in the sharp canonical regime, a neutral representational refinement also supports order-independent revision.
-
-This is the domain in which the attractive equivalence chain is correct. Outside it, joint representation and commuting revision must be separated.
+The same holds outcome by outcome for the corresponding selective operations. In the sharp canonical regime, joint representation supports commuting revision. Generalized measurements separate these properties.
 
 ## 6.4 Local descriptions and global models
 
@@ -671,11 +673,11 @@ which is nonzero because $\mathbf n\cdot\mathbf m=1/2$ and the vectors are not p
 
 **Proposition 6.3 (static gluing without dynamic gluing).** The measurements in (6.10) are jointly measurable, but their canonical Lüders revision channels are order-dependent.
 
-The pair is therefore representationally commensurable: a parent observable supplies a common statistical language. It is dynamically incommensurable: revision through one context and then the other need not agree with the reverse order. This is not a caveat to the sharp theorem. It is a second boundary [27].
+The pair is therefore representationally commensurable: a parent observable supplies a common statistical language. It is dynamically incommensurable: revision through one context and then the other need not agree with the reverse order. The example establishes a second boundary: representational commensurability may hold while dynamical commensurability fails [27].
 
 ## 6.6 Commuting-square dynamics
 
-The operator-algebraic version does not depend on Lüders instruments. Let $\mathcal N_1,\mathcal N_2\subseteq\mathcal M$ be accessible subalgebras and let
+The operator-algebraic formulation extends beyond Lüders instruments. Let $\mathcal N_1,\mathcal N_2\subseteq\mathcal M$ be accessible subalgebras and let
 
 $$
 E_i:\mathcal M\longrightarrow\mathcal N_i
@@ -773,13 +775,11 @@ $Q$ becomes a strict improvement. Thus either verdict may change under enrichmen
 
 For (6.17), perfection under $\mathcal R'$ gives the componentwise inequality $L_P^{\mathcal R'}(x)\leq L_Q^{\mathcal R'}(x)$ for every $Q$ and $x$. Projecting onto the retained coordinates gives $L_P^{\mathcal R}(x)\leq L_Q^{\mathcal R}(x)$. The second counterexample also shows that the converse can fail. $\square$
 
-Reference enrichment is therefore an epistemic event, not a verdict-preserving refinement: it preserves the old data while changing which combinations of distinctions count as an improvement.
-
-> // **Author's comment.** An earlier draft made both mistakes this section is meant to rule out: it treated an abstract Boolean coproduct as an operational common refinement, and it assumed that adding distinctions would preserve an existing improvement verdict. The errors had the same source---treating more formal structure as if it merely revealed more within a fixed comparison. There could scarcely have been a more appropriate section in which to make them.
+Reference enrichment is a verdict-changing epistemic event: it preserves the old data while changing which combinations of distinctions count as an improvement.
 
 Phase-sensitive operations are one source of such enrichment. Block-diagonal comparisons identify states that differ only in cross-sector terms. An admitted reference observable with a nonzero off-diagonal component may separate them [1, §6]. A presentation that appears Perfect under every classical packet statistic may cease to be Perfect once the required phase reference, calibration, and cross-sector measurement become available.
 
-This does not make phase a free epistemic resource. Reference maps, intertwiners, state preparation, calibration, and verification procedures must be specified and charged. The richer contract is a different contract.
+Phase-sensitive comparison requires specified and charged reference maps, intertwiners, state preparation, calibration, and verification procedures. The richer contract is a different contract.
 
 ## 6.8 Consequences for perfection
 
@@ -794,7 +794,7 @@ The last qualification is essential. Commensurability buys the right to formulat
 
 # 7. Perfect resources
 
-Sections 4--6 identify two independent obstructions to calling a theory Done: the required universal claim may exceed the agent's computational power, and the comparisons over which it quantifies may lack an adequate reference structure. I now ask what resources can remove each obstruction. The answer is not a single notion of greater power. Computational resources decide claims within an already effective comparison domain; reference resources create or refine the comparisons on which those claims depend. They may be combined, but neither can substitute for the other.
+Sections 4--6 identify two independent obstructions to calling a theory Done: the required universal claim may exceed the agent's computational power, and the comparisons over which it quantifies may lack an adequate reference structure. I now ask what resources can remove each obstruction. The two obstructions require distinct resources. Computational resources decide claims within an effective comparison domain; reference resources create or refine the comparisons on which those claims depend. They may be combined, but neither can substitute for the other.
 
 ## 7.1 Turing jumps as completion resources
 
@@ -830,7 +830,7 @@ $$
 
 **Proof.** The reductions in Theorems 4.1 and 4.4 give $0'$-hardness for Good and Perfect; the same delayed-witness construction gives it for certificate-complete Final. Conversely, construct a program that searches respectively for an accepted reachable improvement, a certified admissible improving successor, or a finite pair $(Q,x)$ witnessing $L_Q(x)<L_P(x)$. In each case the search program halts exactly on the complement of the completion claim. A halting oracle decides whether it halts. Equation (7.4) follows from the $\Pi^0_2$ upper bound and $\mathsf{TOT}$ reduction in Theorem 4.3. $\square$
 
-The theorem does not identify a magical theory. It identifies the resource required to decide whether a theory satisfies the declared condition. The fit is exact: each stated jump is sufficient and, up to Turing degree, necessary. The second jump for Finality is not a contradiction of the hierarchy (2.10). Perfection is the stronger property, but it has finite local counterexamples; extensional Finality quantifies over the absence of whole uniformly dominating successors.
+The theorem identifies the resource required to decide whether a theory satisfies the declared condition. Each stated jump is sufficient and, up to Turing degree, necessary. Extensional Finality requires the second jump because it quantifies over the absence of uniformly dominating successor vectors; Perfection has finite local counterexamples despite being the stronger property.
 
 **Corollary 7.2 (perfection jump).** For any oracle $R$, if proposals, certificates, comparisons, and losses are $R$-computable, Good, Perfect, and certificate-complete Final have degree $R'$ whenever the relativized contract class contains the reductions above. Extensional pointwise Finality has degree $R''$.
 
@@ -849,7 +849,7 @@ The two axes give four regimes:
 | operationally incomplete | locally decidable where defined | context- or sector-relative Good and Final |
 | operationally incomplete | unbounded and undecidable | simultaneous search for theories, counterexamples, and reference resources |
 
-Neither axis reduces to the other. This is the principal reason the expanded notion of perfection is stronger than the original stopping problem.
+The computational and reference axes are independent, so completion requires both sufficient decision power and an adequate comparison structure.
 
 ## 7.3 Quantum decision access and imperfection
 
@@ -907,7 +907,7 @@ R\oplus\mu_{\mathrm{full}}.
 \tag{7.8}
 $$
 
-This is a limiting contract, not a claim that such an apparatus is physically realizable. An $S$-effective contract is a finality contract whose proposal, verification, comparison, and loss procedures may query $S$. This definition does not require the underlying state space to be discrete. It requires only that every operation available to the agent be finitely addressable; otherwise it is not an operational resource of that agent.
+This limiting contract represents the strongest apparatus admitted by the framework, independently of its physical realizability. An $S$-effective contract is a finality contract whose proposal, verification, comparison, and loss procedures may query $S$. The underlying state space may be continuous, provided every operation available to the agent is finitely addressable.
 
 **Theorem 7.4 (Omnipotence Theorem).** Suppose $\mathcal R^{\mathrm{full}}$ is comparison-complete for the declared candidate and target classes, and suppose the relevant $S$-effective contract classes satisfy the hypotheses of Theorem 7.1 and contain the $S$-relativized constructions used in Theorems 4.1, 4.3, and 4.4. Then
 
@@ -1046,13 +1046,13 @@ The map $e\mapsto\mathfrak F_e$ is computable. $\square$
 
 **Proof.** Any predicate admitting such an approximation is $\Delta^0_2$, while $\mathsf{HASPERFECT}$ is $\Sigma^0_2$-complete. $\square$
 
-The corollary marks the limit of the one-retraction discipline. For a supplied presentation, Perfection is co-c.e. and may be presumed until a finite counterexample appears. The existential question does not inherit that behaviour: an agent may successively find and lose plausible candidates without converging to the truth about whether the class contains a Perfect member.
+The corollary marks the limit of the one-retraction discipline. For a supplied presentation, Perfection is co-c.e. and may be presumed until a finite counterexample appears. For the existential question, an agent may successively find and lose plausible candidates without converging to whether the class contains a Perfect member.
 
 **Remark 7.7 (natural nonexistence through speedup).** The reduction above is exact but deliberately constructed. Blum speedup supplies natural fixed-contract instances with no Perfect element [6]. For a suitable Blum complexity measure $\Phi$, there are total computable functions $f$ such that every program $i$ computing $f$ has another program $j$ computing $f$ with a prescribed computable speedup on almost all inputs. If the candidates are programs computing $f$, targets are inputs, and $L_{P_i}(x)=\Phi_i(x)$, then no $P_i$ is Perfect: some $P_j$ is locally better at a target. This conclusion concerns Perfection. Almost-everywhere speedup need not give pointwise dominance on the finitely many exceptional inputs, so it does not by itself show that $P_i$ is non-Final under (2.8). If the contract charges additional components such as description length, the verdict must be recomputed under its declared order.
 
-# 8. Acting when a theory cannot be called Done
+# 8. Acting without certified completion
 
-The preceding sections identify what completion requires and why additional resources never supply an unindexed stopping point. The remaining question is practical: how should an agent act when Done is unavailable---because the claim is undecidable, the comparison is not yet well typed, revision is path-dependent, or further search is too costly? These obstructions call for different responses.
+The preceding sections characterize the conditions required for completion and the resource-relative boundaries of its certification. The practical question is how an agent should act when the claim is undecidable, the comparison is not yet well typed, revision is path-dependent, or further search is too costly. Each obstruction requires a different response.
 
 ## 8.1 Diagnose the missing warrant
 
@@ -1076,7 +1076,7 @@ These implications remain valid under the stated contract. What varies is the wa
 | **Perfect** | that the comparison is complete and the current presentation is nowhere locally worse over the entire target domain |
 | **Done** | that the appropriate meta-verifier accepts a sound completion certificate |
 
-Failure to certify Good concerns the performed proposal and verification process. Failure to establish Final concerns the quantified space of admissible successors. Failure to establish Perfect may instead concern comparison coverage, the absence of a least element, or the unbounded target domain. Failure to call the theory Done may persist even when the underlying grade is true, because the required certificate is unavailable. The first task is therefore to identify which warrant is missing.
+The missing warrant may lie in the performed proposal and verification process, the quantified class of admissible successors, the coverage of the comparison structure, the existence of a least element, the target horizon, or the availability of a completion certificate. The first task is to identify which of these prevents the desired grade from being asserted.
 
 ## 8.2 Exploration under computational imperfection
 
@@ -1088,15 +1088,15 @@ When the comparison structure is adequate but the universal claim is not decidab
 - strengthening the proof system or verification budget;
 - testing candidate lower bounds that could yield a positive perfection certificate.
 
-For Good, Perfect, and certificate-complete Final, the co-c.e. structure makes refutation privileged. A finite witness can establish failure under the claimed contract. Continued failure to find such a witness does not become a theorem merely through age. Generic extensional Finality is different: refuting it requires establishing that an entire successor loss vector dominates the current one, which may itself require a universal certificate.
+For Good, Perfect, and certificate-complete Final, the co-c.e. structure privileges refutation. A finite witness establishes failure under the declared contract; elapsed search time supplies no completion certificate. Generic extensional Finality is different: refuting it requires establishing that an entire successor loss vector dominates the current one, which may itself require a universal certificate.
 
-For the co-c.e. grades, the one-retraction approximation of Section 5 supplies a disciplined default: act provisionally as if the present theory satisfied the grade, retract on an accepted counterexample, and do not describe the unretracted state as certified convergence. This policy is exact for the logical objective of minimizing uniform mind changes. It need not be optimal for every economic objective.
+For the co-c.e. grades, the one-retraction approximation of Section 5 supplies a disciplined default: act provisionally as if the present theory satisfied the grade and retract on an accepted counterexample. The unretracted state remains a working presumption. This policy minimizes uniform mind changes for the logical objective considered here, while other economic objectives may favour different policies.
 
-Strengthening the computational resource base is another possible response, but Theorem 7.4 fixes the scope of what this achieves. A stronger resource may decide completion claims formulated under the previous contract. Once that resource becomes available to proposal, verification, and construction, however, the resulting claims must be indexed by the enriched base, and the next completion problem moves to the corresponding higher degree. Resource acquisition may close a declared inquiry; it does not certify absolute completion.
+Strengthening the computational resource base is another possible response. A stronger resource may decide completion claims formulated under the previous contract. Once that resource becomes available to proposal, verification, and construction, the resulting claims are indexed by the enriched base, and the next completion problem moves to the corresponding higher degree. Resource acquisition may therefore close a declared inquiry while generating a stronger completion problem.
 
 ## 8.3 Search for comparison resources
 
-When comparison is incomplete, searching harder inside the old candidate language addresses the wrong obstruction. The agent may instead seek:
+When comparison is incomplete, the agent must search for the resources that make comparison possible. It may seek:
 
 - a shared readout or calibration;
 - a translation preserving the declared task distinctions;
@@ -1105,17 +1105,17 @@ When comparison is incomplete, searching harder inside the old candidate languag
 - an intervention that tests whether local descriptions can be glued;
 - a restricted common subdomain on which a weaker finality claim is well typed.
 
-This is representational exploration: the object sought is not immediately a better theory but an apparatus through which the relative quality of theories becomes addressable. Its construction and verification costs belong in the finality contract.
+This is representational exploration: the agent seeks an apparatus through which the relative quality of theories becomes addressable. Its construction and verification costs belong in the finality contract.
 
-Acquiring such an apparatus is a verdict-changing event, not merely the accumulation of further evidence. Under distinction-adding enrichment, a former improvement may become incomparable, while a former tie may become a strict improvement. Finality and Perfection must therefore be recomputed under the enriched comparison contract; neither verdict transfers automatically from the coarser presentation.
+Acquiring such an apparatus changes the comparison contract and may change its verdicts. Under distinction-adding enrichment, a former improvement may become incomparable, while a former tie may become a strict improvement. Finality and Perfection must therefore be recomputed under the enriched comparison contract; neither verdict transfers automatically from the coarser presentation.
 
 If no neutral global structure exists, the agent should retain the local contexts rather than force them into an artificial total order. A contextual model can support coherent local decisions without licensing a context-free declaration of perfection.
 
 ## 8.4 Revision under dynamical incommensurability
 
-If alternatives admit a common statistical description but their revision operations do not commute, the agent must record the learning path. The relevant state is not merely $P$ but $(P,h)$, where $h$ contains the ordered interventions and commitments that produced the current presentation.
+If alternatives admit a common statistical description but their revision operations do not commute, the agent must record the learning path. The relevant state is the pair $(P,h)$, where $h$ contains the ordered interventions and commitments that produced the current presentation.
 
-Accordingly, $h$ belongs to the candidate state and to the comparison contract. Suppressing it does not merely omit metadata; it changes the object whose Finality or Perfection is being evaluated.
+Accordingly, $h$ belongs to the candidate state and to the comparison contract. Suppressing it changes the object whose Finality or Perfection is being evaluated.
 
 Three responses are then available:
 
@@ -1125,11 +1125,11 @@ Three responses are then available:
 
 Calling a theory Perfect without stating the path in a dynamically incommensurable regime discards information on which later comparisons may depend.
 
-## 8.5 Rational stopping without a completion theorem
+## 8.5 Rational stopping under a declared model
 
-A bounded agent need not continue every logically open search. Given a proposal law, a posterior over improvement sizes and discovery times, and the cost of another search allocation, it may stop when the expected value of continued exploration is below its cost. This is an ordinary decision-theoretic result once the quantities are declared.
+A bounded agent may rationally stop a logically open search. Given a proposal law, a posterior over improvement sizes and discovery times, and the cost of another search allocation, it may stop when the expected value of continued exploration falls below its cost.
 
-Such a stopping rule establishes neither Finality nor Perfection. It establishes that continued search is not worthwhile under the current distribution and budget. The distinction matters because new evidence, a new proposal law, or a new reference resource may rationally restart the search without contradicting the earlier decision.
+Such a rule certifies that continued search is not worthwhile under the current distribution and budget. Finality and Perfection remain separate claims. New evidence, a new proposal law, or a new reference resource may rationally restart the search without contradicting the earlier decision.
 
 The strongest useful reports are consequently typed:
 
@@ -1147,9 +1147,9 @@ The strongest useful reports are consequently typed:
 
 For a reflective learning system, every installed resource becomes part of the next constructive language. Source-code access and universal search enlarge the proposal horizon; proof assistants enlarge the set of checkable certificates; standard effective quantum computation may alter accessibility and reference structure without deciding an undecidable completion problem. Even hypothetical oracle and full-measurement access closes only a contract formulated below the granted resource: once that access can be used in construction, completion relativizes to the enriched base.
 
-A well-designed system should therefore expose the contract behind its claims. It may say that no better candidate exists in an enumerated class, that no proof below a declared length defeats the current theory, that the current presentation attains a certified lower bound, or that search has been paused by an expected-value rule. It should not silently convert any of these statements into an unrestricted Done bit.
+A well-designed system should expose the contract behind its claims. It may report that no better candidate exists in an enumerated class, that no proof below a declared length defeats the current theory, that the current presentation attains a certified lower bound, or that search has been paused by an expected-value rule. Each report should retain the candidate class, target domain, resource base, and stopping rule under which it was obtained.
 
-The positive architecture is not endless undirected search. It is a controlled ascent process with proof-carrying local improvements, explicit comparison resources, typed stopping claims, and separate strategies for computational, representational, and dynamical obstruction. Every resource grant re-indexes the completion problem, and every distinction-adding enrichment requires its verdicts to be recomputed. Exploration searches for new candidates and new comparison apparatus; refutation removes false completion claims; certification identifies the contracts under which the search may genuinely close.
+A controlled ascent architecture uses proof-carrying local improvements, explicit comparison resources, typed stopping claims, and separate strategies for computational, representational, and dynamical obstruction. Every resource grant re-indexes the completion problem, and every distinction-adding enrichment requires its verdicts to be recomputed. Exploration searches for new candidates and comparison apparatus; refutation removes false completion claims; certification identifies the contracts under which search may close.
 
 # 9. Relations and scope
 
@@ -1157,17 +1157,17 @@ The results intersect computability theory, learning in the limit, operational t
 
 ## 9.1 Computability and learning in the limit
 
-Turing supplies the base obstruction and the oracle hierarchy [2,3]; Post organizes the degrees [14]. The Simplicity Fallacy sits beside Busy Beaver [4] and Blum speedup [6], but concerns first discovery under an arbitrary exhaustive proposer. Algorithmic information theory gives machine-relative description and invariance [7], while Levin couples length and runtime under a universal schedule [8]. None supplies a computable deadline from shortest description alone.
+Turing supplies the base obstruction and the oracle hierarchy [2,3]; Post organizes the degrees [14]. The Simplicity Fallacy sits beside Busy Beaver [4] and Blum speedup [6], but concerns first discovery under an arbitrary exhaustive proposer. Algorithmic information theory gives machine-relative description and invariance [7], while Levin couples length and runtime under a universal schedule [8]. Theorem 3.1 adds that shortest description alone supplies no computable discovery deadline for an arbitrary exhaustive proposer.
 
-Putnam's trial-and-error predicates, the limit lemma, and the Ershov hierarchy locate Theorem 5.1 [15,16,22,23]. Gold studies identification in the limit [5], and Kelly develops the corresponding logic of reliable inquiry [17]. The present use is unusually sharp for Good, Perfect, and certificate-complete Final because these predicates are co-c.e.: one retraction suffices, and zero does not suffice uniformly. Generic extensional Finality occupies the next arithmetical level.
+Putnam's trial-and-error predicates, the limit lemma, and the Ershov hierarchy locate Theorem 5.1 [15,16,22,23]. Gold studies identification in the limit [5], and Kelly develops the corresponding logic of reliable inquiry [17]. Good, Perfect, and certificate-complete Final are co-c.e., so one retraction suffices and zero does not suffice uniformly. Generic extensional Finality occupies the next arithmetical level.
 
 The finite-schema theorem is adjacent to meta-complexity. MCSP and MKtP ask whether a supplied finite object has a short bounded description [18--21]. The $\mathrm{KT}$ presentation-dominance result of [1] moves one quantifier upward: every supplied target remains decidable, while uniform pointwise dominance throughout the unbounded serialization domain is not.
 
 ## 9.2 Commensurability
 
-Kuhn made incommensurability central to the study of scientific change [33]. The present framework does not assume that rival languages are either globally translatable or wholly isolated. It asks which operational comparisons are preserved, through which reference resources, and at what cost. Packet-level evidential commensurability may coexist with linguistic incommensurability; local operational comparisons may coexist with the absence of a neutral global language.
+Kuhn made incommensurability central to the study of scientific change [33]. The present framework treats translatability and isolation as endpoints rather than an exhaustive choice. It asks which operational comparisons are preserved, through which reference resources, and at what cost. Packet-level evidential commensurability may coexist with linguistic incommensurability; local operational comparisons may coexist with the absence of a neutral global language.
 
-The sharp boundary draws on the standard equivalence between joint sharp measurement and commutation [27]. The unsharp gap belongs to the theory of jointly measurable generalized observables and nondisturbing measurements [26,27]. The global/local distinction uses the sheaf-theoretic account of contextuality [24], and the contextual fraction supplies its empirical grading [25]. Commuting squares of conditional expectations provide the stronger dynamical composability condition [28--30]. These mathematical tools are used operationally: no claim of physical quantumness is required for a learning system unless its actual implementation demands one.
+The sharp boundary draws on the standard equivalence between joint sharp measurement and commutation [27]. The unsharp gap belongs to the theory of jointly measurable generalized observables and nondisturbing measurements [26,27]. The global/local distinction uses the sheaf-theoretic account of contextuality [24], and the contextual fraction supplies its empirical grading [25]. Commuting squares of conditional expectations provide the stronger dynamical composability condition [28--30]. These tools describe operational comparison structures independently of whether their physical implementation is quantum.
 
 ## 9.3 Resource-relative omnipotence
 
@@ -1182,9 +1182,7 @@ the same fixed resource cannot decide every completion problem generated from th
 
 This gives two consistent readings of omnipotence. If the admissible task domain is fixed, a resource may be complete relative to that domain; demanding that it solve a newly admitted task changes the contract. If the task domain must remain closed under every construction enabled by the resource, no fixed effective resource is complete for the resulting hierarchy. The familiar paradox arises by holding the attribution of power fixed while allowing the quantified class of challenges to expand.
 
-> // **Author's comment.** The stone paradox turns out to be missing a type annotation. If the task class remains fixed, power may be complete relative to it. If god mode may be used to construct the next task, the task class has changed---and the next completion problem lies above the grant.
-
-This is not a theorem about a metaphysically unrestricted deity. It is a theorem about finitely addressable agents, operationally specified powers, and task classes that may expand through the exercise of those powers. Its philosophical contribution is to separate relative completeness from closure under self-generated challenges.
+The theorem applies to finitely addressable agents, operationally specified powers, and task classes that may expand through the exercise of those powers. It separates completeness relative to a fixed domain from closure under self-generated challenges.
 
 ## 9.4 Scope conditions
 
@@ -1207,7 +1205,7 @@ The results depend on declared contracts. In particular:
 
 # 10. Conclusion
 
-A theory is not Done merely because inquiry has stopped. It may be **Good** because no accepted improvement is reachable through the declared realization, **Final** because no admissible improving successor exists, or **Perfect** because every admissible alternative is comparable and none is locally better anywhere on the declared target domain. Under sound procedures,
+Stopping inquiry and certifying **Done** are distinct. A theory may be **Good** because no accepted improvement is reachable through the declared realization, **Final** because no admissible improving successor exists, or **Perfect** because every admissible alternative is comparable and none is locally better anywhere on the declared target domain. Under sound procedures,
 
 $$
 \mathrm{Perfect}
@@ -1218,13 +1216,13 @@ $$
 \tag{10.1}
 $$
 
-and neither converse holds. Done is not a fourth grade. It is the licensed announcement that the required grade has been certified.
+and neither converse holds. A **Done** announcement records that the required grade has been certified.
 
-The computational boundary is exact. Good, certificate-complete Finality, and pointwise Perfection are $\Pi^0_1$-complete and require the first Turing jump. Generic extensional Finality is $\Pi^0_2$-complete and requires the second. Quantifying over the candidates raises a different question: whether the contract contains any Perfect presentation is $\Sigma^0_2$-complete and is not computably identifiable in the limit. Thus the one-retraction policy for a supplied candidate does not decide whether Perfection is available somewhere in the class. In the co-enumerable cases, an effective learner can achieve the optimal limit behaviour: presume completion, retract once when a finite counterexample arrives, and never announce convergence without a certificate.
+Good, certificate-complete Finality, and pointwise Perfection are $\Pi^0_1$-complete and require the first Turing jump. Generic extensional Finality is $\Pi^0_2$-complete and requires the second. Quantifying over candidates raises a different question: whether the contract contains any Perfect presentation is $\Sigma^0_2$-complete and is not computably identifiable in the limit. Thus the one-retraction policy for a supplied candidate does not decide whether Perfection is available somewhere in the class. In the co-enumerable cases, an effective learner can achieve the optimal limit behaviour: presume completion, retract once when a finite counterexample arrives, and never announce convergence without a certificate.
 
 Before any such universal claim can be evaluated, however, the alternatives must be comparable. In the sharp canonical regime, joint measurability, commuting projections, a common Boolean refinement, and order-independent revision align. Outside that regime they separate. A neutral statistical language may exist while revision remains path-dependent; locally compatible comparisons may have no global noncontextual description; and a new reference resource may change, rather than merely reveal, the existing Final or Perfect verdict. Perfection is therefore conditional on the right to compare as well as the power to decide.
 
-The strongest attempted escape is to grant the agent both forms of power at once. Let $S$ combine an arbitrarily strong computational oracle with the certified full-measurement interface admitted by the declared model. For the relativized contract classes,
+The **Omnipotence Theorem** combines both forms of power. Let $S$ contain an arbitrarily strong computational oracle and the certified full-measurement interface admitted by the declared model. For the relativized contract classes,
 
 $$
 \mathsf{GOOD}^{S}
@@ -1241,9 +1239,9 @@ S''.
 \tag{10.2}
 $$
 
-This is the **Omnipotence Theorem**. The limit of magic is not that the granted resource fails to solve the old problem; it may solve that problem exactly. The limit is that a reflective agent can use the grant in proposal, comparison, and construction, thereby generating a new completion problem not decided by the grant itself. God mode is omnipotent relative to the position from which it was granted, but not relative to the position that the grant creates.
+The grant may solve every completion problem in the earlier contract. Once a reflective agent can use it in proposal, comparison, and construction, the resulting completion problems are computed relative to $S$ and lie at $S'$ or $S''$. God mode is therefore omnipotent relative to the position from which it was granted, while the grant creates a stronger position.
 
-The remaining strategies are consequently typed. Computational obstruction calls for counterexample search, limit-correct presumption, stronger proof resources, or rationally bounded stopping. Missing commensurability calls for new readouts, calibrations, reference structures, or restricted comparison domains. Dynamical incommensurability calls for path-indexed states or an explicitly declared revision protocol. None of these actions should be reported as an unrestricted completion certificate.
+The remaining strategies are typed. Computational obstruction calls for counterexample search, limit-correct presumption, stronger proof resources, or rationally bounded stopping. Missing commensurability calls for new readouts, calibrations, reference structures, or restricted comparison domains. Dynamical incommensurability calls for path-indexed states or an explicitly declared revision protocol. Reports of these actions should retain the contract and warrant under which they were taken.
 
 $$
 \boxed{
@@ -1255,7 +1253,7 @@ $$
 \tag{10.3}
 $$
 
-*Perfect Theory* therefore studies neither a last language nor an absolute end to inquiry. It identifies the conditions under which a particular inquiry may close, the exact resources required to close it, and the new boundary created when those resources become part of what the agent can express and construct.
+*Perfect Theory* identifies the conditions under which a particular inquiry may close, the resources required to close it, and the new boundary created when those resources become part of what the agent can express and construct.
 
 # References
 
