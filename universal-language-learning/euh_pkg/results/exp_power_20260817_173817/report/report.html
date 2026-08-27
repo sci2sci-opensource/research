@@ -1,0 +1,804 @@
+<html><head><meta charset='utf-8'><style>body{font-family:sans-serif;max-width:1400px;margin:auto} table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:4px;vertical-align:top} img{max-width:100%}</style></head><body><h1>EUH order-dependence — hypothesis ledger</h1>
+<p>Verdicts: <strong>E</strong> witnessed under the pre-registered rule · <strong>H</strong> refuted · <strong>U</strong> not resolved by this data (a definite verdict of non-resolution, not a probability over E/H).</p>
+<h2>Datasets</h2>
+<table>
+<thead>
+<tr>
+<th>stage</th>
+<th>model</th>
+<th>mode</th>
+<th>slider</th>
+<th>cells</th>
+<th>base acc</th>
+<th>replicates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>power_nullswap</td>
+<td>bert-base-uncased</td>
+<td>nullswap</td>
+<td>strength</td>
+<td>3</td>
+<td>0.860</td>
+<td>4</td>
+</tr>
+<tr>
+<td>power_treat</td>
+<td>bert-base-uncased</td>
+<td>disjoint</td>
+<td>strength</td>
+<td>3</td>
+<td>0.860</td>
+<td>4</td>
+</tr>
+<tr>
+<td>scale_110m</td>
+<td>bert-base-uncased</td>
+<td>disjoint</td>
+<td>strength</td>
+<td>3</td>
+<td>0.849</td>
+<td>4</td>
+</tr>
+<tr>
+<td>scale_11m</td>
+<td>google/bert_uncased_L-4_H-256_A-4</td>
+<td>disjoint</td>
+<td>strength</td>
+<td>3</td>
+<td>0.748</td>
+<td>4</td>
+</tr>
+<tr>
+<td>scale_29m</td>
+<td>google/bert_uncased_L-4_H-512_A-8</td>
+<td>disjoint</td>
+<td>strength</td>
+<td>3</td>
+<td>0.781</td>
+<td>4</td>
+</tr>
+<tr>
+<td>scale_41m</td>
+<td>google/bert_uncased_L-8_H-512_A-8</td>
+<td>disjoint</td>
+<td>strength</td>
+<td>3</td>
+<td>0.800</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<h2>Hypotheses × datasets</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>hypothesis</th>
+<th>rule</th>
+<th>power_nullswap</th>
+<th>power_treat</th>
+<th>scale_110m</th>
+<th>scale_11m</th>
+<th>scale_29m</th>
+<th>scale_41m</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>H1</strong></td>
+<td>Order effect exceeds the composite's own seed noise</td>
+<td><sub>disagreement(S→T,T→S) ≥ 2× same-order replicate disagreement in ≥2/3 of cells</sub></td>
+<td>🔴 H<br><sub>order disagreement ≤1.2× floor in 67% of cells</sub></td>
+<td>⚪ U<br><sub>mixed: median 1.4× floor</sub></td>
+<td>🔴 H<br><sub>order disagreement ≤1.2× floor in 67% of cells</sub></td>
+<td>⚪ U<br><sub>mixed: median 1.6× floor</sub></td>
+<td>🔴 H<br><sub>order disagreement ≤1.2× floor in 67% of cells</sub></td>
+<td>🔴 H<br><sub>order disagreement ≤1.2× floor in 67% of cells</sub></td>
+</tr>
+<tr>
+<td><strong>H2</strong></td>
+<td>Γ_U sign: S→T ends more neutral than T→S, seed-stable</td>
+<td><sub>mean Γ_U &gt; 0,</td>
+<td>mean</td>
+<td>&gt; 2·SE, positive in ≥80% cells</sub></td>
+<td>⚪ U<br><sub>Γ_U = -0.002 ± 0.025, sign not stable</sub></td>
+<td>🟢 E<br><sub>Γ_U = +0.026 ± 0.017, positive in 100% of cells</sub></td>
+<td>⚪ U<br><sub>Γ_U = +0.026 ± 0.037, sign not stable</sub></td>
+<td>⚪ U<br><sub>Γ_U = +0.035 ± 0.054, sign not stable</sub></td>
+</tr>
+<tr>
+<td><strong>H3</strong></td>
+<td>Non-lumpability: verdict marginal is not a sufficient statistic</td>
+<td><sub>Markov composite Φ_S·Φ_T rejected (χ² p&lt;0.01) in ≥2/3 of cells</sub></td>
+<td>🟢 E<br><sub>Markov composite rejected (p&lt;0.01) in 100% of cells</sub></td>
+<td>🟢 E<br><sub>Markov composite rejected (p&lt;0.01) in 100% of cells</sub></td>
+<td>🟢 E<br><sub>Markov composite rejected (p&lt;0.01) in 100% of cells</sub></td>
+<td>🟢 E<br><sub>Markov composite rejected (p&lt;0.01) in 100% of cells</sub></td>
+<td>🟢 E<br><sub>Markov composite rejected (p&lt;0.01) in 100% of cells</sub></td>
+<td>🟢 E<br><sub>Markov composite rejected (p&lt;0.01) in 100% of cells</sub></td>
+</tr>
+<tr>
+<td><strong>H4</strong></td>
+<td>Order effect lives OUTSIDE the overlap of the two flip sets</td>
+<td><sub>≥90% of cross-order disagreement on items neither pass flipped or only one flipped</sub></td>
+<td>🟢 E<br><sub>98% of order-disagreement lies outside the predicted overlap set</sub></td>
+<td>🟢 E<br><sub>98% of order-disagreement lies outside the predicted overlap set</sub></td>
+<td>🟢 E<br><sub>98% of order-disagreement lies outside the predicted overlap set</sub></td>
+<td>🟢 E<br><sub>97% of order-disagreement lies outside the predicted overlap set</sub></td>
+<td>🟢 E<br><sub>98% of order-disagreement lies outside the predicted overlap set</sub></td>
+<td>🟢 E<br><sub>98% of order-disagreement lies outside the predicted overlap set</sub></td>
+</tr>
+<tr>
+<td><strong>H5</strong></td>
+<td>Flip-set co-dependence tracks operator identity</td>
+<td><sub>disjoint objectives → overlap ratio ≈1; shared operator → ≫1</sub></td>
+<td>🔴 H<br><sub>disjoint mode but overlap ratio 7.7× — operators still share a component</sub></td>
+<td>🔴 H<br><sub>disjoint mode but overlap ratio 6.1× — operators still share a component</sub></td>
+<td>🔴 H<br><sub>disjoint mode but overlap ratio 4.9× — operators still share a component</sub></td>
+<td>🔴 H<br><sub>disjoint mode but overlap ratio 3.3× — operators still share a component</sub></td>
+<td>🔴 H<br><sub>disjoint mode but overlap ratio 5.2× — operators still share a component</sub></td>
+<td>🔴 H<br><sub>disjoint mode but overlap ratio 4.3× — operators still share a component</sub></td>
+</tr>
+<tr>
+<td><strong>H6</strong></td>
+<td>Order effect concentrates at verdict boundaries</td>
+<td><sub>AUC(base top-2 margin → flip) ≥ 0.75</sub></td>
+<td>🟢 E<br><sub>AUC(base margin → flip) = 0.87: order effect concentrates at verdict boundaries</sub></td>
+<td>🟢 E<br><sub>AUC(base margin → flip) = 0.89: order effect concentrates at verdict boundaries</sub></td>
+<td>🟢 E<br><sub>AUC(base margin → flip) = 0.86: order effect concentrates at verdict boundaries</sub></td>
+<td>🟢 E<br><sub>AUC(base margin → flip) = 0.85: order effect concentrates at verdict boundaries</sub></td>
+<td>🟢 E<br><sub>AUC(base margin → flip) = 0.81: order effect concentrates at verdict boundaries</sub></td>
+<td>🟢 E<br><sub>AUC(base margin → flip) = 0.83: order effect concentrates at verdict boundaries</sub></td>
+</tr>
+<tr>
+<td><strong>H7</strong></td>
+<td>Prop 6.3 specimen: readouts coincide, revisions differ</td>
+<td><sub>some cell with Stuart–Maxwell p&gt;0.05 AND disagreement ≥2× floor</sub></td>
+<td>⚪ U<br><sub>no cell shows coincident readouts with above-floor revision difference (not refutable by absence)</sub></td>
+<td>⚪ U<br><sub>no cell shows coincident readouts with above-floor revision difference (not refutable by absence)</sub></td>
+<td>⚪ U<br><sub>no cell shows coincident readouts with above-floor revision difference (not refutable by absence)</sub></td>
+<td>⚪ U<br><sub>no cell shows coincident readouts with above-floor revision difference (not refutable by absence)</sub></td>
+<td>⚪ U<br><sub>no cell shows coincident readouts with above-floor revision difference (not refutable by absence)</sub></td>
+<td>⚪ U<br><sub>no cell shows coincident readouts with above-floor revision difference (not refutable by absence)</sub></td>
+</tr>
+<tr>
+<td><strong>H8</strong></td>
+<td>Shared-fraction slider raises co-dependence</td>
+<td><sub>Spearman(α_shared, overlap ratio) ≥ 0.6</sub></td>
+<td>⚪ U<br><sub>needs the shared-fraction slider stage</sub></td>
+<td>⚪ U<br><sub>needs the shared-fraction slider stage</sub></td>
+<td>⚪ U<br><sub>needs the shared-fraction slider stage</sub></td>
+<td>⚪ U<br><sub>needs the shared-fraction slider stage</sub></td>
+<td>⚪ U<br><sub>needs the shared-fraction slider stage</sub></td>
+<td>⚪ U<br><sub>needs the shared-fraction slider stage</sub></td>
+</tr>
+<tr>
+<td><strong>H9</strong></td>
+<td>Negative control: one operator ⇒ no order effect</td>
+<td><sub>weighted mode: disagreement ≤ 1.5× floor</sub></td>
+<td>⚪ U<br><sub>needs the weighted-mode control stage</sub></td>
+<td>⚪ U<br><sub>needs the weighted-mode control stage</sub></td>
+<td>⚪ U<br><sub>needs the weighted-mode control stage</sub></td>
+<td>⚪ U<br><sub>needs the weighted-mode control stage</sub></td>
+<td>⚪ U<br><sub>needs the weighted-mode control stage</sub></td>
+<td>⚪ U<br><sub>needs the weighted-mode control stage</sub></td>
+</tr>
+<tr>
+<td><strong>H10</strong></td>
+<td>The join destroys information</td>
+<td><sub>H(tuple) − H(join) ≥ 0.2 bit/item</sub></td>
+<td>🟢 E<br><sub>publishing join(ST,TS) instead of the tuple destroys 0.40 bits/item (median)</sub></td>
+<td>🟢 E<br><sub>publishing join(ST,TS) instead of the tuple destroys 0.40 bits/item (median)</sub></td>
+<td>🟢 E<br><sub>publishing join(ST,TS) instead of the tuple destroys 0.42 bits/item (median)</sub></td>
+<td>🟢 E<br><sub>publishing join(ST,TS) instead of the tuple destroys 0.50 bits/item (median)</sub></td>
+<td>🟢 E<br><sub>publishing join(ST,TS) instead of the tuple destroys 0.46 bits/item (median)</sub></td>
+<td>🟢 E<br><sub>publishing join(ST,TS) instead of the tuple destroys 0.46 bits/item (median)</sub></td>
+</tr>
+<tr>
+<td><strong>H11</strong></td>
+<td>Calibrated non-lumpability: exceeds the replicate-noise statistic</td>
+<td><sub>obs χ² ≥ 2× median replicate-composite χ² in ≥2/3 of cells</sub></td>
+<td>🔴 H<br><sub>observed non-lumpability ≈ noise level (median 1.1×)</sub></td>
+<td>🔴 H<br><sub>observed non-lumpability ≈ noise level (median 0.9×)</sub></td>
+<td>🔴 H<br><sub>observed non-lumpability ≈ noise level (median 0.9×)</sub></td>
+<td>🔴 H<br><sub>observed non-lumpability ≈ noise level (median 0.9×)</sub></td>
+<td>⚪ U<br><sub>median 1.3× the noise statistic</sub></td>
+<td>🔴 H<br><sub>observed non-lumpability ≈ noise level (median 0.9×)</sub></td>
+</tr>
+<tr>
+<td><strong>H12</strong></td>
+<td>Calibrated localization: above-noise excess lies outside the overlap set</td>
+<td><sub>≥90% of excess (obs − replicate-noise rate) outside, ≥3 cells with ≥0.5% excess</sub></td>
+<td>🔴 H<br><sub>above-noise excess mostly inside the overlap set (26% outside)</sub></td>
+<td>🔴 H<br><sub>above-noise excess mostly inside the overlap set (12% outside)</sub></td>
+<td>⚪ U<br><sub>above-noise excess ≥0.5% in only 2 cell(s) — nothing to localize</sub></td>
+<td>🔴 H<br><sub>above-noise excess mostly inside the overlap set (46% outside)</sub></td>
+<td>⚪ U<br><sub>above-noise excess ≥0.5% in only 2 cell(s) — nothing to localize</sub></td>
+<td>🔴 H<br><sub>above-noise excess mostly inside the overlap set (29% outside)</sub></td>
+</tr>
+<tr>
+<td><strong>H13</strong></td>
+<td>Sign consistency: order/floor ratio &gt;1 almost everywhere</td>
+<td><sub>ratio &gt;1× floor in ≥90% of ≥6 cells</sub></td>
+<td>⚪ U<br><sub>fewer than 6 cells with floors</sub></td>
+<td>⚪ U<br><sub>fewer than 6 cells with floors</sub></td>
+<td>⚪ U<br><sub>fewer than 6 cells with floors</sub></td>
+<td>⚪ U<br><sub>fewer than 6 cells with floors</sub></td>
+<td>⚪ U<br><sub>fewer than 6 cells with floors</sub></td>
+<td>⚪ U<br><sub>fewer than 6 cells with floors</sub></td>
+</tr>
+<tr>
+<td><strong>H14</strong></td>
+<td>A systematic (non-noise) order component exists</td>
+<td><sub>cross-order minus within-order pairwise disagreement &gt;0, bootstrap CI excluding 0, in ≥2/3 of cells</sub></td>
+<td>🟢 E<br><sub>systematic component &gt;0 (bootstrap CI excludes 0) in 100% of cells; 19% of cross-order disagreement is systematic (median ratio 1.23×)</sub></td>
+<td>🟢 E<br><sub>systematic component &gt;0 (bootstrap CI excludes 0) in 100% of cells; 17% of cross-order disagreement is systematic (median ratio 1.20×)</sub></td>
+<td>🟢 E<br><sub>systematic component &gt;0 (bootstrap CI excludes 0) in 100% of cells; 21% of cross-order disagreement is systematic (median ratio 1.26×)</sub></td>
+<td>🟢 E<br><sub>systematic component &gt;0 (bootstrap CI excludes 0) in 100% of cells; 28% of cross-order disagreement is systematic (median ratio 1.39×)</sub></td>
+<td>🟢 E<br><sub>systematic component &gt;0 (bootstrap CI excludes 0) in 100% of cells; 18% of cross-order disagreement is systematic (median ratio 1.22×)</sub></td>
+<td>🟢 E<br><sub>systematic component &gt;0 (bootstrap CI excludes 0) in 100% of cells; 19% of cross-order disagreement is systematic (median ratio 1.23×)</sub></td>
+</tr>
+</tbody>
+</table>
+<h2>Battery-level hypotheses</h2>
+<p>These compare stages against each other rather than scoring one stage, so they carry a single verdict per battery.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>hypothesis</th>
+<th>rule</th>
+<th>verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>H15</strong></td>
+<td>Operator identity drives the order difference (matched null-swap control)</td>
+<td><sub>median systematic fraction in power_treat ≥ 2× power_nullswap, with CI&gt;0 in ≥2/3 of treat cells</sub></td>
+<td>🔴 H<br><sub>null swap shows as much order effect as the two-operator arm (19% vs 17%)</sub></td>
+</tr>
+<tr>
+<td><strong>H16</strong></td>
+<td>Order/noise ratio rises with model scale</td>
+<td><sub>Spearman(log params, pairwise ratio) ≥ 0.6 over ≥4 scale stages</sub></td>
+<td>🔴 H<br><sub>ratio does not rise with scale (ρ=-0.20)</sub></td>
+</tr>
+</tbody>
+</table>
+<h2>Bayesian update over theories of the composite</h2>
+<p>Each theory predicts every item's verdict for S→T and T→S from base, S, T only; likelihood uses ε = the cell's measured replicate floor. Uniform prior; posterior after the last cell of each stage.</p>
+<p><strong>(a) composite packet</strong> — per-item verdicts of S→T and T→S (tempered, n_eff=200 per cell)</p>
+<table>
+<thead>
+<tr>
+<th>stage</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+<th>best</th>
+<th>verdict acc of best</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>power_nullswap</td>
+<td>0.000</td>
+<td>1.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>first_writer</strong></td>
+<td>0.943</td>
+</tr>
+<tr>
+<td>power_treat</td>
+<td>0.062</td>
+<td>0.937</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>first_writer</strong></td>
+<td>0.939</td>
+</tr>
+<tr>
+<td>scale_110m</td>
+<td>0.000</td>
+<td>1.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>first_writer</strong></td>
+<td>0.924</td>
+</tr>
+<tr>
+<td>scale_11m</td>
+<td>0.000</td>
+<td>0.001</td>
+<td>0.000</td>
+<td>0.999</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>tilt</strong></td>
+<td>0.906</td>
+</tr>
+<tr>
+<td>scale_29m</td>
+<td>0.750</td>
+<td>0.102</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.148</td>
+<td>0.000</td>
+<td><strong>last_writer</strong></td>
+<td>0.908</td>
+</tr>
+<tr>
+<td>scale_41m</td>
+<td>0.000</td>
+<td>1.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>first_writer</strong></td>
+<td>0.918</td>
+</tr>
+</tbody>
+</table>
+<p><strong>(b) order packet</strong> — per-item disagreement indicator [v_ST ≠ v_TS], class-balanced log-lik (a theory that predicts no flips pays log ε on every observed flip); this is the statistic the order question is about</p>
+<table>
+<thead>
+<tr>
+<th>stage</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+<th>best</th>
+<th>flip-set F1 of best</th>
+<th>observed disagreement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>power_nullswap</td>
+<td>0.500</td>
+<td>0.500</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>last_writer</strong></td>
+<td>0.428</td>
+<td>0.066</td>
+</tr>
+<tr>
+<td>power_treat</td>
+<td>0.500</td>
+<td>0.500</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>last_writer</strong></td>
+<td>0.459</td>
+<td>0.068</td>
+</tr>
+<tr>
+<td>scale_110m</td>
+<td>0.500</td>
+<td>0.500</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>last_writer</strong></td>
+<td>0.399</td>
+<td>0.079</td>
+</tr>
+<tr>
+<td>scale_11m</td>
+<td>0.500</td>
+<td>0.500</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>last_writer</strong></td>
+<td>0.433</td>
+<td>0.103</td>
+</tr>
+<tr>
+<td>scale_29m</td>
+<td>0.500</td>
+<td>0.500</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>last_writer</strong></td>
+<td>0.354</td>
+<td>0.084</td>
+</tr>
+<tr>
+<td>scale_41m</td>
+<td>0.500</td>
+<td>0.500</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td><strong>last_writer</strong></td>
+<td>0.424</td>
+<td>0.091</td>
+</tr>
+</tbody>
+</table>
+<p><sub>Posterior concentration is relative to the theories entertained; an absent theory cannot acquire mass (§3.5). Per-item accuracy of the best theory is reported so a 'winner' that is merely least-wrong is visible as such.</sub></p>
+<h3>Per-cell verdict accuracy of each theory</h3>
+<p><strong>power_nullswap</strong> — verdict accuracy / flip-set F1 (predicted disagreement rate)</p>
+<table>
+<thead>
+<tr>
+<th>cell</th>
+<th>ε (floor)</th>
+<th>obs dis</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a1.0_s0</td>
+<td>0.056</td>
+<td>0.067</td>
+<td>0.93 / 0.45 (0.07)</td>
+<td>0.95 / 0.45 (0.07)</td>
+<td>0.92 / 0.00 (0.00)</td>
+<td>0.93 / 0.03 (0.00)</td>
+<td>0.94 / 0.04 (0.00)</td>
+<td>0.92 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s1</td>
+<td>0.053</td>
+<td>0.061</td>
+<td>0.93 / 0.39 (0.07)</td>
+<td>0.94 / 0.39 (0.07)</td>
+<td>0.91 / 0.00 (0.00)</td>
+<td>0.92 / 0.04 (0.00)</td>
+<td>0.93 / 0.05 (0.00)</td>
+<td>0.91 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s2</td>
+<td>0.055</td>
+<td>0.070</td>
+<td>0.94 / 0.45 (0.06)</td>
+<td>0.95 / 0.45 (0.06)</td>
+<td>0.92 / 0.00 (0.00)</td>
+<td>0.92 / 0.01 (0.00)</td>
+<td>0.94 / 0.03 (0.00)</td>
+<td>0.92 / 0.00 (0.00)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>power_treat</strong> — verdict accuracy / flip-set F1 (predicted disagreement rate)</p>
+<table>
+<thead>
+<tr>
+<th>cell</th>
+<th>ε (floor)</th>
+<th>obs dis</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a1.0_s0</td>
+<td>0.052</td>
+<td>0.072</td>
+<td>0.94 / 0.45 (0.07)</td>
+<td>0.94 / 0.45 (0.07)</td>
+<td>0.93 / 0.00 (0.00)</td>
+<td>0.93 / 0.03 (0.00)</td>
+<td>0.94 / 0.07 (0.00)</td>
+<td>0.93 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s1</td>
+<td>0.051</td>
+<td>0.070</td>
+<td>0.94 / 0.48 (0.07)</td>
+<td>0.94 / 0.48 (0.07)</td>
+<td>0.93 / 0.00 (0.00)</td>
+<td>0.93 / 0.01 (0.00)</td>
+<td>0.94 / 0.02 (0.00)</td>
+<td>0.93 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s2</td>
+<td>0.059</td>
+<td>0.061</td>
+<td>0.93 / 0.45 (0.09)</td>
+<td>0.94 / 0.45 (0.09)</td>
+<td>0.93 / 0.00 (0.00)</td>
+<td>0.93 / 0.05 (0.00)</td>
+<td>0.93 / 0.04 (0.00)</td>
+<td>0.93 / 0.00 (0.00)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>scale_110m</strong> — verdict accuracy / flip-set F1 (predicted disagreement rate)</p>
+<table>
+<thead>
+<tr>
+<th>cell</th>
+<th>ε (floor)</th>
+<th>obs dis</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a1.0_s0</td>
+<td>0.071</td>
+<td>0.071</td>
+<td>0.91 / 0.36 (0.10)</td>
+<td>0.92 / 0.36 (0.10)</td>
+<td>0.90 / 0.00 (0.00)</td>
+<td>0.92 / 0.07 (0.01)</td>
+<td>0.92 / 0.05 (0.01)</td>
+<td>0.90 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s1</td>
+<td>0.062</td>
+<td>0.093</td>
+<td>0.91 / 0.39 (0.10)</td>
+<td>0.92 / 0.39 (0.10)</td>
+<td>0.91 / 0.00 (0.00)</td>
+<td>0.91 / 0.04 (0.01)</td>
+<td>0.90 / 0.03 (0.00)</td>
+<td>0.91 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s2</td>
+<td>0.060</td>
+<td>0.072</td>
+<td>0.92 / 0.45 (0.10)</td>
+<td>0.93 / 0.45 (0.10)</td>
+<td>0.93 / 0.00 (0.00)</td>
+<td>0.92 / 0.03 (0.00)</td>
+<td>0.92 / 0.05 (0.00)</td>
+<td>0.93 / 0.00 (0.00)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>scale_11m</strong> — verdict accuracy / flip-set F1 (predicted disagreement rate)</p>
+<table>
+<thead>
+<tr>
+<th>cell</th>
+<th>ε (floor)</th>
+<th>obs dis</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a1.0_s0</td>
+<td>0.065</td>
+<td>0.073</td>
+<td>0.90 / 0.40 (0.16)</td>
+<td>0.90 / 0.40 (0.16)</td>
+<td>0.86 / 0.00 (0.00)</td>
+<td>0.92 / 0.08 (0.01)</td>
+<td>0.90 / 0.06 (0.01)</td>
+<td>0.86 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s1</td>
+<td>0.079</td>
+<td>0.125</td>
+<td>0.87 / 0.53 (0.15)</td>
+<td>0.91 / 0.53 (0.15)</td>
+<td>0.89 / 0.00 (0.00)</td>
+<td>0.91 / 0.00 (0.00)</td>
+<td>0.88 / 0.05 (0.01)</td>
+<td>0.89 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s2</td>
+<td>0.062</td>
+<td>0.110</td>
+<td>0.91 / 0.37 (0.09)</td>
+<td>0.90 / 0.37 (0.09)</td>
+<td>0.88 / 0.00 (0.00)</td>
+<td>0.89 / 0.02 (0.00)</td>
+<td>0.91 / 0.01 (0.00)</td>
+<td>0.88 / 0.00 (0.00)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>scale_29m</strong> — verdict accuracy / flip-set F1 (predicted disagreement rate)</p>
+<table>
+<thead>
+<tr>
+<th>cell</th>
+<th>ε (floor)</th>
+<th>obs dis</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a1.0_s0</td>
+<td>0.076</td>
+<td>0.078</td>
+<td>0.89 / 0.30 (0.13)</td>
+<td>0.89 / 0.30 (0.13)</td>
+<td>0.86 / 0.00 (0.00)</td>
+<td>0.89 / 0.07 (0.01)</td>
+<td>0.89 / 0.06 (0.01)</td>
+<td>0.86 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s1</td>
+<td>0.074</td>
+<td>0.101</td>
+<td>0.91 / 0.34 (0.10)</td>
+<td>0.90 / 0.34 (0.10)</td>
+<td>0.88 / 0.00 (0.00)</td>
+<td>0.89 / 0.00 (0.00)</td>
+<td>0.90 / 0.03 (0.00)</td>
+<td>0.88 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s2</td>
+<td>0.063</td>
+<td>0.074</td>
+<td>0.93 / 0.42 (0.10)</td>
+<td>0.92 / 0.42 (0.10)</td>
+<td>0.90 / 0.00 (0.00)</td>
+<td>0.91 / 0.04 (0.00)</td>
+<td>0.92 / 0.04 (0.00)</td>
+<td>0.90 / 0.00 (0.00)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>scale_41m</strong> — verdict accuracy / flip-set F1 (predicted disagreement rate)</p>
+<table>
+<thead>
+<tr>
+<th>cell</th>
+<th>ε (floor)</th>
+<th>obs dis</th>
+<th>last_writer</th>
+<th>first_writer</th>
+<th>markov</th>
+<th>tilt</th>
+<th>overlap</th>
+<th>base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a1.0_s0</td>
+<td>0.075</td>
+<td>0.080</td>
+<td>0.89 / 0.40 (0.14)</td>
+<td>0.91 / 0.40 (0.14)</td>
+<td>0.87 / 0.00 (0.00)</td>
+<td>0.91 / 0.16 (0.02)</td>
+<td>0.91 / 0.08 (0.01)</td>
+<td>0.87 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s1</td>
+<td>0.080</td>
+<td>0.119</td>
+<td>0.89 / 0.52 (0.11)</td>
+<td>0.93 / 0.52 (0.11)</td>
+<td>0.89 / 0.00 (0.00)</td>
+<td>0.90 / 0.10 (0.01)</td>
+<td>0.91 / 0.03 (0.00)</td>
+<td>0.89 / 0.00 (0.00)</td>
+</tr>
+<tr>
+<td>a1.0_s2</td>
+<td>0.067</td>
+<td>0.075</td>
+<td>0.91 / 0.35 (0.09)</td>
+<td>0.92 / 0.35 (0.09)</td>
+<td>0.89 / 0.00 (0.00)</td>
+<td>0.91 / 0.08 (0.01)</td>
+<td>0.92 / 0.04 (0.00)</td>
+<td>0.89 / 0.00 (0.00)</td>
+</tr>
+</tbody>
+</table>
+<h2>Figures</h2>
+<h3>power_nullswap</h3>
+<p><img alt="01_prediction_vs_empirical.png" src="../power_nullswap/figures/01_prediction_vs_empirical.png" />
+<img alt="02_simplex_trajectories.png" src="../power_nullswap/figures/02_simplex_trajectories.png" />
+<img alt="03_joint_tables.png" src="../power_nullswap/figures/03_joint_tables.png" />
+<img alt="04_boundary_concentration.png" src="../power_nullswap/figures/04_boundary_concentration.png" />
+<img alt="05_decomposition_commutators.png" src="../power_nullswap/figures/05_decomposition_commutators.png" />
+<img alt="06_item_level_pred_vs_obs.png" src="../power_nullswap/figures/06_item_level_pred_vs_obs.png" />
+<img alt="07_overlap_null.png" src="../power_nullswap/figures/07_overlap_null.png" /></p>
+<h3>power_treat</h3>
+<p><img alt="01_prediction_vs_empirical.png" src="../power_treat/figures/01_prediction_vs_empirical.png" />
+<img alt="02_simplex_trajectories.png" src="../power_treat/figures/02_simplex_trajectories.png" />
+<img alt="03_joint_tables.png" src="../power_treat/figures/03_joint_tables.png" />
+<img alt="04_boundary_concentration.png" src="../power_treat/figures/04_boundary_concentration.png" />
+<img alt="05_decomposition_commutators.png" src="../power_treat/figures/05_decomposition_commutators.png" />
+<img alt="06_item_level_pred_vs_obs.png" src="../power_treat/figures/06_item_level_pred_vs_obs.png" />
+<img alt="07_overlap_null.png" src="../power_treat/figures/07_overlap_null.png" /></p>
+<h3>scale_110m</h3>
+<p><img alt="01_prediction_vs_empirical.png" src="../scale_110m/figures/01_prediction_vs_empirical.png" />
+<img alt="02_simplex_trajectories.png" src="../scale_110m/figures/02_simplex_trajectories.png" />
+<img alt="03_joint_tables.png" src="../scale_110m/figures/03_joint_tables.png" />
+<img alt="04_boundary_concentration.png" src="../scale_110m/figures/04_boundary_concentration.png" />
+<img alt="05_decomposition_commutators.png" src="../scale_110m/figures/05_decomposition_commutators.png" />
+<img alt="06_item_level_pred_vs_obs.png" src="../scale_110m/figures/06_item_level_pred_vs_obs.png" />
+<img alt="07_overlap_null.png" src="../scale_110m/figures/07_overlap_null.png" /></p>
+<h3>scale_11m</h3>
+<p><img alt="01_prediction_vs_empirical.png" src="../scale_11m/figures/01_prediction_vs_empirical.png" />
+<img alt="02_simplex_trajectories.png" src="../scale_11m/figures/02_simplex_trajectories.png" />
+<img alt="03_joint_tables.png" src="../scale_11m/figures/03_joint_tables.png" />
+<img alt="04_boundary_concentration.png" src="../scale_11m/figures/04_boundary_concentration.png" />
+<img alt="05_decomposition_commutators.png" src="../scale_11m/figures/05_decomposition_commutators.png" />
+<img alt="06_item_level_pred_vs_obs.png" src="../scale_11m/figures/06_item_level_pred_vs_obs.png" />
+<img alt="07_overlap_null.png" src="../scale_11m/figures/07_overlap_null.png" /></p>
+<h3>scale_29m</h3>
+<p><img alt="01_prediction_vs_empirical.png" src="../scale_29m/figures/01_prediction_vs_empirical.png" />
+<img alt="02_simplex_trajectories.png" src="../scale_29m/figures/02_simplex_trajectories.png" />
+<img alt="03_joint_tables.png" src="../scale_29m/figures/03_joint_tables.png" />
+<img alt="04_boundary_concentration.png" src="../scale_29m/figures/04_boundary_concentration.png" />
+<img alt="05_decomposition_commutators.png" src="../scale_29m/figures/05_decomposition_commutators.png" />
+<img alt="06_item_level_pred_vs_obs.png" src="../scale_29m/figures/06_item_level_pred_vs_obs.png" />
+<img alt="07_overlap_null.png" src="../scale_29m/figures/07_overlap_null.png" /></p>
+<h3>scale_41m</h3>
+<p><img alt="01_prediction_vs_empirical.png" src="../scale_41m/figures/01_prediction_vs_empirical.png" />
+<img alt="02_simplex_trajectories.png" src="../scale_41m/figures/02_simplex_trajectories.png" />
+<img alt="03_joint_tables.png" src="../scale_41m/figures/03_joint_tables.png" />
+<img alt="04_boundary_concentration.png" src="../scale_41m/figures/04_boundary_concentration.png" />
+<img alt="05_decomposition_commutators.png" src="../scale_41m/figures/05_decomposition_commutators.png" />
+<img alt="06_item_level_pred_vs_obs.png" src="../scale_41m/figures/06_item_level_pred_vs_obs.png" />
+<img alt="07_overlap_null.png" src="../scale_41m/figures/07_overlap_null.png" /></p></body></html>

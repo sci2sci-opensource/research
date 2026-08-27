@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use or cite this work, please cite it as below."
+title: "Universal Language Learning series"
+authors:
+  - family-names: Kremnev
+    given-names: Valerii
+    affiliation: "sci2sci GmbH"
+doi: 10.5281/zenodo.21971311
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21971310
+    description: "Concept DOI - resolves to the latest version"
+  - type: doi
+    value: 10.5281/zenodo.21971311
+    description: "Version DOI (v1, 2026-08-17)"
+license: CC-BY-4.0
+date-released: "2026-08-17"
+version: v1
+repository-code: "https://github.com/sci2sci-opensource/research"

@@ -1,0 +1,2965 @@
+{
+ "hypotheses": {
+  "H1": {
+   "name": "Order effect exceeds the composite's own seed noise",
+   "rule": "disagreement(S\u2192T,T\u2192S) \u2265 2\u00d7 same-order replicate disagreement in \u22652/3 of cells",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "U",
+     "why": "mixed: median 1.3\u00d7 floor",
+     "evidence": {
+      "median_ratio": 1.3250899230191724,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.125
+     }
+    },
+    "base_strength": {
+     "verdict": "U",
+     "why": "mixed: median 1.4\u00d7 floor",
+     "evidence": {
+      "median_ratio": 1.353274050121261,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.13333333333333333
+     }
+    },
+    "base_weighted": {
+     "verdict": "H",
+     "why": "order disagreement \u22641.2\u00d7 floor in 100% of cells",
+     "evidence": {
+      "median_ratio": 0.7412972410526398,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 1.0
+     }
+    },
+    "tiny_strength": {
+     "verdict": "H",
+     "why": "order disagreement \u22641.2\u00d7 floor in 100% of cells",
+     "evidence": {
+      "median_ratio": 0.8394974590626765,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 1.0
+     }
+    }
+   }
+  },
+  "H2": {
+   "name": "\u0393_U sign: S\u2192T ends more neutral than T\u2192S, seed-stable",
+   "rule": "mean \u0393_U > 0, |mean| > 2\u00b7SE, positive in \u226580% cells",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "E",
+     "why": "\u0393_U = +0.050 \u00b1 0.019, positive in 100% of cells",
+     "evidence": {
+      "mean": 0.0504375,
+      "sd": 0.019457715142622185,
+      "n": 8,
+      "frac_pos": 1.0
+     }
+    },
+    "base_strength": {
+     "verdict": "E",
+     "why": "\u0393_U = +0.017 \u00b1 0.017, positive in 100% of cells",
+     "evidence": {
+      "mean": 0.017116666666666665,
+      "sd": 0.01746753791901941,
+      "n": 15,
+      "frac_pos": 1.0
+     }
+    },
+    "base_weighted": {
+     "verdict": "U",
+     "why": "\u0393_U = +0.014 \u00b1 0.016, sign not stable",
+     "evidence": {
+      "mean": 0.014187499999999992,
+      "sd": 0.015935253109589032,
+      "n": 4,
+      "frac_pos": 0.75
+     }
+    },
+    "tiny_strength": {
+     "verdict": "U",
+     "why": "\u0393_U = +0.014 \u00b1 0.036, sign not stable",
+     "evidence": {
+      "mean": 0.014083333333333331,
+      "sd": 0.03610957650196849,
+      "n": 12,
+      "frac_pos": 0.75
+     }
+    }
+   }
+  },
+  "H3": {
+   "name": "Non-lumpability: verdict marginal is not a sufficient statistic",
+   "rule": "Markov composite \u03a6_S\u00b7\u03a6_T rejected (\u03c7\u00b2 p<0.01) in \u22652/3 of cells",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 8
+     }
+    },
+    "base_strength": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 15
+     }
+    },
+    "base_weighted": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 4
+     }
+    },
+    "tiny_strength": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 12
+     }
+    }
+   }
+  },
+  "H4": {
+   "name": "Order effect lives OUTSIDE the overlap of the two flip sets",
+   "rule": "\u226590% of cross-order disagreement on items neither pass flipped or only one flipped",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.9823232323232323,
+      "n": 8
+     }
+    },
+    "base_strength": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.9811320754716981,
+      "n": 15
+     }
+    },
+    "base_weighted": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.9803575561212683,
+      "n": 4
+     }
+    },
+    "tiny_strength": {
+     "verdict": "E",
+     "why": "100% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 1.0,
+      "n": 12
+     }
+    }
+   }
+  },
+  "H5": {
+   "name": "Flip-set co-dependence tracks operator identity",
+   "rule": "disjoint objectives \u2192 overlap ratio \u22481; shared operator \u2192 \u226b1",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 6.7\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 6.674676278200508,
+      "n": 8,
+      "mode": "disjoint"
+     }
+    },
+    "base_strength": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 6.7\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 6.7376032209030035,
+      "n": 15,
+      "mode": "disjoint"
+     }
+    },
+    "base_weighted": {
+     "verdict": "E",
+     "why": "weighted (shared-pool) mode: overlap ratio 8.7\u00d7 \u2014 flip sets co-dependent (one operator)",
+     "evidence": {
+      "median": 8.744315045684909,
+      "n": 4,
+      "mode": "weighted"
+     }
+    },
+    "tiny_strength": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 4.0\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 4.002463054187192,
+      "n": 12,
+      "mode": "disjoint"
+     }
+    }
+   }
+  },
+  "H6": {
+   "name": "Order effect concentrates at verdict boundaries",
+   "rule": "AUC(base top-2 margin \u2192 flip) \u2265 0.75",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.89: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.8894699729332782
+     }
+    },
+    "base_strength": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.89: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.8910860312754053
+     }
+    },
+    "base_weighted": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.88: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.8849609404949103
+     }
+    },
+    "tiny_strength": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.87: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.8738303370133813
+     }
+    }
+   }
+  },
+  "H7": {
+   "name": "Prop 6.3 specimen: readouts coincide, revisions differ",
+   "rule": "some cell with Stuart\u2013Maxwell p>0.05 AND disagreement \u22652\u00d7 floor",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "base_strength": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "base_weighted": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "tiny_strength": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    }
+   }
+  },
+  "H8": {
+   "name": "Shared-fraction slider raises co-dependence",
+   "rule": "Spearman(\u03b1_shared, overlap ratio) \u2265 0.6",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "H",
+     "why": "overlap ratio falls with shared fraction (\u03c1=-0.34)",
+     "evidence": {
+      "spearman": -0.3436164855716712
+     }
+    },
+    "base_strength": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    },
+    "base_weighted": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    },
+    "tiny_strength": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    }
+   }
+  },
+  "H9": {
+   "name": "Negative control: one operator \u21d2 no order effect",
+   "rule": "weighted mode: disagreement \u2264 1.5\u00d7 floor",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    },
+    "base_strength": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    },
+    "base_weighted": {
+     "verdict": "E",
+     "why": "shared-operator control shows no order effect above floor (0.7\u00d7) \u2014 design diagnosis confirmed",
+     "evidence": {
+      "median_ratio": 0.7412972410526398
+     }
+    },
+    "tiny_strength": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    }
+   }
+  },
+  "H10": {
+   "name": "The join destroys information",
+   "rule": "H(tuple) \u2212 H(join) \u2265 0.2 bit/item",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.42 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.4238353245660158
+     }
+    },
+    "base_strength": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.34 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.3411008339137511
+     }
+    },
+    "base_weighted": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.22 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.2231697930633234
+     }
+    },
+    "tiny_strength": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.29 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.2901467268210942
+     }
+    }
+   }
+  },
+  "H11": {
+   "name": "Calibrated non-lumpability: exceeds the replicate-noise statistic",
+   "rule": "obs \u03c7\u00b2 \u2265 2\u00d7 median replicate-composite \u03c7\u00b2 in \u22652/3 of cells",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 1.1\u00d7)",
+     "evidence": {
+      "median_ratio": 1.0670730514538609,
+      "frac_ge2": 0.0,
+      "n": 8
+     }
+    },
+    "base_strength": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 0.9\u00d7)",
+     "evidence": {
+      "median_ratio": 0.9260645148281641,
+      "frac_ge2": 0.0,
+      "n": 15
+     }
+    },
+    "base_weighted": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 1.0\u00d7)",
+     "evidence": {
+      "median_ratio": 1.0273890682707856,
+      "frac_ge2": 0.0,
+      "n": 4
+     }
+    },
+    "tiny_strength": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 0.7\u00d7)",
+     "evidence": {
+      "median_ratio": 0.6723123584102922,
+      "frac_ge2": 0.08333333333333333,
+      "n": 12
+     }
+    }
+   }
+  },
+  "H12": {
+   "name": "Calibrated localization: above-noise excess lies outside the overlap set",
+   "rule": "\u226590% of excess (obs \u2212 replicate-noise rate) outside, \u22653 cells with \u22650.5% excess",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "H",
+     "why": "above-noise excess mostly inside the overlap set (18% outside)",
+     "evidence": {
+      "median_frac_outside": 0.17825685450793632,
+      "n_eligible": 8
+     }
+    },
+    "base_strength": {
+     "verdict": "H",
+     "why": "above-noise excess mostly inside the overlap set (18% outside)",
+     "evidence": {
+      "median_frac_outside": 0.18341944998504417,
+      "n_eligible": 14
+     }
+    },
+    "base_weighted": {
+     "verdict": "U",
+     "why": "above-noise excess \u22650.5% in only 1 cell(s) \u2014 nothing to localize",
+     "evidence": {
+      "n_eligible": 1
+     }
+    },
+    "tiny_strength": {
+     "verdict": "U",
+     "why": "above-noise excess \u22650.5% in only 2 cell(s) \u2014 nothing to localize",
+     "evidence": {
+      "n_eligible": 2
+     }
+    }
+   }
+  },
+  "H13": {
+   "name": "Sign consistency: order/floor ratio >1 almost everywhere",
+   "rule": "ratio >1\u00d7 floor in \u226590% of \u22656 cells",
+   "verdicts": {
+    "base_shared": {
+     "verdict": "E",
+     "why": "ratio >1\u00d7 floor in 100% of 8 cells (median 1.3\u00d7)",
+     "evidence": {
+      "frac_gt1": 1.0,
+      "n": 8,
+      "median": 1.3250899230191724
+     }
+    },
+    "base_strength": {
+     "verdict": "E",
+     "why": "ratio >1\u00d7 floor in 100% of 15 cells (median 1.4\u00d7)",
+     "evidence": {
+      "frac_gt1": 1.0,
+      "n": 15,
+      "median": 1.353274050121261
+     }
+    },
+    "base_weighted": {
+     "verdict": "U",
+     "why": "fewer than 6 cells with floors",
+     "evidence": {}
+    },
+    "tiny_strength": {
+     "verdict": "H",
+     "why": "ratio >1\u00d7 floor in only 33% of cells",
+     "evidence": {
+      "frac_gt1": 0.3333333333333333,
+      "n": 12,
+      "median": 0.8394974590626765
+     }
+    }
+   }
+  }
+ },
+ "bayes": {
+  "base_shared": {
+   "posterior_composite": {
+    "last_writer": 0.9999999999840017,
+    "first_writer": 6.164899784161923e-12,
+    "markov": 1.5474351216541261e-34,
+    "tilt": 3.351423637930926e-31,
+    "overlap": 9.833492415004492e-12,
+    "base": 1.5474351216541261e-34
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 0.0,
+    "tilt": 0.0,
+    "overlap": 0.0,
+    "base": 0.0
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 0.969086866597459,
+     "first_writer": 0.019120780795889816,
+     "markov": 0.00026403501809327555,
+     "tilt": 6.925645387498741e-05,
+     "overlap": 0.011195026116589455,
+     "base": 0.00026403501809327555
+    },
+    {
+     "last_writer": 0.9650751097455147,
+     "first_writer": 0.0190416259481496,
+     "markov": 2.895424863821473e-08,
+     "tilt": 6.9515620332199996e-09,
+     "overlap": 0.015883199446276627,
+     "base": 2.895424863821473e-08
+    },
+    {
+     "last_writer": 0.9995021328184545,
+     "first_writer": 0.00022711432005214448,
+     "markov": 2.3277096756423475e-12,
+     "tilt": 2.4104977280927103e-15,
+     "overlap": 0.00027075285683567866,
+     "base": 2.3277096756423475e-12
+    },
+    {
+     "last_writer": 0.9997421757228057,
+     "first_writer": 0.00017353057065501386,
+     "markov": 1.8749283627126083e-16,
+     "tilt": 4.918541477475349e-18,
+     "overlap": 8.429370653884115e-05,
+     "base": 1.8749283627126083e-16
+    },
+    {
+     "last_writer": 0.999978348580491,
+     "first_writer": 2.0944309787793174e-05,
+     "markov": 5.218006113987567e-19,
+     "tilt": 4.978694407432273e-21,
+     "overlap": 7.071097211694285e-07,
+     "base": 5.218006113987567e-19
+    },
+    {
+     "last_writer": 0.9995689278263153,
+     "first_writer": 0.0004306512701964893,
+     "markov": 3.6775337285532968e-22,
+     "tilt": 5.892423929498691e-24,
+     "overlap": 4.2090348813954817e-07,
+     "base": 3.6775337285532968e-22
+    },
+    {
+     "last_writer": 0.9999999999840092,
+     "first_writer": 1.2100111187228666e-11,
+     "markov": 5.526239206854255e-28,
+     "tilt": 1.4879406727287557e-29,
+     "overlap": 3.890636840191134e-12,
+     "base": 5.526239206854255e-28
+    },
+    {
+     "last_writer": 0.9999999999840017,
+     "first_writer": 6.164899784161923e-12,
+     "markov": 1.5474351216541261e-34,
+     "tilt": 3.351423637930926e-31,
+     "overlap": 9.833492415004492e-12,
+     "base": 1.5474351216541261e-34
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 6.744348550762765e-51,
+     "tilt": 8.880779840960835e-49,
+     "overlap": 9.267825066222912e-47,
+     "base": 6.744348550762765e-51
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 1.2124165253173494e-107,
+     "tilt": 9.763528631506114e-105,
+     "overlap": 3.050741138333481e-102,
+     "base": 1.2124165253173494e-107
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 2.6405442887226595e-159,
+     "tilt": 1.6685446864178593e-154,
+     "overlap": 1.8842368146817364e-152,
+     "base": 2.6405442887226595e-159
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.608207683904218e-209,
+     "tilt": 4.885432670504345e-203,
+     "overlap": 4.041260712339991e-200,
+     "base": 3.608207683904218e-209
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 4.4252831424432887e-259,
+     "tilt": 1.3922375837407595e-252,
+     "overlap": 2.5771722036323036e-247,
+     "base": 4.4252831424432887e-259
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 5.223218423217747e-309,
+     "tilt": 5.099291358877608e-301,
+     "overlap": 1.0170264993012795e-295,
+     "base": 5.223218423217747e-309
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a0.0_s0",
+     "eps": 0.053375,
+     "ll_per_item": {
+      "last_writer": -0.2636216541301912,
+      "first_writer": -0.2832495466806395,
+      "markov": -0.30466179309931035,
+      "tilt": -0.311353120105145,
+      "overlap": -0.2859260774829734,
+      "base": -0.30466179309931035
+     },
+     "ll_order": {
+      "last_writer": -0.9184825911923404,
+      "first_writer": -0.9184825911923404,
+      "markov": -1.4926325294907494,
+      "tilt": -1.468230756207701,
+      "overlap": -1.444991608486331,
+      "base": -1.4926325294907494
+     },
+     "acc": {
+      "last_writer": 0.9415,
+      "first_writer": 0.9359999999999999,
+      "markov": 0.9299999999999999,
+      "tilt": 0.928125,
+      "overlap": 0.9352499999999999,
+      "base": 0.9299999999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.445993031358885,
+      "first_writer": 0.445993031358885,
+      "markov": 0.0,
+      "tilt": 0.033783783783783786,
+      "overlap": 0.06557377049180328,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.071,
+      "first_writer": 0.071,
+      "markov": 0.0,
+      "tilt": 0.0015,
+      "overlap": 0.00375,
+      "base": 0.0
+     },
+     "obs_dis": 0.0725
+    },
+    {
+     "cell": "a0.0_s1",
+     "eps": 0.054875,
+     "ll_per_item": {
+      "last_writer": -0.26836004947340525,
+      "first_writer": -0.2683600494734053,
+      "markov": -0.3139299082000845,
+      "tilt": -0.3143723340129649,
+      "overlap": -0.26659034622188377,
+      "base": -0.3139299082000845
+     },
+     "ll_order": {
+      "last_writer": -0.8262634732764486,
+      "first_writer": -0.8262634732764486,
+      "markov": -1.4795677463452521,
+      "tilt": -1.4705134768041699,
+      "overlap": -1.4650301947202442,
+      "base": -1.4795677463452521
+     },
+     "acc": {
+      "last_writer": 0.940125,
+      "first_writer": 0.940125,
+      "markov": 0.92725,
+      "tilt": 0.927125,
+      "overlap": 0.940625,
+      "base": 0.92725
+     },
+     "flip_f1": {
+      "last_writer": 0.4844290657439446,
+      "first_writer": 0.4844290657439446,
+      "markov": 0.0,
+      "tilt": 0.014084507042253521,
+      "overlap": 0.02112676056338028,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.07475,
+      "first_writer": 0.07475,
+      "markov": 0.0,
+      "tilt": 0.00125,
+      "overlap": 0.00125,
+      "base": 0.0
+     },
+     "obs_dis": 0.06975
+    },
+    {
+     "cell": "a0.25_s0",
+     "eps": 0.053250000000000006,
+     "ll_per_item": {
+      "last_writer": -0.2805976282043168,
+      "first_writer": -0.30291753097151874,
+      "markov": -0.327915822070785,
+      "tilt": -0.3551461034467714,
+      "overlap": -0.3011319387501426,
+      "base": -0.327915822070785
+     },
+     "ll_order": {
+      "last_writer": -0.8989585669655578,
+      "first_writer": -0.8989585669655578,
+      "markov": -1.4937388432964178,
+      "tilt": -1.4719254251188878,
+      "overlap": -1.4770141486701012,
+      "base": -1.4937388432964178
+     },
+     "acc": {
+      "last_writer": 0.93675,
+      "first_writer": 0.9305,
+      "markov": 0.9235,
+      "tilt": 0.915875,
+      "overlap": 0.931,
+      "base": 0.9235
+     },
+     "flip_f1": {
+      "last_writer": 0.5077399380804953,
+      "first_writer": 0.5077399380804953,
+      "markov": 0.0,
+      "tilt": 0.0316622691292876,
+      "overlap": 0.026246719160104987,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.06925,
+      "first_writer": 0.06925,
+      "markov": 0.0,
+      "tilt": 0.0025,
+      "overlap": 0.003,
+      "base": 0.0
+     },
+     "obs_dis": 0.09225
+    },
+    {
+     "cell": "a0.25_s1",
+     "eps": 0.052250000000000005,
+     "ll_per_item": {
+      "last_writer": -0.2870923974529383,
+      "first_writer": -0.2884390967194801,
+      "markov": -0.33422687178190136,
+      "tilt": -0.31806648058339976,
+      "overlap": -0.2929280942746194,
+      "base": -0.33422687178190136
+     },
+     "ll_order": {
+      "last_writer": -0.9286048135965564,
+      "first_writer": -0.9286048135965564,
+      "markov": -1.5026899563614549,
+      "tilt": -1.4873666311222413,
+      "overlap": -1.4774100667414565,
+      "base": -1.5026899563614549
+     },
+     "acc": {
+      "last_writer": 0.935,
+      "first_writer": 0.934625,
+      "markov": 0.921875,
+      "tilt": 0.926375,
+      "overlap": 0.9333750000000001,
+      "base": 0.921875
+     },
+     "flip_f1": {
+      "last_writer": 0.42105263157894735,
+      "first_writer": 0.42105263157894735,
+      "markov": 0.0,
+      "tilt": 0.02181818181818182,
+      "overlap": 0.035842293906810034,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.075,
+      "first_writer": 0.075,
+      "markov": 0.0,
+      "tilt": 0.00125,
+      "overlap": 0.00225,
+      "base": 0.0
+     },
+     "obs_dis": 0.0675
+    },
+    {
+     "cell": "a0.5_s0",
+     "eps": 0.048125,
+     "ll_per_item": {
+      "last_writer": -0.2846994184752018,
+      "first_writer": -0.2952730334210559,
+      "markov": -0.3141216513680132,
+      "tilt": -0.3191785976464651,
+      "overlap": -0.308604982700611,
+      "base": -0.3141216513680132
+     },
+     "ll_order": {
+      "last_writer": -0.9670118631089593,
+      "first_writer": -0.9670118631089593,
+      "markov": -1.5416375208534494,
+      "tilt": -1.5374219390299446,
+      "overlap": -1.51036867970291,
+      "base": -1.5416375208534494
+     },
+     "acc": {
+      "last_writer": 0.9359999999999999,
+      "first_writer": 0.933125,
+      "markov": 0.9279999999999999,
+      "tilt": 0.926625,
+      "overlap": 0.9295,
+      "base": 0.9279999999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.46511627906976744,
+      "first_writer": 0.46511627906976744,
+      "markov": 0.0,
+      "tilt": 0.005633802816901409,
+      "overlap": 0.043478260869565216,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.07275,
+      "first_writer": 0.07275,
+      "markov": 0.0,
+      "tilt": 0.00025,
+      "overlap": 0.0035,
+      "base": 0.0
+     },
+     "obs_dis": 0.0885
+    },
+    {
+     "cell": "a0.5_s1",
+     "eps": 0.059375000000000004,
+     "ll_per_item": {
+      "last_writer": -0.29447847750950723,
+      "first_writer": -0.2793592717201343,
+      "markov": -0.3307645714040021,
+      "tilt": -0.3281727075543954,
+      "overlap": -0.297070341359114,
+      "base": -0.3307645714040021
+     },
+     "ll_order": {
+      "last_writer": -0.8677289981109437,
+      "first_writer": -0.8677289981109437,
+      "markov": -1.442546373836114,
+      "tilt": -1.425371399116919,
+      "overlap": -1.4249984683278285,
+      "base": -1.442546373836114
+     },
+     "acc": {
+      "last_writer": 0.9325,
+      "first_writer": 0.936875,
+      "markov": 0.9219999999999999,
+      "tilt": 0.92275,
+      "overlap": 0.9317500000000001,
+      "base": 0.9219999999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.4521452145214521,
+      "first_writer": 0.4521452145214521,
+      "markov": 0.0,
+      "tilt": 0.02631578947368421,
+      "overlap": 0.026402640264026403,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.0775,
+      "first_writer": 0.0775,
+      "markov": 0.0,
+      "tilt": 0.002,
+      "overlap": 0.00175,
+      "base": 0.0
+     },
+     "obs_dis": 0.074
+    },
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.059125,
+     "ll_per_item": {
+      "last_writer": -0.2728885827874718,
+      "first_writer": -0.35982871141842326,
+      "markov": -0.33993196556258365,
+      "tilt": -0.33733673784225676,
+      "overlap": -0.33084866854143946,
+      "base": -0.33993196556258365
+     },
+     "ll_order": {
+      "last_writer": -0.894492798922889,
+      "first_writer": -0.894492798922889,
+      "markov": -1.4445232088987405,
+      "tilt": -1.4345396327739108,
+      "overlap": -1.4053518369735998,
+      "base": -1.4445232088987405
+     },
+     "acc": {
+      "last_writer": 0.93875,
+      "first_writer": 0.913625,
+      "markov": 0.919375,
+      "tilt": 0.9201250000000001,
+      "overlap": 0.9219999999999999,
+      "base": 0.919375
+     },
+     "flip_f1": {
+      "last_writer": 0.4626038781163435,
+      "first_writer": 0.4626038781163435,
+      "markov": 0.0,
+      "tilt": 0.0158311345646438,
+      "overlap": 0.06015037593984962,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.08725,
+      "first_writer": 0.08725,
+      "markov": 0.0,
+      "tilt": 0.0015,
+      "overlap": 0.0065,
+      "base": 0.0
+     },
+     "obs_dis": 0.09325
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.06425,
+     "ll_per_item": {
+      "last_writer": -0.3032698268983319,
+      "first_writer": -0.3066415407019011,
+      "markov": -0.3787119232531917,
+      "tilt": -0.3222357170434083,
+      "overlap": -0.2986337204184243,
+      "base": -0.3787119232531917
+     },
+     "ll_order": {
+      "last_writer": -0.9547457952115136,
+      "first_writer": -0.9547457952115136,
+      "markov": -1.4056902437022034,
+      "tilt": -1.3984798769257716,
+      "overlap": -1.3853134378805456,
+      "base": -1.4056902437022034
+     },
+     "acc": {
+      "last_writer": 0.9297500000000001,
+      "first_writer": 0.92875,
+      "markov": 0.907375,
+      "tilt": 0.924125,
+      "overlap": 0.931125,
+      "base": 0.907375
+     },
+     "flip_f1": {
+      "last_writer": 0.38397328881469117,
+      "first_writer": 0.38397328881469117,
+      "markov": 0.0,
+      "tilt": 0.013157894736842105,
+      "overlap": 0.032467532467532464,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.0755,
+      "first_writer": 0.0755,
+      "markov": 0.0,
+      "tilt": 0.00175,
+      "overlap": 0.00275,
+      "base": 0.0
+     },
+     "obs_dis": 0.07425
+    }
+   ]
+  },
+  "base_strength": {
+   "posterior_composite": {
+    "last_writer": 3.710620735898088e-20,
+    "first_writer": 1.0,
+    "markov": 3.57592703856344e-51,
+    "tilt": 6.281795854326365e-48,
+    "overlap": 8.149904193835803e-23,
+    "base": 3.57592703856344e-51
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 0.0,
+    "tilt": 0.0,
+    "overlap": 0.0,
+    "base": 0.0
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 3.8294846314956066e-05,
+     "first_writer": 0.7664400915946704,
+     "markov": 3.643439193695566e-07,
+     "tilt": 4.333571801672917e-06,
+     "overlap": 0.23351655129937396,
+     "base": 3.643439193695566e-07
+    },
+    {
+     "last_writer": 4.501193326006159e-08,
+     "first_writer": 0.42528202719879915,
+     "markov": 3.4231285316064605e-14,
+     "tilt": 2.1623519083437154e-11,
+     "overlap": 0.5747179277675758,
+     "base": 3.4231285316064605e-14
+    },
+    {
+     "last_writer": 3.2043010965808084e-08,
+     "first_writer": 0.63167583891501,
+     "markov": 6.784786477813258e-17,
+     "tilt": 7.312324616409778e-13,
+     "overlap": 0.3683241290412477,
+     "base": 6.784786477813258e-17
+    },
+    {
+     "last_writer": 3.173492485786269e-10,
+     "first_writer": 0.8342238703068867,
+     "markov": 1.052837169019644e-21,
+     "tilt": 7.284076183487586e-17,
+     "overlap": 0.16577612937576408,
+     "base": 1.052837169019644e-21
+    },
+    {
+     "last_writer": 3.123318856964448e-11,
+     "first_writer": 0.9362418461805864,
+     "markov": 2.909582831072639e-26,
+     "tilt": 4.116773410941357e-20,
+     "overlap": 0.06375815378818032,
+     "base": 2.909582831072639e-26
+    },
+    {
+     "last_writer": 2.9900047376279293e-10,
+     "first_writer": 0.9977161801122266,
+     "markov": 3.123741441606282e-27,
+     "tilt": 5.9623216017739516e-21,
+     "overlap": 0.002283819588772877,
+     "base": 3.123741441606282e-27
+    },
+    {
+     "last_writer": 2.0481080382013424e-10,
+     "first_writer": 0.9997431728063062,
+     "markov": 9.661554991667326e-31,
+     "tilt": 2.028091104444059e-24,
+     "overlap": 0.00025682698888300465,
+     "base": 9.661554991667326e-31
+    },
+    {
+     "last_writer": 7.057885120403237e-12,
+     "first_writer": 0.9999565774411575,
+     "markov": 3.2776438167789745e-35,
+     "tilt": 2.799562009972526e-28,
+     "overlap": 4.342255178461494e-05,
+     "base": 3.2776438167789745e-35
+    },
+    {
+     "last_writer": 6.410043132200082e-12,
+     "first_writer": 0.9999998657825864,
+     "markov": 7.658004995061004e-37,
+     "tilt": 6.050180909377867e-28,
+     "overlap": 1.3421100359060076e-07,
+     "base": 7.658004995061004e-37
+    },
+    {
+     "last_writer": 3.4380109004350896e-10,
+     "first_writer": 0.9999999216813457,
+     "markov": 9.941387628799962e-39,
+     "tilt": 2.0207647929321003e-30,
+     "overlap": 7.797485314005553e-08,
+     "base": 9.941387628799962e-39
+    },
+    {
+     "last_writer": 3.438010784053814e-10,
+     "first_writer": 0.9999998878300084,
+     "markov": 9.231680648823137e-43,
+     "tilt": 1.7147558237632815e-34,
+     "overlap": 1.1182619046060517e-07,
+     "base": 9.231680648823137e-43
+    },
+    {
+     "last_writer": 3.14355673763601e-13,
+     "first_writer": 0.9999999999916576,
+     "markov": 1.1086462600610325e-45,
+     "tilt": 1.38835841111901e-36,
+     "overlap": 8.028014562164241e-12,
+     "base": 1.1086462600610325e-45
+    },
+    {
+     "last_writer": 7.760825464806019e-14,
+     "first_writer": 0.9999999999999154,
+     "markov": 2.7331868691644997e-47,
+     "tilt": 8.450152336787186e-39,
+     "overlap": 6.781177877561727e-15,
+     "base": 2.7331868691644997e-47
+    },
+    {
+     "last_writer": 7.636045081732135e-19,
+     "first_writer": 1.0,
+     "markov": 1.1862957471919318e-49,
+     "tilt": 5.415679548081553e-46,
+     "overlap": 2.1409864987237685e-20,
+     "base": 1.1862957471919318e-49
+    },
+    {
+     "last_writer": 3.710620735898088e-20,
+     "first_writer": 1.0,
+     "markov": 3.57592703856344e-51,
+     "tilt": 6.281795854326365e-48,
+     "overlap": 8.149904193835803e-23,
+     "base": 3.57592703856344e-51
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 2.1070100934409246e-61,
+     "tilt": 6.525182894864145e-59,
+     "overlap": 7.436888269313135e-61,
+     "base": 2.1070100934409246e-61
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 6.344666501321319e-120,
+     "tilt": 2.852979784015401e-116,
+     "overlap": 2.0537487089158372e-119,
+     "base": 6.344666501321319e-120
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 9.003005790497614e-193,
+     "tilt": 1.9319361576606023e-188,
+     "overlap": 1.995715066843389e-189,
+     "base": 9.003005790497614e-193
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 6.223528887433896e-257,
+     "tilt": 1.7968495338717394e-251,
+     "overlap": 1.8876479285378684e-250,
+     "base": 6.223528887433896e-257
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 1.115509508366e-312,
+     "tilt": 9.787776659328718e-307,
+     "overlap": 1.3236989446440303e-305,
+     "base": 1.115509508366e-312
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a0.1_s0",
+     "eps": 0.03666666666666667,
+     "ll_per_item": {
+      "last_writer": -0.24682954230060689,
+      "first_writer": -0.19730855985218182,
+      "markov": -0.27010440405136665,
+      "tilt": -0.2577241584392604,
+      "overlap": -0.20325107774599283,
+      "base": -0.27010440405136665
+     },
+     "ll_order": {
+      "last_writer": -0.9765251263666304,
+      "first_writer": -0.9765251263666304,
+      "markov": -1.6716214942008,
+      "tilt": -1.6429436479836732,
+      "overlap": -1.66531558123709,
+      "base": -1.6716214942008
+     },
+     "acc": {
+      "last_writer": 0.947125,
+      "first_writer": 0.959625,
+      "markov": 0.9412499999999999,
+      "tilt": 0.944375,
+      "overlap": 0.958125,
+      "base": 0.9412499999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.4429530201342282,
+      "first_writer": 0.4429530201342282,
+      "markov": 0.0,
+      "tilt": 0.03587443946188341,
+      "overlap": 0.0091324200913242,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.058,
+      "first_writer": 0.058,
+      "markov": 0.0,
+      "tilt": 0.002,
+      "overlap": 0.001,
+      "base": 0.0
+     },
+     "obs_dis": 0.05375
+    },
+    {
+     "cell": "a0.1_s1",
+     "eps": 0.036291666666666667,
+     "ll_per_item": {
+      "last_writer": -0.23806669246729495,
+      "first_writer": -0.20728099760549715,
+      "markov": -0.2852383216910174,
+      "tilt": -0.2653765830705027,
+      "overlap": -0.19983284562280415,
+      "base": -0.2852383216910174
+     },
+     "ll_order": {
+      "last_writer": -1.0028159813412312,
+      "first_writer": -1.0028159813412312,
+      "markov": -1.6765668607060817,
+      "tilt": -1.6631892578262497,
+      "overlap": -1.6769995870908196,
+      "base": -1.6765668607060817
+     },
+     "acc": {
+      "last_writer": 0.949375,
+      "first_writer": 0.957125,
+      "markov": 0.9375,
+      "tilt": 0.9425,
+      "overlap": 0.959,
+      "base": 0.9375
+     },
+     "flip_f1": {
+      "last_writer": 0.43119266055045874,
+      "first_writer": 0.43119266055045874,
+      "markov": 0.0,
+      "tilt": 0.01834862385321101,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.05625,
+      "first_writer": 0.05625,
+      "markov": 0.0,
+      "tilt": 0.00175,
+      "overlap": 0.00025,
+      "base": 0.0
+     },
+     "obs_dis": 0.05275
+    },
+    {
+     "cell": "a0.1_s2",
+     "eps": 0.029041666666666667,
+     "ll_per_item": {
+      "last_writer": -0.23803066833757125,
+      "first_writer": -0.23435330657569522,
+      "markov": -0.26744956243257956,
+      "tilt": -0.25326545277962914,
+      "overlap": -0.238556005732125,
+      "base": -0.26744956243257956
+     },
+     "ll_order": {
+      "last_writer": -0.9455538714887189,
+      "first_writer": -0.9455538714887189,
+      "markov": -1.7842477106346517,
+      "tilt": -1.7764337114454851,
+      "overlap": -1.751601975767161,
+      "base": -1.7842477106346517
+     },
+     "acc": {
+      "last_writer": 0.950375,
+      "first_writer": 0.9512499999999999,
+      "markov": 0.943375,
+      "tilt": 0.94675,
+      "overlap": 0.95025,
+      "base": 0.943375
+     },
+     "flip_f1": {
+      "last_writer": 0.4612159329140461,
+      "first_writer": 0.4612159329140461,
+      "markov": 0.0,
+      "tilt": 0.009345794392523364,
+      "overlap": 0.03686635944700461,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.06625,
+      "first_writer": 0.06625,
+      "markov": 0.0,
+      "tilt": 0.0005,
+      "overlap": 0.00125,
+      "base": 0.0
+     },
+     "obs_dis": 0.053
+    },
+    {
+     "cell": "a0.25_s0",
+     "eps": 0.038375,
+     "ll_per_item": {
+      "last_writer": -0.23582758540873042,
+      "first_writer": -0.2113628008060324,
+      "markov": -0.2681211010842918,
+      "tilt": -0.2588244829352666,
+      "overlap": -0.216745053418626,
+      "base": -0.2681211010842918
+     },
+     "ll_order": {
+      "last_writer": -0.9110665583449018,
+      "first_writer": -0.9110665583449018,
+      "markov": -1.6497398951389075,
+      "tilt": -1.6367433017285566,
+      "overlap": -1.613633365927143,
+      "base": -1.6497398951389075
+     },
+     "acc": {
+      "last_writer": 0.94975,
+      "first_writer": 0.956,
+      "markov": 0.9415,
+      "tilt": 0.943875,
+      "overlap": 0.9546250000000001,
+      "base": 0.9415
+     },
+     "flip_f1": {
+      "last_writer": 0.46875,
+      "first_writer": 0.46875,
+      "markov": 0.0,
+      "tilt": 0.01818181818181818,
+      "overlap": 0.04504504504504504,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.05875,
+      "first_writer": 0.05875,
+      "markov": 0.0,
+      "tilt": 0.00175,
+      "overlap": 0.00225,
+      "base": 0.0
+     },
+     "obs_dis": 0.05325
+    },
+    {
+     "cell": "a0.25_s1",
+     "eps": 0.03912499999999999,
+     "ll_per_item": {
+      "last_writer": -0.23559600174612938,
+      "first_writer": -0.22342653343560148,
+      "markov": -0.27648541526950304,
+      "tilt": -0.26139527456444855,
+      "overlap": -0.22878109949223377,
+      "base": -0.27648541526950304
+     },
+     "ll_order": {
+      "last_writer": -0.9986462609819496,
+      "first_writer": -0.9986462609819496,
+      "markov": -1.6404522907173305,
+      "tilt": -1.634894589744951,
+      "overlap": -1.6336316691720385,
+      "base": -1.6404522907173305
+     },
+     "acc": {
+      "last_writer": 0.94975,
+      "first_writer": 0.952875,
+      "markov": 0.93925,
+      "tilt": 0.943125,
+      "overlap": 0.9515,
+      "base": 0.93925
+     },
+     "flip_f1": {
+      "last_writer": 0.4037122969837587,
+      "first_writer": 0.4037122969837587,
+      "markov": 0.0,
+      "tilt": 0.00975609756097561,
+      "overlap": 0.009900990099009901,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.05825,
+      "first_writer": 0.05825,
+      "markov": 0.0,
+      "tilt": 0.00175,
+      "overlap": 0.001,
+      "base": 0.0
+     },
+     "obs_dis": 0.0495
+    },
+    {
+     "cell": "a0.25_s2",
+     "eps": 0.035625000000000004,
+     "ll_per_item": {
+      "last_writer": -0.2448350985905888,
+      "first_writer": -0.25581194294458237,
+      "markov": -0.26728773476921197,
+      "tilt": -0.2657908923573038,
+      "overlap": -0.27277615694620877,
+      "base": -0.26728773476921197
+     },
+     "ll_order": {
+      "last_writer": -0.8060390202257808,
+      "first_writer": -0.8060390202257808,
+      "markov": -1.6854913481290172,
+      "tilt": -1.679330852837003,
+      "overlap": -1.620591450358522,
+      "base": -1.6854913481290172
+     },
+     "acc": {
+      "last_writer": 0.94775,
+      "first_writer": 0.9450000000000001,
+      "markov": 0.942125,
+      "tilt": 0.9425,
+      "overlap": 0.94075,
+      "base": 0.942125
+     },
+     "flip_f1": {
+      "last_writer": 0.45136186770428016,
+      "first_writer": 0.45136186770428016,
+      "markov": 0.0,
+      "tilt": 0.00980392156862745,
+      "overlap": 0.0761904761904762,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.079,
+      "first_writer": 0.079,
+      "markov": 0.0,
+      "tilt": 0.0015,
+      "overlap": 0.003,
+      "base": 0.0
+     },
+     "obs_dis": 0.0495
+    },
+    {
+     "cell": "a0.5_s0",
+     "eps": 0.042666666666666665,
+     "ll_per_item": {
+      "last_writer": -0.23427316492840516,
+      "first_writer": -0.2323712245050009,
+      "markov": -0.27278745850234065,
+      "tilt": -0.2723119733964896,
+      "overlap": -0.2433073819395752,
+      "base": -0.27278745850234065
+     },
+     "ll_order": {
+      "last_writer": -0.7603541496429342,
+      "first_writer": -0.7603541496429342,
+      "markov": -1.5989704706063803,
+      "tilt": -1.5653344969864487,
+      "overlap": -1.5361257301672138,
+      "base": -1.5989704706063803
+     },
+     "acc": {
+      "last_writer": 0.949875,
+      "first_writer": 0.950375,
+      "markov": 0.93975,
+      "tilt": 0.939875,
+      "overlap": 0.9475,
+      "base": 0.93975
+     },
+     "flip_f1": {
+      "last_writer": 0.5114345114345115,
+      "first_writer": 0.5114345114345115,
+      "markov": 0.0,
+      "tilt": 0.044444444444444446,
+      "overlap": 0.07860262008733625,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.067,
+      "first_writer": 0.067,
+      "markov": 0.0,
+      "tilt": 0.003,
+      "overlap": 0.004,
+      "base": 0.0
+     },
+     "obs_dis": 0.05325
+    },
+    {
+     "cell": "a0.5_s1",
+     "eps": 0.04525,
+     "ll_per_item": {
+      "last_writer": -0.24792723159400692,
+      "first_writer": -0.23108645842966855,
+      "markov": -0.2825443764318135,
+      "tilt": -0.2755273876133392,
+      "overlap": -0.23997464426640266,
+      "base": -0.2825443764318135
+     },
+     "ll_order": {
+      "last_writer": -0.813593582032826,
+      "first_writer": -0.813593582032826,
+      "markov": -1.5709291808563568,
+      "tilt": -1.5573661497521716,
+      "overlap": -1.5481830220793444,
+      "base": -1.5709291808563568
+     },
+     "acc": {
+      "last_writer": 0.946125,
+      "first_writer": 0.950625,
+      "markov": 0.936875,
+      "tilt": 0.93875,
+      "overlap": 0.94825,
+      "base": 0.936875
+     },
+     "flip_f1": {
+      "last_writer": 0.4517543859649123,
+      "first_writer": 0.4517543859649123,
+      "markov": 0.0,
+      "tilt": 0.020100502512562814,
+      "overlap": 0.030456852791878174,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.06625,
+      "first_writer": 0.06625,
+      "markov": 0.0,
+      "tilt": 0.002,
+      "overlap": 0.0015,
+      "base": 0.0
+     },
+     "obs_dis": 0.04775
+    },
+    {
+     "cell": "a0.5_s2",
+     "eps": 0.04070833333333333,
+     "ll_per_item": {
+      "last_writer": -0.27128984443999365,
+      "first_writer": -0.2708082307495234,
+      "markov": -0.289591164677861,
+      "tilt": -0.266955321225762,
+      "overlap": -0.299705052177735,
+      "base": -0.289591164677861
+     },
+     "ll_order": {
+      "last_writer": -0.8554797984574595,
+      "first_writer": -0.8554797984574595,
+      "markov": -1.621441285686506,
+      "tilt": -1.5783860995927486,
+      "overlap": -1.587159908838226,
+      "base": -1.621441285686506
+     },
+     "acc": {
+      "last_writer": 0.940375,
+      "first_writer": 0.9404999999999999,
+      "markov": 0.9356249999999999,
+      "tilt": 0.9415,
+      "overlap": 0.933,
+      "base": 0.9356249999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.40852575488454707,
+      "first_writer": 0.40852575488454707,
+      "markov": 0.0,
+      "tilt": 0.05429864253393665,
+      "overlap": 0.04484304932735426,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.08825,
+      "first_writer": 0.08825,
+      "markov": 0.0,
+      "tilt": 0.00275,
+      "overlap": 0.00325,
+      "base": 0.0
+     },
+     "obs_dis": 0.0525
+    },
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.05083333333333333,
+     "ll_per_item": {
+      "last_writer": -0.2639513601991878,
+      "first_writer": -0.2838623462382738,
+      "markov": -0.3055834219172767,
+      "tilt": -0.3123712580669651,
+      "overlap": -0.2865774806981492,
+      "base": -0.3055834219172767
+     },
+     "ll_order": {
+      "last_writer": -0.9312598975527833,
+      "first_writer": -0.9312598975527833,
+      "markov": -1.515686921965845,
+      "tilt": -1.490848365346856,
+      "overlap": -1.4671932448866027,
+      "base": -1.515686921965845
+     },
+     "acc": {
+      "last_writer": 0.9415,
+      "first_writer": 0.9359999999999999,
+      "markov": 0.9299999999999999,
+      "tilt": 0.928125,
+      "overlap": 0.9352499999999999,
+      "base": 0.9299999999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.445993031358885,
+      "first_writer": 0.445993031358885,
+      "markov": 0.0,
+      "tilt": 0.033783783783783786,
+      "overlap": 0.06557377049180328,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.071,
+      "first_writer": 0.071,
+      "markov": 0.0,
+      "tilt": 0.0015,
+      "overlap": 0.00375,
+      "base": 0.0
+     },
+     "obs_dis": 0.0725
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.05154166666666667,
+     "ll_per_item": {
+      "last_writer": -0.2688023901453455,
+      "first_writer": -0.2688023901453455,
+      "markov": -0.3152244193059991,
+      "tilt": -0.31567511861823844,
+      "overlap": -0.266999592896388,
+      "base": -0.3152244193059991
+     },
+     "ll_order": {
+      "last_writer": -0.840644619597415,
+      "first_writer": -0.840644619597415,
+      "markov": -1.5091410782601444,
+      "tilt": -1.499876257297686,
+      "overlap": -1.4942654648904443,
+      "base": -1.5091410782601444
+     },
+     "acc": {
+      "last_writer": 0.940125,
+      "first_writer": 0.940125,
+      "markov": 0.92725,
+      "tilt": 0.927125,
+      "overlap": 0.940625,
+      "base": 0.92725
+     },
+     "flip_f1": {
+      "last_writer": 0.4844290657439446,
+      "first_writer": 0.4844290657439446,
+      "markov": 0.0,
+      "tilt": 0.014084507042253521,
+      "overlap": 0.02112676056338028,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.07475,
+      "first_writer": 0.07475,
+      "markov": 0.0,
+      "tilt": 0.00125,
+      "overlap": 0.00125,
+      "base": 0.0
+     },
+     "obs_dis": 0.06975
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.050124999999999996,
+     "ll_per_item": {
+      "last_writer": -0.3058719204268093,
+      "first_writer": -0.2708854526420488,
+      "markov": -0.3045088112923381,
+      "tilt": -0.29496704735103974,
+      "overlap": -0.3185942723485403,
+      "base": -0.3045088112923381
+     },
+     "ll_order": {
+      "last_writer": -0.7850593218020497,
+      "first_writer": -0.7850593218020497,
+      "markov": -1.522330137673796,
+      "tilt": -1.4891435740394612,
+      "overlap": -1.4944136609240088,
+      "base": -1.522330137673796
+     },
+     "acc": {
+      "last_writer": 0.93,
+      "first_writer": 0.9396249999999999,
+      "markov": 0.930375,
+      "tilt": 0.933,
+      "overlap": 0.9265,
+      "base": 0.930375
+     },
+     "flip_f1": {
+      "last_writer": 0.44552845528455287,
+      "first_writer": 0.44552845528455287,
+      "markov": 0.0,
+      "tilt": 0.04669260700389105,
+      "overlap": 0.03937007874015748,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.093,
+      "first_writer": 0.093,
+      "markov": 0.0,
+      "tilt": 0.0035,
+      "overlap": 0.00275,
+      "base": 0.0
+     },
+     "obs_dis": 0.06075
+    },
+    {
+     "cell": "a2.0_s0",
+     "eps": 0.06924999999999999,
+     "ll_per_item": {
+      "last_writer": -0.3326091850277526,
+      "first_writer": -0.32561492868773134,
+      "markov": -0.3441291366466113,
+      "tilt": -0.3511233929866326,
+      "overlap": -0.3609976372313686,
+      "base": -0.3441291366466113
+     },
+     "ll_order": {
+      "last_writer": -0.9348745319808914,
+      "first_writer": -0.9348745319808914,
+      "markov": -1.3708983500719998,
+      "tilt": -1.3592012823627784,
+      "overlap": -1.3584940783432669,
+      "base": -1.3708983500719998
+     },
+     "acc": {
+      "last_writer": 0.92075,
+      "first_writer": 0.922875,
+      "markov": 0.9172499999999999,
+      "tilt": 0.915125,
+      "overlap": 0.9121250000000001,
+      "base": 0.9172499999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.37790697674418605,
+      "first_writer": 0.37790697674418605,
+      "markov": 0.0,
+      "tilt": 0.023391812865497075,
+      "overlap": 0.023529411764705882,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.0905,
+      "first_writer": 0.0905,
+      "markov": 0.0,
+      "tilt": 0.004,
+      "overlap": 0.0035,
+      "base": 0.0
+     },
+     "obs_dis": 0.0815
+    },
+    {
+     "cell": "a2.0_s1",
+     "eps": 0.072125,
+     "ll_per_item": {
+      "last_writer": -0.4134250864563352,
+      "first_writer": -0.35577941466557855,
+      "markov": -0.3829784288203722,
+      "tilt": -0.43859432343539806,
+      "overlap": -0.4191084625483817,
+      "base": -0.3829784288203722
+     },
+     "ll_order": {
+      "last_writer": -0.846070610902889,
+      "first_writer": -0.846070610902889,
+      "markov": -1.35210640384915,
+      "tilt": -1.3167748196351445,
+      "overlap": -1.3353827030177172,
+      "base": -1.35210640384915
+     },
+     "acc": {
+      "last_writer": 0.89575,
+      "first_writer": 0.9135,
+      "markov": 0.905125,
+      "tilt": 0.888,
+      "overlap": 0.894,
+      "base": 0.905125
+     },
+     "flip_f1": {
+      "last_writer": 0.4697986577181208,
+      "first_writer": 0.4697986577181208,
+      "markov": 0.0,
+      "tilt": 0.05508474576271186,
+      "overlap": 0.029723991507430998,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.1095,
+      "first_writer": 0.1095,
+      "markov": 0.0,
+      "tilt": 0.004,
+      "overlap": 0.00375,
+      "base": 0.0
+     },
+     "obs_dis": 0.114
+    },
+    {
+     "cell": "a2.0_s2",
+     "eps": 0.07654166666666667,
+     "ll_per_item": {
+      "last_writer": -0.3593741782068413,
+      "first_writer": -0.3442528495778449,
+      "markov": -0.3617617564114197,
+      "tilt": -0.3665369128205764,
+      "overlap": -0.37210792863125924,
+      "base": -0.3617617564114197
+     },
+     "ll_order": {
+      "last_writer": -0.8745096970515407,
+      "first_writer": -0.8745096970515407,
+      "markov": -1.324774811342683,
+      "tilt": -1.305889552477254,
+      "overlap": -1.3011347004030063,
+      "base": -1.324774811342683
+     },
+     "acc": {
+      "last_writer": 0.9121250000000001,
+      "first_writer": 0.9168750000000001,
+      "markov": 0.911375,
+      "tilt": 0.909875,
+      "overlap": 0.9081250000000001,
+      "base": 0.911375
+     },
+     "flip_f1": {
+      "last_writer": 0.40932642487046633,
+      "first_writer": 0.40932642487046633,
+      "markov": 0.0,
+      "tilt": 0.03598971722365039,
+      "overlap": 0.04145077720207254,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.101,
+      "first_writer": 0.101,
+      "markov": 0.0,
+      "tilt": 0.00525,
+      "overlap": 0.0045,
+      "base": 0.0
+     },
+     "obs_dis": 0.092
+    }
+   ]
+  },
+  "base_weighted": {
+   "posterior_composite": {
+    "last_writer": 0.99997462264595,
+    "first_writer": 2.5206560810460115e-05,
+    "markov": 5.931036271442549e-13,
+    "tilt": 1.5443776804868477e-17,
+    "overlap": 1.707920532481329e-07,
+    "base": 5.931036271442549e-13
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 4.7170680212602434e-207,
+    "tilt": 2.2235180890308855e-193,
+    "overlap": 1.563857049823326e-196,
+    "base": 4.7170680212602434e-207
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 0.992471403974409,
+     "first_writer": 0.002342294880838888,
+     "markov": 0.0003218341419998368,
+     "tilt": 3.4460755132718797e-06,
+     "overlap": 0.004539186785239226,
+     "base": 0.0003218341419998368
+    },
+    {
+     "last_writer": 0.9965783362150257,
+     "first_writer": 0.00283311538992146,
+     "markov": 8.973014545827116e-08,
+     "tilt": 4.8906094254772523e-11,
+     "overlap": 0.0005883688858558352,
+     "base": 8.973014545827116e-08
+    },
+    {
+     "last_writer": 0.9999942113370478,
+     "first_writer": 4.359440924907835e-06,
+     "markov": 1.5126665675075806e-10,
+     "tilt": 4.768019241507232e-14,
+     "overlap": 1.4289194466051534e-06,
+     "base": 1.5126665675075806e-10
+    },
+    {
+     "last_writer": 0.99997462264595,
+     "first_writer": 2.5206560810460115e-05,
+     "markov": 5.931036271442549e-13,
+     "tilt": 1.5443776804868477e-17,
+     "overlap": 1.707920532481329e-07,
+     "base": 5.931036271442549e-13
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 1.8578359271378684e-49,
+     "tilt": 4.132491926208064e-48,
+     "overlap": 1.081543747921611e-47,
+     "base": 1.8578359271378684e-49
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 1.8952939639706908e-105,
+     "tilt": 2.2374640748487357e-101,
+     "overlap": 1.6140350874151027e-100,
+     "base": 1.8952939639706908e-105
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.9041707175539836e-146,
+     "tilt": 2.336460273005524e-139,
+     "overlap": 8.735717214947744e-140,
+     "base": 3.9041707175539836e-146
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 4.7170680212602434e-207,
+     "tilt": 2.2235180890308855e-193,
+     "overlap": 1.563857049823326e-196,
+     "base": 4.7170680212602434e-207
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a0.5_s0",
+     "eps": 0.043625,
+     "ll_per_item": {
+      "last_writer": -0.20103027623513142,
+      "first_writer": -0.23127561139984637,
+      "markov": -0.2411998620007685,
+      "tilt": -0.26388386337430475,
+      "overlap": -0.22796752786620567,
+      "base": -0.2411998620007685
+     },
+     "ll_order": {
+      "last_writer": -1.030794490715709,
+      "first_writer": -1.030794490715709,
+      "markov": -1.5883650409448336,
+      "tilt": -1.5728547741465777,
+      "overlap": -1.5680443045827823,
+      "base": -1.5883650409448336
+     },
+     "acc": {
+      "last_writer": 0.9586250000000001,
+      "first_writer": 0.950625,
+      "markov": 0.948,
+      "tilt": 0.942,
+      "overlap": 0.9515,
+      "base": 0.948
+     },
+     "flip_f1": {
+      "last_writer": 0.34502923976608185,
+      "first_writer": 0.34502923976608185,
+      "markov": 0.0,
+      "tilt": 0.024390243902439025,
+      "overlap": 0.02631578947368421,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.04825,
+      "first_writer": 0.04825,
+      "markov": 0.0,
+      "tilt": 0.00375,
+      "overlap": 0.00075,
+      "base": 0.0
+     },
+     "obs_dis": 0.03725
+    },
+    {
+     "cell": "a0.5_s1",
+     "eps": 0.046125,
+     "ll_per_item": {
+      "last_writer": -0.20495615311999837,
+      "first_writer": -0.2040255719415461,
+      "markov": -0.2459017249718979,
+      "tilt": -0.26079102382713415,
+      "overlap": -0.21519254608297325,
+      "base": -0.2459017249718979
+     },
+     "ll_order": {
+      "last_writer": -0.9171873920699917,
+      "first_writer": -0.9171873920699917,
+      "markov": -1.5618114099968936,
+      "tilt": -1.5304401291227936,
+      "overlap": -1.5253707022520113,
+      "base": -1.5618114099968936
+     },
+     "acc": {
+      "last_writer": 0.957625,
+      "first_writer": 0.957875,
+      "markov": 0.946625,
+      "tilt": 0.942625,
+      "overlap": 0.9548749999999999,
+      "base": 0.946625
+     },
+     "flip_f1": {
+      "last_writer": 0.3323076923076923,
+      "first_writer": 0.3323076923076923,
+      "markov": 0.0,
+      "tilt": 0.04316546762589928,
+      "overlap": 0.047619047619047616,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.05225,
+      "first_writer": 0.05225,
+      "markov": 0.0,
+      "tilt": 0.00575,
+      "overlap": 0.0025,
+      "base": 0.0
+     },
+     "obs_dis": 0.029
+    },
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.049375,
+     "ll_per_item": {
+      "last_writer": -0.23180768850355848,
+      "first_writer": -0.2642087392591844,
+      "markov": -0.2637523864316404,
+      "tilt": -0.2664905033969045,
+      "overlap": -0.26192697512146423,
+      "base": -0.2637523864316404
+     },
+     "ll_order": {
+      "last_writer": -1.061056749020271,
+      "first_writer": -1.061056749020271,
+      "markov": -1.5294733358647152,
+      "tilt": -1.4983314468634905,
+      "overlap": -1.5131303539222358,
+      "base": -1.5294733358647152
+     },
+     "acc": {
+      "last_writer": 0.950375,
+      "first_writer": 0.9415,
+      "markov": 0.9416249999999999,
+      "tilt": 0.940875,
+      "overlap": 0.942125,
+      "base": 0.9416249999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.29314420803782504,
+      "first_writer": 0.29314420803782504,
+      "markov": 0.0,
+      "tilt": 0.04371584699453552,
+      "overlap": 0.022988505747126436,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.0635,
+      "first_writer": 0.0635,
+      "markov": 0.0,
+      "tilt": 0.0035,
+      "overlap": 0.00125,
+      "base": 0.0
+     },
+     "obs_dis": 0.04225
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.047375,
+     "ll_per_item": {
+      "last_writer": -0.23232407099075147,
+      "first_writer": -0.2235501705990353,
+      "markov": -0.2600311248593288,
+      "tilt": -0.2724992991001885,
+      "overlap": -0.2429451083070394,
+      "base": -0.2600311248593288
+     },
+     "ll_order": {
+      "last_writer": -0.8477545380653739,
+      "first_writer": -0.8477545380653739,
+      "markov": -1.5490972812877015,
+      "tilt": -1.4697002452433297,
+      "overlap": -1.5010796881577948,
+      "base": -1.5490972812877015
+     },
+     "acc": {
+      "last_writer": 0.95025,
+      "first_writer": 0.952625,
+      "markov": 0.94275,
+      "tilt": 0.9393750000000001,
+      "overlap": 0.947375,
+      "base": 0.94275
+     },
+     "flip_f1": {
+      "last_writer": 0.2977667493796526,
+      "first_writer": 0.2977667493796526,
+      "markov": 0.0,
+      "tilt": 0.09090909090909091,
+      "overlap": 0.06153846153846154,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.07225,
+      "first_writer": 0.07225,
+      "markov": 0.0,
+      "tilt": 0.01,
+      "overlap": 0.004,
+      "base": 0.0
+     },
+     "obs_dis": 0.0285
+    }
+   ]
+  },
+  "tiny_strength": {
+   "posterior_composite": {
+    "last_writer": 1.2016430139611783e-64,
+    "first_writer": 4.0278808397957864e-86,
+    "markov": 8.75836706794183e-137,
+    "tilt": 1.0,
+    "overlap": 2.7403966693106865e-34,
+    "base": 8.75836706794183e-137
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 0.0,
+    "tilt": 0.0,
+    "overlap": 0.0,
+    "base": 0.0
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 3.5828542436375795e-18,
+     "first_writer": 2.0510638519468246e-18,
+     "markov": 5.6086336915204456e-36,
+     "tilt": 0.008651703040215763,
+     "overlap": 0.9913482969597842,
+     "base": 5.6086336915204456e-36
+    },
+    {
+     "last_writer": 1.0887741493293101e-23,
+     "first_writer": 2.9170184871066503e-18,
+     "markov": 1.2087837029659907e-41,
+     "tilt": 7.108934243261694e-05,
+     "overlap": 0.9999289106575673,
+     "base": 1.2087837029659907e-41
+    },
+    {
+     "last_writer": 8.0018562619314e-31,
+     "first_writer": 5.1182100247845947e-23,
+     "markov": 4.821631562987607e-54,
+     "tilt": 3.235812295161146e-14,
+     "overlap": 0.9999999999999676,
+     "base": 4.821631562987607e-54
+    },
+    {
+     "last_writer": 3.2952528135252686e-41,
+     "first_writer": 1.8415873577894442e-37,
+     "markov": 4.1230980619948076e-79,
+     "tilt": 4.39489675899217e-09,
+     "overlap": 0.9999999956051033,
+     "base": 4.1230980619948076e-79
+    },
+    {
+     "last_writer": 2.290745083184846e-44,
+     "first_writer": 4.155116174013362e-36,
+     "markov": 1.2703425379399591e-83,
+     "tilt": 6.213344551629914e-09,
+     "overlap": 0.9999999937866555,
+     "base": 1.2703425379399591e-83
+    },
+    {
+     "last_writer": 8.181412982387828e-47,
+     "first_writer": 4.4365539774714596e-39,
+     "markov": 2.8950813022296355e-90,
+     "tilt": 7.925534115703932e-14,
+     "overlap": 0.9999999999999207,
+     "base": 2.8950813022296355e-90
+    },
+    {
+     "last_writer": 4.658493843689443e-49,
+     "first_writer": 4.952589596058224e-50,
+     "markov": 4.845637395218146e-104,
+     "tilt": 0.020148611834121408,
+     "overlap": 0.9798513881658785,
+     "base": 4.845637395218146e-104
+    },
+    {
+     "last_writer": 1.0126249704874233e-50,
+     "first_writer": 2.1893953129352756e-48,
+     "markov": 1.4635095634563681e-108,
+     "tilt": 0.03947718042342757,
+     "overlap": 0.9605228195765725,
+     "base": 1.4635095634563681e-108
+    },
+    {
+     "last_writer": 7.437849978509538e-53,
+     "first_writer": 3.656898872158449e-51,
+     "markov": 4.020077336876709e-108,
+     "tilt": 0.9999999833881181,
+     "overlap": 1.6611881890242717e-08,
+     "base": 4.020077336876709e-108
+    },
+    {
+     "last_writer": 1.0347681627666598e-61,
+     "first_writer": 1.2743676851100705e-73,
+     "markov": 6.14992019782426e-124,
+     "tilt": 1.0,
+     "overlap": 1.9785115156705366e-26,
+     "base": 6.14992019782426e-124
+    },
+    {
+     "last_writer": 1.2453525608034825e-60,
+     "first_writer": 6.041711346780877e-74,
+     "markov": 3.98451342391705e-125,
+     "tilt": 1.0,
+     "overlap": 1.2029531961025434e-26,
+     "base": 3.98451342391705e-125
+    },
+    {
+     "last_writer": 1.2016430139611783e-64,
+     "first_writer": 4.0278808397957864e-86,
+     "markov": 8.75836706794183e-137,
+     "tilt": 1.0,
+     "overlap": 2.7403966693106865e-34,
+     "base": 8.75836706794183e-137
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 4.714276593375163e-50,
+     "tilt": 4.714276593375163e-50,
+     "overlap": 3.793096730122268e-50,
+     "base": 4.714276593375163e-50
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 8.108508139631931e-107,
+     "tilt": 4.554471950171904e-107,
+     "overlap": 6.524088076169936e-107,
+     "base": 8.108508139631931e-107
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 5.983100165056453e-157,
+     "tilt": 3.3606504929839604e-157,
+     "overlap": 3.45252219528679e-157,
+     "base": 5.983100165056453e-157
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 2.1033547637158212e-210,
+     "tilt": 1.2625085495449206e-208,
+     "overlap": 7.895306511042848e-211,
+     "base": 2.1033547637158212e-210
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.892955130216202e-257,
+     "tilt": 1.743120358209866e-255,
+     "overlap": 1.4612881534304172e-257,
+     "base": 3.892955130216202e-257
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 5e-324,
+     "tilt": 2.08e-322,
+     "overlap": 0.0,
+     "base": 5e-324
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 0.0,
+     "tilt": 0.0,
+     "overlap": 0.0,
+     "base": 0.0
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a0.1_s0",
+     "eps": 0.1095,
+     "ll_per_item": {
+      "last_writer": -0.4130012869269465,
+      "first_writer": -0.4157902926609796,
+      "markov": -0.6179932083783797,
+      "tilt": -0.23589942281584433,
+      "overlap": -0.21219287407656293,
+      "base": -0.6179932083783797
+     },
+     "ll_order": {
+      "last_writer": -0.5994738930316429,
+      "first_writer": -0.5994738930316429,
+      "markov": -1.163901452989001,
+      "tilt": -1.163901452989001,
+      "overlap": -1.1649885165540805,
+      "base": -1.163901452989001
+     },
+     "acc": {
+      "last_writer": 0.8935,
+      "first_writer": 0.8925000000000001,
+      "markov": 0.82,
+      "tilt": 0.957,
+      "overlap": 0.9655,
+      "base": 0.82
+     },
+     "flip_f1": {
+      "last_writer": 0.2175732217573222,
+      "first_writer": 0.2175732217573222,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.203,
+      "first_writer": 0.203,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.001,
+      "base": 0.0
+     },
+     "obs_dis": 0.036
+    },
+    {
+     "cell": "a0.1_s1",
+     "eps": 0.060500000000000005,
+     "ll_per_item": {
+      "last_writer": -0.24794344838495724,
+      "first_writer": -0.18266226733180052,
+      "markov": -0.2496613742021456,
+      "tilt": -0.20843115458962555,
+      "overlap": -0.18438019314898887,
+      "base": -0.2496613742021456
+     },
+     "ll_order": {
+      "last_writer": -0.7802345276354039,
+      "first_writer": -0.7802345276354039,
+      "markov": -1.4337596870369793,
+      "tilt": -1.436643708544673,
+      "overlap": -1.4337596870369793,
+      "base": -1.4337596870369793
+     },
+     "acc": {
+      "last_writer": 0.946,
+      "first_writer": 0.965,
+      "markov": 0.9455,
+      "tilt": 0.9575,
+      "overlap": 0.9644999999999999,
+      "base": 0.9455
+     },
+     "flip_f1": {
+      "last_writer": 0.4716981132075472,
+      "first_writer": 0.4716981132075472,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.057,
+      "first_writer": 0.057,
+      "markov": 0.0,
+      "tilt": 0.002,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "obs_dis": 0.049
+    },
+    {
+     "cell": "a0.1_s2",
+     "eps": 0.0385,
+     "ll_per_item": {
+      "last_writer": -0.21329947989443188,
+      "first_writer": -0.1859225953643666,
+      "markov": -0.273919724211005,
+      "tilt": -0.23872087267234962,
+      "overlap": -0.13116882630423604,
+      "base": -0.273919724211005
+     },
+     "ll_order": {
+      "last_writer": -1.07101272736165,
+      "first_writer": -1.07101272736165,
+      "markov": -1.6481788758208507,
+      "tilt": -1.6481788758208507,
+      "overlap": -1.64984098135997,
+      "base": -1.6481788758208507
+     },
+     "acc": {
+      "last_writer": 0.9555,
+      "first_writer": 0.9625,
+      "markov": 0.94,
+      "tilt": 0.949,
+      "overlap": 0.9764999999999999,
+      "base": 0.94
+     },
+     "flip_f1": {
+      "last_writer": 0.2857142857142857,
+      "first_writer": 0.2857142857142857,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.059,
+      "first_writer": 0.059,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.001,
+      "base": 0.0
+     },
+     "obs_dis": 0.032
+    },
+    {
+     "cell": "a0.25_s0",
+     "eps": 0.11349999999999999,
+     "ll_per_item": {
+      "last_writer": -0.41870001687094793,
+      "first_writer": -0.4654266498465447,
+      "markov": -0.5877404832238422,
+      "tilt": -0.24003936137601908,
+      "overlap": -0.29913480896280326,
+      "base": -0.5877404832238422
+     },
+     "ll_order": {
+      "last_writer": -0.5328012217244856,
+      "first_writer": -0.5328012217244856,
+      "markov": -1.1482132977642772,
+      "tilt": -1.1248555899393589,
+      "overlap": -1.1503633796561106,
+      "base": -1.1482132977642772
+     },
+     "acc": {
+      "last_writer": 0.8915,
+      "first_writer": 0.8745,
+      "markov": 0.83,
+      "tilt": 0.9564999999999999,
+      "overlap": 0.935,
+      "base": 0.83
+     },
+     "flip_f1": {
+      "last_writer": 0.26217228464419473,
+      "first_writer": 0.26217228464419473,
+      "markov": 0.0,
+      "tilt": 0.044444444444444446,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.223,
+      "first_writer": 0.223,
+      "markov": 0.0,
+      "tilt": 0.001,
+      "overlap": 0.002,
+      "base": 0.0
+     },
+     "obs_dis": 0.044
+    },
+    {
+     "cell": "a0.25_s1",
+     "eps": 0.059000000000000004,
+     "ll_per_item": {
+      "last_writer": -0.24086488896121694,
+      "first_writer": -0.18892659581762286,
+      "markov": -0.2564463769042952,
+      "tilt": -0.20277680732258127,
+      "overlap": -0.2045080837607011,
+      "base": -0.2564463769042952
+     },
+     "ll_order": {
+      "last_writer": -0.9074856652139733,
+      "first_writer": -0.9074856652139733,
+      "markov": -1.4455149872365871,
+      "tilt": -1.446980281255465,
+      "overlap": -1.4455149872365871,
+      "base": -1.4455149872365871
+     },
+     "acc": {
+      "last_writer": 0.948,
+      "first_writer": 0.963,
+      "markov": 0.9435,
+      "tilt": 0.959,
+      "overlap": 0.9584999999999999,
+      "base": 0.9435
+     },
+     "flip_f1": {
+      "last_writer": 0.4339622641509434,
+      "first_writer": 0.4339622641509434,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.051,
+      "first_writer": 0.051,
+      "markov": 0.0,
+      "tilt": 0.001,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "obs_dis": 0.055
+    },
+    {
+     "cell": "a0.25_s2",
+     "eps": 0.0345,
+     "ll_per_item": {
+      "last_writer": -0.21220187128278067,
+      "first_writer": -0.21823912222036745,
+      "markov": -0.260499878783475,
+      "tilt": -0.24037570899151905,
+      "overlap": -0.18402803357404227,
+      "base": -0.260499878783475
+     },
+     "ll_order": {
+      "last_writer": -0.9305462378319459,
+      "first_writer": -0.9305462378319459,
+      "markov": -1.7009525660291953,
+      "tilt": -1.7009525660291953,
+      "overlap": -1.7026788286083825,
+      "base": -1.7009525660291953
+     },
+     "acc": {
+      "last_writer": 0.956,
+      "first_writer": 0.9545,
+      "markov": 0.944,
+      "tilt": 0.949,
+      "overlap": 0.963,
+      "base": 0.944
+     },
+     "flip_f1": {
+      "last_writer": 0.34951456310679613,
+      "first_writer": 0.34951456310679613,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.068,
+      "first_writer": 0.068,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.001,
+      "base": 0.0
+     },
+     "obs_dis": 0.035
+    },
+    {
+     "cell": "a0.5_s0",
+     "eps": 0.11750000000000001,
+     "ll_per_item": {
+      "last_writer": -0.41355479338559425,
+      "first_writer": -0.5138050959095721,
+      "markov": -0.5463187075389704,
+      "tilt": -0.25640567051016966,
+      "overlap": -0.3878148508456541,
+      "base": -0.5463187075389704
+     },
+     "ll_order": {
+      "last_writer": -0.4641867915136701,
+      "first_writer": -0.4641867915136701,
+      "markov": -1.1331567177863042,
+      "tilt": -1.1168448786837222,
+      "overlap": -1.1363674191481248,
+      "base": -1.1331567177863042
+     },
+     "acc": {
+      "last_writer": 0.8935,
+      "first_writer": 0.8565,
+      "markov": 0.8445,
+      "tilt": 0.9515,
+      "overlap": 0.903,
+      "base": 0.8445
+     },
+     "flip_f1": {
+      "last_writer": 0.3389830508474576,
+      "first_writer": 0.3389830508474576,
+      "markov": 0.0,
+      "tilt": 0.03333333333333333,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.237,
+      "first_writer": 0.237,
+      "markov": 0.0,
+      "tilt": 0.002,
+      "overlap": 0.003,
+      "base": 0.0
+     },
+     "obs_dis": 0.058
+    },
+    {
+     "cell": "a0.5_s1",
+     "eps": 0.059,
+     "ll_per_item": {
+      "last_writer": -0.2408648889612169,
+      "first_writer": -0.2027768073225812,
+      "markov": -0.27375914128549317,
+      "tilt": -0.21835829526565945,
+      "overlap": -0.22182084814189906,
+      "base": -0.27375914128549317
+     },
+     "ll_order": {
+      "last_writer": -0.8709548066362061,
+      "first_writer": -0.8709548066362061,
+      "markov": -1.4455149872365873,
+      "tilt": -1.4484643010765017,
+      "overlap": -1.4455149872365873,
+      "base": -1.4455149872365873
+     },
+     "acc": {
+      "last_writer": 0.948,
+      "first_writer": 0.959,
+      "markov": 0.9385,
+      "tilt": 0.9544999999999999,
+      "overlap": 0.9535,
+      "base": 0.9385
+     },
+     "flip_f1": {
+      "last_writer": 0.47368421052631576,
+      "first_writer": 0.47368421052631576,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.053,
+      "first_writer": 0.053,
+      "markov": 0.0,
+      "tilt": 0.002,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "obs_dis": 0.061
+    },
+    {
+     "cell": "a0.5_s2",
+     "eps": 0.047,
+     "ll_per_item": {
+      "last_writer": -0.25918940083066805,
+      "first_writer": -0.2665946297956762,
+      "markov": -0.2295684849706353,
+      "tilt": -0.21846064152312306,
+      "overlap": -0.32398515427448954,
+      "base": -0.2295684849706353
+     },
+     "ll_order": {
+      "last_writer": -0.715154661788244,
+      "first_writer": -0.715154661788244,
+      "markov": -1.5528740263000065,
+      "tilt": -1.5528740263000065,
+      "overlap": -1.5544546288745569,
+      "base": -1.5528740263000065
+     },
+     "acc": {
+      "last_writer": 0.943,
+      "first_writer": 0.9410000000000001,
+      "markov": 0.951,
+      "tilt": 0.954,
+      "overlap": 0.9255,
+      "base": 0.951
+     },
+     "flip_f1": {
+      "last_writer": 0.4195804195804196,
+      "first_writer": 0.4195804195804196,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.095,
+      "first_writer": 0.095,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.001,
+      "base": 0.0
+     },
+     "obs_dis": 0.048
+    },
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.15,
+     "ll_per_item": {
+      "last_writer": -0.4198602425082685,
+      "first_writer": -0.5764500037269179,
+      "markov": -0.49997593429455417,
+      "tilt": -0.31789481659845037,
+      "overlap": -0.5242534166540347,
+      "base": -0.49997593429455417
+     },
+     "ll_order": {
+      "last_writer": -0.4530055931615552,
+      "first_writer": -0.4530055931615552,
+      "markov": -1.0298194571918282,
+      "tilt": -0.9917085203699035,
+      "overlap": -1.000528446745384,
+      "base": -1.0298194571918282
+     },
+     "acc": {
+      "last_writer": 0.8939999999999999,
+      "first_writer": 0.8295,
+      "markov": 0.861,
+      "tilt": 0.9359999999999999,
+      "overlap": 0.851,
+      "base": 0.861
+     },
+     "flip_f1": {
+      "last_writer": 0.41916167664670656,
+      "first_writer": 0.41916167664670656,
+      "markov": 0.0,
+      "tilt": 0.08888888888888889,
+      "overlap": 0.06896551724137931,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.253,
+      "first_writer": 0.253,
+      "markov": 0.0,
+      "tilt": 0.009,
+      "overlap": 0.006,
+      "base": 0.0
+     },
+     "obs_dis": 0.081
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.14250000000000002,
+     "ll_per_item": {
+      "last_writer": -0.3875897777718276,
+      "first_writer": -0.4037606491111213,
+      "markov": -0.41371195455068666,
+      "tilt": -0.40002890957128434,
+      "overlap": -0.40251673593117565,
+      "base": -0.41371195455068666
+     },
+     "ll_order": {
+      "last_writer": -0.8899601863242758,
+      "first_writer": -0.8899601863242758,
+      "markov": -1.051073689607737,
+      "tilt": -1.0400006944174074,
+      "overlap": -1.051073689607737,
+      "base": -1.051073689607737
+     },
+     "acc": {
+      "last_writer": 0.9059999999999999,
+      "first_writer": 0.8995,
+      "markov": 0.8955,
+      "tilt": 0.901,
+      "overlap": 0.8999999999999999,
+      "base": 0.8955
+     },
+     "flip_f1": {
+      "last_writer": 0.30275229357798167,
+      "first_writer": 0.30275229357798167,
+      "markov": 0.0,
+      "tilt": 0.026490066225165563,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.07,
+      "first_writer": 0.07,
+      "markov": 0.0,
+      "tilt": 0.003,
+      "overlap": 0.0,
+      "base": 0.0
+     },
+     "obs_dis": 0.148
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.092,
+     "ll_per_item": {
+      "last_writer": -0.30976701360186587,
+      "first_writer": -0.40371900753840023,
+      "markov": -0.3977538015741758,
+      "tilt": -0.2635366673791268,
+      "overlap": -0.3515234553514367,
+      "base": -0.3977538015741758
+     },
+     "ll_order": {
+      "last_writer": -0.6288899171414859,
+      "first_writer": -0.6288899171414859,
+      "markov": -1.2412388011569697,
+      "tilt": -1.2265628024290707,
+      "overlap": -1.216853085266361,
+      "base": -1.2412388011569697
+     },
+     "acc": {
+      "last_writer": 0.9285,
+      "first_writer": 0.897,
+      "markov": 0.899,
+      "tilt": 0.944,
+      "overlap": 0.9145000000000001,
+      "base": 0.899
+     },
+     "flip_f1": {
+      "last_writer": 0.460093896713615,
+      "first_writer": 0.460093896713615,
+      "markov": 0.0,
+      "tilt": 0.02531645569620253,
+      "overlap": 0.047619047619047616,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.135,
+      "first_writer": 0.135,
+      "markov": 0.0,
+      "tilt": 0.001,
+      "overlap": 0.006,
+      "base": 0.0
+     },
+     "obs_dis": 0.078
+    }
+   ]
+  }
+ }
+}

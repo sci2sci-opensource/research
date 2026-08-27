@@ -1,0 +1,74 @@
+name: papers
+
+on:
+  push:
+    paths:
+      - '**.md'
+      - 'paper-tools/**'
+      - '.github/workflows/papers.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq pandoc zip \
+            texlive-latex-base texlive-latex-recommended texlive-latex-extra
+
+      - name: Build all papers (HTML + PDF)
+        run: python3 paper-tools/build_all.py --html --pdf
+
+      - name: Collect build outputs
+        run: |
+          mkdir -p _out
+          # find built html/pdf directly (they are gitignored, so git listings would miss them);
+          # skip _out itself and any committed results report.html
+          find . -type d -name _out -prune -o -type f \( -name '*.html' -o -name '*.pdf' \) -print \
+            | sed 's|^\./||' \
+            | grep -viE '/results/.*report\.html$' \
+            | while read -r f; do
+                # artifact paths may not contain '*' (and friends); encode as '@'
+                safe="${f//\*/@}"
+                if [ "$safe" != "$f" ]; then
+                  echo "asterisks in repository paths are encoded as '@' in this artifact" > _out/PATHS.txt
+                fi
+                mkdir -p "_out/$(dirname "$safe")"
+                cp "$f" "_out/$safe"
+              done
+          find _out -type f | sort
+          test -n "$(find _out -type f)" || { echo 'no build outputs collected'; exit 1; }
+
+      - name: Package per-paper archives
+        run: |
+          mkdir -p _archives
+          # one zip per paper: the paper's html plus any pdf sharing its stem
+          find _out -type f -name '*.html' \
+            | while read -r html; do
+                stem="${html%.html}"
+                files="$html"
+                for pdf in "$stem".pdf "$stem"-twocol.pdf; do
+                  [ -f "$pdf" ] && files="$files $pdf"
+                done
+                zip -q -j "_archives/$(basename "$stem").zip" $files
+              done
+          # everything together, preserving the repo layout
+          (cd _out && zip -q -r ../_archives/all-papers.zip .)
+          ls -l _archives
+          test -n "$(find _archives -type f)" || { echo 'no archives packaged'; exit 1; }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: papers-${{ github.sha }}
+          path: _out
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper-archives-${{ github.sha }}
+          path: _archives
+          if-no-files-found: error

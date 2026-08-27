@@ -1,0 +1,501 @@
+19:01:07 device=cuda  model=bert-base-uncased
+19:01:17 pools: base=60000 S=6000 [binEH] T=6000 [binU, U=2027] shared=0 eval=4000  mode=disjoint slider=shared
+19:01:18 training base
+19:01:21       step 25 loss 1.0989
+19:01:23       step 50 loss 0.7249
+19:01:25       step 75 loss 0.7344
+19:01:27       step 100 loss 0.6744
+19:01:29       step 125 loss 0.6546
+19:01:32       step 150 loss 0.7228
+19:01:34       step 175 loss 0.4040
+19:01:36       step 200 loss 0.5429
+19:01:39       step 225 loss 0.7389
+19:01:41       step 250 loss 0.7107
+19:01:43       step 275 loss 0.5866
+19:01:45       step 300 loss 0.6695
+19:01:47       step 325 loss 0.5701
+19:01:50       step 350 loss 0.4665
+19:01:52       step 375 loss 0.5589
+19:01:54       step 400 loss 0.6211
+19:01:57       step 425 loss 0.5874
+19:01:59       step 450 loss 0.7550
+19:02:02       step 475 loss 0.2645
+19:02:04       step 500 loss 0.6396
+19:02:07       step 525 loss 0.3931
+19:02:09       step 550 loss 0.4691
+19:02:12       step 575 loss 0.6112
+19:02:14       step 600 loss 0.2465
+19:02:16       step 625 loss 0.7023
+19:02:19       step 650 loss 0.6212
+19:02:21       step 675 loss 0.5894
+19:02:23       step 700 loss 0.5936
+19:02:25       step 725 loss 0.2708
+19:02:28       step 750 loss 0.6074
+19:02:30       step 775 loss 0.4650
+19:02:32       step 800 loss 0.3584
+19:02:35       step 825 loss 0.5758
+19:02:37       step 850 loss 0.5830
+19:02:39       step 875 loss 0.6624
+19:02:41       step 900 loss 0.5572
+19:02:43       step 925 loss 0.6580
+19:02:46       step 950 loss 0.2576
+19:02:48       step 975 loss 0.5343
+19:02:50       step 1000 loss 0.2741
+19:02:52       step 1025 loss 0.5236
+19:02:55       step 1050 loss 0.5138
+19:02:57       step 1075 loss 0.2917
+19:02:59       step 1100 loss 0.4358
+19:03:02       step 1125 loss 0.6982
+19:03:04       step 1150 loss 0.5231
+19:03:06       step 1175 loss 0.3495
+19:03:09       step 1200 loss 0.5554
+19:03:11       step 1225 loss 0.4547
+19:03:14       step 1250 loss 0.3670
+19:03:16       step 1275 loss 0.4505
+19:03:19       step 1300 loss 0.4779
+19:03:21       step 1325 loss 0.5978
+19:03:24       step 1350 loss 0.2145
+19:03:26       step 1375 loss 0.2024
+19:03:28       step 1400 loss 0.4430
+19:03:30       step 1425 loss 0.4855
+19:03:33       step 1450 loss 0.4330
+19:03:35       step 1475 loss 0.2972
+19:03:37       step 1500 loss 0.3416
+19:03:40       step 1525 loss 0.3692
+19:03:42       step 1550 loss 0.6446
+19:03:44       step 1575 loss 0.4877
+19:03:46       step 1600 loss 0.3695
+19:03:49       step 1625 loss 0.5034
+19:03:51       step 1650 loss 0.6570
+19:03:53       step 1675 loss 0.3054
+19:03:55       step 1700 loss 0.4347
+19:03:57       step 1725 loss 0.4037
+19:04:00       step 1750 loss 0.4288
+19:04:02       step 1775 loss 0.4114
+19:04:04       step 1800 loss 0.5065
+19:04:07       step 1825 loss 0.6022
+19:04:09       step 1850 loss 0.9051
+19:04:11       step 1875 loss 0.5646
+19:04:14 base acc 0.860  C=[0.365 0.315 0.32 ]
+19:04:14    α=0.0: shared items = 0
+19:04:14 == α=0.0 seed=0  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=0
+19:04:15     pass S [binEH, n=6000]
+19:04:18       step 25 loss 0.1455
+19:04:20       step 50 loss 0.0465
+19:04:23       step 75 loss 0.0529
+19:04:26       step 100 loss 0.0931
+19:04:29       step 125 loss 0.2645
+19:04:32       step 150 loss 0.0261
+19:04:35       step 175 loss 0.3357
+19:04:37     pass T [binU, n=6000]
+19:04:40       step 25 loss 0.2937
+19:04:43       step 50 loss 0.3601
+19:04:46       step 75 loss 0.7263
+19:04:49       step 100 loss 0.4094
+19:04:51       step 125 loss 0.4501
+19:04:54       step 150 loss 0.4390
+19:04:57       step 175 loss 0.5233
+19:05:04     SEALED prediction 981495b6604972f3…  Γ(alr)=[ 0.001 -0.001 -0.001] Γ(overlap)=[-0.001  0.003 -0.002] pred-dis alr=0.002 overlap=0.004 | flipS=0.06 flipT=0.06 overlap-ratio=7.16 | ‖[Φ]‖=0.009 ‖[A]‖=0.0180
+19:05:05     pass S→T [binU, n=6000]
+19:05:07       step 25 loss 0.1896
+19:05:10       step 50 loss 0.1881
+19:05:13       step 75 loss 0.4610
+19:05:16       step 100 loss 0.2721
+19:05:19       step 125 loss 0.2054
+19:05:21       step 150 loss 0.3225
+19:05:24       step 175 loss 0.1751
+19:05:26     pass T→S [binEH, n=6000]
+19:05:29       step 25 loss 0.1567
+19:05:32       step 50 loss 0.1929
+19:05:35       step 75 loss 0.0594
+19:05:38       step 100 loss 0.1506
+19:05:41       step 125 loss 0.1481
+19:05:44       step 150 loss 0.1347
+19:05:46       step 175 loss 0.1108
+19:05:54     pass S→T rep1 [binU, n=6000]
+19:05:57       step 25 loss 0.1878
+19:06:00       step 50 loss 0.3804
+19:06:02       step 75 loss 0.2290
+19:06:05       step 100 loss 0.4206
+19:06:08       step 125 loss 0.2632
+19:06:11       step 150 loss 0.2140
+19:06:14       step 175 loss 0.4344
+19:06:19     pass T→S rep1 [binEH, n=6000]
+19:06:21       step 25 loss 0.1037
+19:06:24       step 50 loss 0.2133
+19:06:27       step 75 loss 0.0251
+19:06:30       step 100 loss 0.1560
+19:06:33       step 125 loss 0.0542
+19:06:36       step 150 loss 0.0370
+19:06:38       step 175 loss 0.2962
+19:06:44     OBSERVED Γ=[-0.032  0.043 -0.011] disagreement=0.072 SM p=0 | overlap err 0.025/0.017 agree 0.93/0.94 Γ-sign 1.00 in/out 0.003/0.070 | alr err 0.047/0.004 | markov err 0.022/0.024
+19:06:44     FLOOR replicates: pair-dis ST=0.064 TS=0.043 σ_eff=0.518/0.389 | order-dis 0.072 = 1.4× floor | loss-sd [0.102 0.101 0.113 0.096]
+19:06:44 == α=0.0 seed=1  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=0
+19:06:45     pass S [binEH, n=6000]
+19:06:48       step 25 loss 0.0813
+19:06:51       step 50 loss 0.1824
+19:06:54       step 75 loss 0.3053
+19:06:57       step 100 loss 0.2136
+19:07:00       step 125 loss 0.0982
+19:07:03       step 150 loss 0.1878
+19:07:05       step 175 loss 0.0481
+19:07:08     pass T [binU, n=6000]
+19:07:11       step 25 loss 0.5188
+19:07:14       step 50 loss 0.3820
+19:07:16       step 75 loss 0.3475
+19:07:19       step 100 loss 0.2115
+19:07:22       step 125 loss 0.3414
+19:07:25       step 150 loss 0.4328
+19:07:28       step 175 loss 0.2925
+19:07:35     SEALED prediction e25d1f00cef78bfb…  Γ(alr)=[ 0.001 -0.001  0.001] Γ(overlap)=[-0.     0.001 -0.001] pred-dis alr=0.001 overlap=0.001 | flipS=0.06 flipT=0.05 overlap-ratio=6.12 | ‖[Φ]‖=0.007 ‖[A]‖=0.0030
+19:07:35     pass S→T [binU, n=6000]
+19:07:38       step 25 loss 0.3317
+19:07:41       step 50 loss 0.3820
+19:07:44       step 75 loss 0.3820
+19:07:47       step 100 loss 0.3183
+19:07:50       step 125 loss 0.4878
+19:07:53       step 150 loss 0.2031
+19:07:55       step 175 loss 0.3995
+19:07:58     pass T→S [binEH, n=6000]
+19:08:01       step 25 loss 0.1304
+19:08:04       step 50 loss 0.0679
+19:08:06       step 75 loss 0.1533
+19:08:09       step 100 loss 0.2276
+19:08:12       step 125 loss 0.1163
+19:08:15       step 150 loss 0.0359
+19:08:18       step 175 loss 0.0820
+19:08:25     pass S→T rep1 [binU, n=6000]
+19:08:28       step 25 loss 0.4183
+19:08:31       step 50 loss 0.2990
+19:08:34       step 75 loss 0.2241
+19:08:37       step 100 loss 0.4796
+19:08:39       step 125 loss 0.2112
+19:08:42       step 150 loss 0.5396
+19:08:45       step 175 loss 0.3111
+19:08:50     pass T→S rep1 [binEH, n=6000]
+19:08:53       step 25 loss 0.0613
+19:08:56       step 50 loss 0.1419
+19:08:58       step 75 loss 0.1278
+19:09:01       step 100 loss 0.3565
+19:09:04       step 125 loss 0.1904
+19:09:07       step 150 loss 0.1238
+19:09:10       step 175 loss 0.0735
+19:09:15     OBSERVED Γ=[ 0.015  0.024 -0.038] disagreement=0.070 SM p=0 | overlap err 0.027/0.010 agree 0.94/0.94 Γ-sign 0.67 in/out 0.001/0.069 | alr err 0.037/0.025 | markov err 0.032/0.004
+19:09:15     FLOOR replicates: pair-dis ST=0.063 TS=0.047 σ_eff=0.504/0.414 | order-dis 0.070 = 1.3× floor | loss-sd [0.114 0.121 0.103 0.105]
+19:09:16    α=0.25: shared items = 993
+19:09:16 == α=0.25 seed=0  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=993
+19:09:17     pass S [binEH, n=6000]
+19:09:20       step 25 loss 0.1455
+19:09:22       step 50 loss 0.0465
+19:09:25       step 75 loss 0.0529
+19:09:28       step 100 loss 0.0931
+19:09:31       step 125 loss 0.2645
+19:09:34       step 150 loss 0.0261
+19:09:36       step 175 loss 0.3357
+19:09:39     pass T [binU, n=6000]
+19:09:42       step 25 loss 0.4221
+19:09:45       step 50 loss 0.3356
+19:09:48       step 75 loss 0.6743
+19:09:50       step 100 loss 0.2882
+19:09:53       step 125 loss 0.6048
+19:09:56       step 150 loss 0.3133
+19:09:59       step 175 loss 0.4100
+19:10:06     SEALED prediction 9a9777a729873ff5…  Γ(alr)=[ 0.002  0.001 -0.002] Γ(overlap)=[-0.001  0.002 -0.002] pred-dis alr=0.003 overlap=0.003 | flipS=0.06 flipT=0.06 overlap-ratio=7.50 | ‖[Φ]‖=0.006 ‖[A]‖=0.0132
+19:10:07     pass S→T [binU, n=6000]
+19:10:10       step 25 loss 0.2178
+19:10:12       step 50 loss 0.3054
+19:10:15       step 75 loss 0.3190
+19:10:18       step 100 loss 0.2387
+19:10:21       step 125 loss 0.2483
+19:10:24       step 150 loss 0.2725
+19:10:27       step 175 loss 0.2002
+19:10:29     pass T→S [binEH, n=6000]
+19:10:32       step 25 loss 0.1531
+19:10:35       step 50 loss 0.2221
+19:10:38       step 75 loss 0.0694
+19:10:41       step 100 loss 0.1583
+19:10:44       step 125 loss 0.1494
+19:10:47       step 150 loss 0.1310
+19:10:49       step 175 loss 0.1525
+19:10:57     pass S→T rep1 [binU, n=6000]
+19:11:00       step 25 loss 0.2516
+19:11:03       step 50 loss 0.2581
+19:11:06       step 75 loss 0.2886
+19:11:08       step 100 loss 0.2467
+19:11:11       step 125 loss 0.1945
+19:11:14       step 150 loss 0.1965
+19:11:17       step 175 loss 0.3471
+19:11:22     pass T→S rep1 [binEH, n=6000]
+19:11:25       step 25 loss 0.0421
+19:11:28       step 50 loss 0.2510
+19:11:30       step 75 loss 0.0242
+19:11:33       step 100 loss 0.1462
+19:11:36       step 125 loss 0.0590
+19:11:39       step 150 loss 0.0323
+19:11:42       step 175 loss 0.2042
+19:11:48     OBSERVED Γ=[-0.044  0.074 -0.029] disagreement=0.092 SM p=0 | overlap err 0.053/0.019 agree 0.93/0.94 Γ-sign 1.00 in/out 0.001/0.091 | alr err 0.083/0.011 | markov err 0.054/0.026
+19:11:48     FLOOR replicates: pair-dis ST=0.058 TS=0.048 σ_eff=0.508/0.400 | order-dis 0.092 = 1.7× floor | loss-sd [0.102 0.112 0.1   0.094]
+19:11:48 == α=0.25 seed=1  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=993
+19:11:49     pass S [binEH, n=6000]
+19:11:52       step 25 loss 0.0813
+19:11:55       step 50 loss 0.1824
+19:11:58       step 75 loss 0.3053
+19:12:01       step 100 loss 0.2136
+19:12:04       step 125 loss 0.0982
+19:12:06       step 150 loss 0.1878
+19:12:09       step 175 loss 0.0481
+19:12:12     pass T [binU, n=6000]
+19:12:15       step 25 loss 0.4760
+19:12:18       step 50 loss 0.4832
+19:12:21       step 75 loss 0.3966
+19:12:24       step 100 loss 0.2161
+19:12:27       step 125 loss 0.1313
+19:12:29       step 150 loss 0.3598
+19:12:32       step 175 loss 0.4329
+19:12:39     SEALED prediction 94a12891c1c56050…  Γ(alr)=[ 0.001 -0.001  0.   ] Γ(overlap)=[-0.     0.001 -0.001] pred-dis alr=0.001 overlap=0.002 | flipS=0.06 flipT=0.07 overlap-ratio=6.67 | ‖[Φ]‖=0.006 ‖[A]‖=0.0089
+19:12:40     pass S→T [binU, n=6000]
+19:12:43       step 25 loss 0.2487
+19:12:45       step 50 loss 0.2998
+19:12:48       step 75 loss 0.5782
+19:12:51       step 100 loss 0.3320
+19:12:54       step 125 loss 0.3594
+19:12:57       step 150 loss 0.2198
+19:13:00       step 175 loss 0.3280
+19:13:02     pass T→S [binEH, n=6000]
+19:13:05       step 25 loss 0.1510
+19:13:08       step 50 loss 0.0713
+19:13:11       step 75 loss 0.1446
+19:13:13       step 100 loss 0.2617
+19:13:16       step 125 loss 0.0941
+19:13:19       step 150 loss 0.0466
+19:13:22       step 175 loss 0.0737
+19:13:29     pass S→T rep1 [binU, n=6000]
+19:13:32       step 25 loss 0.5078
+19:13:35       step 50 loss 0.2503
+19:13:38       step 75 loss 0.1173
+19:13:41       step 100 loss 0.2058
+19:13:43       step 125 loss 0.3774
+19:13:46       step 150 loss 0.3935
+19:13:49       step 175 loss 0.5988
+19:13:53     pass T→S rep1 [binEH, n=6000]
+19:13:56       step 25 loss 0.0520
+19:13:59       step 50 loss 0.1492
+19:14:02       step 75 loss 0.1902
+19:14:05       step 100 loss 0.3469
+19:14:08       step 125 loss 0.2162
+19:14:10       step 150 loss 0.0654
+19:14:13       step 175 loss 0.0601
+19:14:19     OBSERVED Γ=[-0.009  0.038 -0.029] disagreement=0.068 SM p=0 | overlap err 0.023/0.016 agree 0.93/0.93 Γ-sign 1.00 in/out 0.001/0.066 | alr err 0.046/0.010 | markov err 0.029/0.007
+19:14:19     FLOOR replicates: pair-dis ST=0.058 TS=0.046 σ_eff=0.487/0.407 | order-dis 0.068 = 1.3× floor | loss-sd [0.114 0.115 0.115 0.091]
+19:14:19    α=0.5: shared items = 1986
+19:14:19 == α=0.5 seed=0  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=1986
+19:14:20     pass S [binEH, n=6000]
+19:14:23       step 25 loss 0.1455
+19:14:26       step 50 loss 0.0465
+19:14:29       step 75 loss 0.0529
+19:14:32       step 100 loss 0.0931
+19:14:35       step 125 loss 0.2645
+19:14:37       step 150 loss 0.0261
+19:14:40       step 175 loss 0.3357
+19:14:43     pass T [binU, n=6000]
+19:14:45       step 25 loss 0.4876
+19:14:48       step 50 loss 0.3216
+19:14:51       step 75 loss 0.6510
+19:14:54       step 100 loss 0.3964
+19:14:57       step 125 loss 0.4645
+19:15:00       step 150 loss 0.6408
+19:15:03       step 175 loss 0.5329
+19:15:09     SEALED prediction 45d059a0aa4f6fdc…  Γ(alr)=[ 0. -0.  0.] Γ(overlap)=[-0.001  0.002 -0.002] pred-dis alr=0.000 overlap=0.004 | flipS=0.06 flipT=0.06 overlap-ratio=6.88 | ‖[Φ]‖=0.009 ‖[A]‖=0.0208
+19:15:10     pass S→T [binU, n=6000]
+19:15:13       step 25 loss 0.2203
+19:15:16       step 50 loss 0.2259
+19:15:18       step 75 loss 0.3305
+19:15:21       step 100 loss 0.2393
+19:15:24       step 125 loss 0.2458
+19:15:27       step 150 loss 0.3970
+19:15:30       step 175 loss 0.2159
+19:15:32     pass T→S [binEH, n=6000]
+19:15:35       step 25 loss 0.1571
+19:15:38       step 50 loss 0.1582
+19:15:41       step 75 loss 0.0817
+19:15:43       step 100 loss 0.1306
+19:15:46       step 125 loss 0.2088
+19:15:49       step 150 loss 0.1773
+19:15:52       step 175 loss 0.1410
+19:15:59     pass S→T rep1 [binU, n=6000]
+19:16:02       step 25 loss 0.3508
+19:16:05       step 50 loss 0.2694
+19:16:08       step 75 loss 0.2848
+19:16:11       step 100 loss 0.2592
+19:16:13       step 125 loss 0.2992
+19:16:16       step 150 loss 0.2331
+19:16:19       step 175 loss 0.6213
+19:16:23     pass T→S rep1 [binEH, n=6000]
+19:16:26       step 25 loss 0.0825
+19:16:29       step 50 loss 0.2385
+19:16:32       step 75 loss 0.0208
+19:16:35       step 100 loss 0.1930
+19:16:38       step 125 loss 0.0349
+19:16:40       step 150 loss 0.0363
+19:16:44       step 175 loss 0.2110
+19:16:51     OBSERVED Γ=[-0.054  0.062 -0.008] disagreement=0.088 SM p=0 | overlap err 0.034/0.029 agree 0.93/0.93 Γ-sign 1.00 in/out 0.002/0.086 | alr err 0.051/0.013 | markov err 0.030/0.035
+19:16:51     FLOOR replicates: pair-dis ST=0.051 TS=0.045 σ_eff=0.483/0.413 | order-dis 0.088 = 1.8× floor | loss-sd [0.102 0.117 0.105 0.1  ]
+19:16:52 == α=0.5 seed=1  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=1986
+19:16:53     pass S [binEH, n=6000]
+19:16:57       step 25 loss 0.0813
+19:17:02       step 50 loss 0.1824
+19:17:06       step 75 loss 0.3053
+19:17:09       step 100 loss 0.2136
+19:17:13       step 125 loss 0.0982
+19:17:17       step 150 loss 0.1878
+19:17:21       step 175 loss 0.0481
+19:17:24     pass T [binU, n=6000]
+19:17:28       step 25 loss 0.5173
+19:17:32       step 50 loss 0.4024
+19:17:36       step 75 loss 0.4466
+19:17:40       step 100 loss 0.3198
+19:17:44       step 125 loss 0.2875
+19:17:48       step 150 loss 0.3264
+19:17:51       step 175 loss 0.3629
+19:18:02     SEALED prediction ac03bf9058c046f9…  Γ(alr)=[ 0.002 -0.001 -0.001] Γ(overlap)=[-0.001  0.001 -0.   ] pred-dis alr=0.002 overlap=0.002 | flipS=0.06 flipT=0.07 overlap-ratio=6.29 | ‖[Φ]‖=0.004 ‖[A]‖=0.0028
+19:18:03     pass S→T [binU, n=6000]
+19:18:07       step 25 loss 0.3474
+19:18:11       step 50 loss 0.2663
+19:18:15       step 75 loss 0.5119
+19:18:19       step 100 loss 0.3358
+19:18:22       step 125 loss 0.2448
+19:18:26       step 150 loss 0.1466
+19:18:30       step 175 loss 0.2767
+19:18:33     pass T→S [binEH, n=6000]
+19:18:37       step 25 loss 0.1765
+19:18:41       step 50 loss 0.0674
+19:18:45       step 75 loss 0.1199
+19:18:49       step 100 loss 0.2507
+19:18:52       step 125 loss 0.0869
+19:18:55       step 150 loss 0.0646
+19:18:59       step 175 loss 0.0737
+19:19:11     pass S→T rep1 [binU, n=6000]
+19:19:15       step 25 loss 0.4203
+19:19:18       step 50 loss 0.3343
+19:19:22       step 75 loss 0.1934
+19:19:26       step 100 loss 0.2692
+19:19:29       step 125 loss 0.3468
+19:19:33       step 150 loss 0.4175
+19:19:37       step 175 loss 0.5445
+19:19:44     pass T→S rep1 [binEH, n=6000]
+19:19:48       step 25 loss 0.0864
+19:19:52       step 50 loss 0.1375
+19:19:55       step 75 loss 0.1065
+19:19:59       step 100 loss 0.3220
+19:20:04       step 125 loss 0.2009
+19:20:07       step 150 loss 0.0762
+19:20:11       step 175 loss 0.0636
+19:20:19     OBSERVED Γ=[-0.011  0.04  -0.029] disagreement=0.074 SM p=0 | overlap err 0.029/0.012 agree 0.93/0.93 Γ-sign 1.00 in/out 0.001/0.073 | alr err 0.050/0.014 | markov err 0.036/0.004
+19:20:19     FLOOR replicates: pair-dis ST=0.069 TS=0.050 σ_eff=0.563/0.445 | order-dis 0.074 = 1.2× floor | loss-sd [0.114 0.14  0.121 0.118]
+19:20:20    α=1.0: shared items = 3973
+19:20:20 == α=1.0 seed=0  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=3973
+19:20:21     pass S [binEH, n=6000]
+19:20:25       step 25 loss 0.1455
+19:20:29       step 50 loss 0.0465
+19:20:33       step 75 loss 0.0529
+19:20:37       step 100 loss 0.0931
+19:20:41       step 125 loss 0.2645
+19:20:44       step 150 loss 0.0261
+19:20:48       step 175 loss 0.3357
+19:20:51     pass T [binU, n=6000]
+19:20:56       step 25 loss 0.4837
+19:21:00       step 50 loss 0.2930
+19:21:04       step 75 loss 0.6827
+19:21:08       step 100 loss 0.3074
+19:21:11       step 125 loss 0.4765
+19:21:15       step 150 loss 0.6393
+19:21:19       step 175 loss 0.6832
+19:21:29     SEALED prediction 9fdd4eb006e3ac7f…  Γ(alr)=[-0.001  0.     0.001] Γ(overlap)=[-0.001  0.006 -0.005] pred-dis alr=0.002 overlap=0.006 | flipS=0.06 flipT=0.08 overlap-ratio=6.11 | ‖[Φ]‖=0.016 ‖[A]‖=0.0210
+19:21:30     pass S→T [binU, n=6000]
+19:21:34       step 25 loss 0.1573
+19:21:38       step 50 loss 0.1936
+19:21:42       step 75 loss 0.3071
+19:21:46       step 100 loss 0.2530
+19:21:50       step 125 loss 0.3434
+19:21:53       step 150 loss 0.3571
+19:21:57       step 175 loss 0.2014
+19:22:00     pass T→S [binEH, n=6000]
+19:22:04       step 25 loss 0.1503
+19:22:08       step 50 loss 0.1609
+19:22:12       step 75 loss 0.0863
+19:22:16       step 100 loss 0.2059
+19:22:20       step 125 loss 0.2012
+19:22:23       step 150 loss 0.1598
+19:22:25       step 175 loss 0.1265
+19:22:32     pass S→T rep1 [binU, n=6000]
+19:22:35       step 25 loss 0.2181
+19:22:37       step 50 loss 0.3432
+19:22:39       step 75 loss 0.2501
+19:22:42       step 100 loss 0.2712
+19:22:44       step 125 loss 0.3131
+19:22:47       step 150 loss 0.2502
+19:22:49       step 175 loss 0.3938
+19:22:53     pass T→S rep1 [binEH, n=6000]
+19:22:56       step 25 loss 0.0760
+19:22:58       step 50 loss 0.2145
+19:23:01       step 75 loss 0.0168
+19:23:04       step 100 loss 0.1893
+19:23:08       step 125 loss 0.0405
+19:23:12       step 150 loss 0.0484
+19:23:15       step 175 loss 0.2112
+19:23:23     OBSERVED Γ=[-0.035  0.081 -0.045] disagreement=0.093 SM p=0 | overlap err 0.047/0.028 agree 0.92/0.92 Γ-sign 1.00 in/out 0.003/0.090 | alr err 0.076/0.006 | markov err 0.041/0.032
+19:23:23     FLOOR replicates: pair-dis ST=0.072 TS=0.046 σ_eff=0.704/0.382 | order-dis 0.093 = 1.6× floor | loss-sd [0.102 0.115 0.111 0.1  ]
+19:23:25 == α=1.0 seed=1  mode=disjoint lr_S=3e-05 lr_T=3e-05 shared=3973
+19:23:25     pass S [binEH, n=6000]
+19:23:30       step 25 loss 0.0813
+19:23:34       step 50 loss 0.1824
+19:23:38       step 75 loss 0.3053
+19:23:42       step 100 loss 0.2136
+19:23:46       step 125 loss 0.0982
+19:23:50       step 150 loss 0.1878
+19:23:54       step 175 loss 0.0481
+19:23:57     pass T [binU, n=6000]
+19:24:01       step 25 loss 0.5097
+19:24:06       step 50 loss 0.4526
+19:24:10       step 75 loss 0.3569
+19:24:14       step 100 loss 0.2346
+19:24:18       step 125 loss 0.2271
+19:24:22       step 150 loss 0.2862
+19:24:26       step 175 loss 0.3253
+19:24:37     SEALED prediction ed4e38f86bad5530…  Γ(alr)=[ 0.001 -0.001  0.   ] Γ(overlap)=[-0.001  0.001  0.   ] pred-dis alr=0.002 overlap=0.003 | flipS=0.06 flipT=0.07 overlap-ratio=6.67 | ‖[Φ]‖=0.004 ‖[A]‖=0.0102
+19:24:38     pass S→T [binU, n=6000]
+19:24:42       step 25 loss 0.3143
+19:24:46       step 50 loss 0.2223
+19:24:50       step 75 loss 0.5147
+19:24:54       step 100 loss 0.2761
+19:24:58       step 125 loss 0.2336
+19:25:01       step 150 loss 0.2453
+19:25:06       step 175 loss 0.2627
+19:25:08     pass T→S [binEH, n=6000]
+19:25:12       step 25 loss 0.1085
+19:25:16       step 50 loss 0.1877
+19:25:20       step 75 loss 0.1378
+19:25:23       step 100 loss 0.2216
+19:25:27       step 125 loss 0.0925
+19:25:30       step 150 loss 0.0511
+19:25:34       step 175 loss 0.0747
+19:25:46     pass S→T rep1 [binU, n=6000]
+19:25:50       step 25 loss 0.3434
+19:25:53       step 50 loss 0.4394
+19:25:57       step 75 loss 0.1104
+19:26:01       step 100 loss 0.2591
+19:26:05       step 125 loss 0.3908
+19:26:09       step 150 loss 0.3529
+19:26:13       step 175 loss 0.4540
+19:26:19     pass T→S rep1 [binEH, n=6000]
+19:26:23       step 25 loss 0.0766
+19:26:27       step 50 loss 0.2160
+19:26:31       step 75 loss 0.1075
+19:26:34       step 100 loss 0.2922
+19:26:38       step 125 loss 0.2212
+19:26:42       step 150 loss 0.1153
+19:26:46       step 175 loss 0.0748
+19:26:53     OBSERVED Γ=[-0.027  0.043 -0.016] disagreement=0.074 SM p=0 | overlap err 0.017/0.035 agree 0.94/0.92 Γ-sign 0.67 in/out 0.001/0.073 | alr err 0.032/0.023 | markov err 0.016/0.025
+19:26:53     FLOOR replicates: pair-dis ST=0.069 TS=0.060 σ_eff=0.561/0.471 | order-dis 0.074 = 1.2× floor | loss-sd [0.114 0.13  0.11  0.108]
+19:26:55 checkpoints: 49 files, 10.95 GB in runs\exp_full_20260815_151503/base_shared\ckpt (excluded from zip)
+19:26:55 sweep done

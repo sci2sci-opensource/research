@@ -1,0 +1,2022 @@
+{
+ "hypotheses": {
+  "H1": {
+   "name": "Order effect exceeds the composite's own seed noise",
+   "rule": "disagreement(S\u2192T,T\u2192S) \u2265 2\u00d7 same-order replicate disagreement in \u22652/3 of cells",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "H",
+     "why": "order disagreement \u22641.2\u00d7 floor in 67% of cells",
+     "evidence": {
+      "median_ratio": 1.1813471502590673,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.6666666666666666
+     }
+    },
+    "power_treat": {
+     "verdict": "U",
+     "why": "mixed: median 1.4\u00d7 floor",
+     "evidence": {
+      "median_ratio": 1.3620829943043125,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.3333333333333333
+     }
+    },
+    "scale_110m": {
+     "verdict": "H",
+     "why": "order disagreement \u22641.2\u00d7 floor in 67% of cells",
+     "evidence": {
+      "median_ratio": 1.1917241379310344,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.6666666666666666
+     }
+    },
+    "scale_11m": {
+     "verdict": "U",
+     "why": "mixed: median 1.6\u00d7 floor",
+     "evidence": {
+      "median_ratio": 1.5731515469323547,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.3333333333333333
+     }
+    },
+    "scale_29m": {
+     "verdict": "H",
+     "why": "order disagreement \u22641.2\u00d7 floor in 67% of cells",
+     "evidence": {
+      "median_ratio": 1.1657367902855267,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.6666666666666666
+     }
+    },
+    "scale_41m": {
+     "verdict": "H",
+     "why": "order disagreement \u22641.2\u00d7 floor in 67% of cells",
+     "evidence": {
+      "median_ratio": 1.113861386138614,
+      "frac_ge2": 0.0,
+      "frac_le1_2": 0.6666666666666666
+     }
+    }
+   }
+  },
+  "H2": {
+   "name": "\u0393_U sign: S\u2192T ends more neutral than T\u2192S, seed-stable",
+   "rule": "mean \u0393_U > 0, |mean| > 2\u00b7SE, positive in \u226580% cells",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "U",
+     "why": "\u0393_U = -0.002 \u00b1 0.025, sign not stable",
+     "evidence": {
+      "mean": -0.002166666666666687,
+      "sd": 0.02544151790544999,
+      "n": 3,
+      "frac_pos": 0.6666666666666666
+     }
+    },
+    "power_treat": {
+     "verdict": "E",
+     "why": "\u0393_U = +0.026 \u00b1 0.017, positive in 100% of cells",
+     "evidence": {
+      "mean": 0.02558333333333333,
+      "sd": 0.016825080485196316,
+      "n": 3,
+      "frac_pos": 1.0
+     }
+    },
+    "scale_110m": {
+     "verdict": "U",
+     "why": "\u0393_U = +0.026 \u00b1 0.037, sign not stable",
+     "evidence": {
+      "mean": 0.025500000000000005,
+      "sd": 0.03696197370271238,
+      "n": 3,
+      "frac_pos": 0.6666666666666666
+     }
+    },
+    "scale_11m": {
+     "verdict": "U",
+     "why": "\u0393_U = +0.035 \u00b1 0.054, sign not stable",
+     "evidence": {
+      "mean": 0.0345,
+      "sd": 0.054208509479601104,
+      "n": 3,
+      "frac_pos": 0.6666666666666666
+     }
+    },
+    "scale_29m": {
+     "verdict": "U",
+     "why": "\u0393_U = +0.029 \u00b1 0.030, sign not stable",
+     "evidence": {
+      "mean": 0.02900000000000001,
+      "sd": 0.02975,
+      "n": 3,
+      "frac_pos": 0.6666666666666666
+     }
+    },
+    "scale_41m": {
+     "verdict": "U",
+     "why": "\u0393_U = +0.016 \u00b1 0.039, sign not stable",
+     "evidence": {
+      "mean": 0.015749999999999986,
+      "sd": 0.03850243498793291,
+      "n": 3,
+      "frac_pos": 0.6666666666666666
+     }
+    }
+   }
+  },
+  "H3": {
+   "name": "Non-lumpability: verdict marginal is not a sufficient statistic",
+   "rule": "Markov composite \u03a6_S\u00b7\u03a6_T rejected (\u03c7\u00b2 p<0.01) in \u22652/3 of cells",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 3
+     }
+    },
+    "power_treat": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 3
+     }
+    },
+    "scale_110m": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 3
+     }
+    },
+    "scale_11m": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 3
+     }
+    },
+    "scale_29m": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 3
+     }
+    },
+    "scale_41m": {
+     "verdict": "E",
+     "why": "Markov composite rejected (p<0.01) in 100% of cells",
+     "evidence": {
+      "frac_reject": 1.0,
+      "n": 3
+     }
+    }
+   }
+  },
+  "H4": {
+   "name": "Order effect lives OUTSIDE the overlap of the two flip sets",
+   "rule": "\u226590% of cross-order disagreement on items neither pass flipped or only one flipped",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.981203007518797,
+      "n": 3
+     }
+    },
+    "power_treat": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.9794238683127572,
+      "n": 3
+     }
+    },
+    "scale_110m": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.9756944444444446,
+      "n": 3
+     }
+    },
+    "scale_11m": {
+     "verdict": "E",
+     "why": "97% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.974,
+      "n": 3
+     }
+    },
+    "scale_29m": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.9797297297297297,
+      "n": 3
+     }
+    },
+    "scale_41m": {
+     "verdict": "E",
+     "why": "98% of order-disagreement lies outside the predicted overlap set",
+     "evidence": {
+      "median_frac_outside": 0.98,
+      "n": 3
+     }
+    }
+   }
+  },
+  "H5": {
+   "name": "Flip-set co-dependence tracks operator identity",
+   "rule": "disjoint objectives \u2192 overlap ratio \u22481; shared operator \u2192 \u226b1",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 7.7\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 7.687267962437214,
+      "n": 3,
+      "mode": "nullswap"
+     }
+    },
+    "power_treat": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 6.1\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 6.115100677891094,
+      "n": 3,
+      "mode": "disjoint"
+     }
+    },
+    "scale_110m": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 4.9\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 4.8840048840048835,
+      "n": 3,
+      "mode": "disjoint"
+     }
+    },
+    "scale_11m": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 3.3\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 3.29788599583321,
+      "n": 3,
+      "mode": "disjoint"
+     }
+    },
+    "scale_29m": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 5.2\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 5.172835622662612,
+      "n": 3,
+      "mode": "disjoint"
+     }
+    },
+    "scale_41m": {
+     "verdict": "H",
+     "why": "disjoint mode but overlap ratio 4.3\u00d7 \u2014 operators still share a component",
+     "evidence": {
+      "median": 4.330667411727727,
+      "n": 3,
+      "mode": "disjoint"
+     }
+    }
+   }
+  },
+  "H6": {
+   "name": "Order effect concentrates at verdict boundaries",
+   "rule": "AUC(base top-2 margin \u2192 flip) \u2265 0.75",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.87: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.87206601858878
+     }
+    },
+    "power_treat": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.89: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.8943153216414826
+     }
+    },
+    "scale_110m": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.86: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.858380457848751
+     }
+    },
+    "scale_11m": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.85: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.8482922625127681
+     }
+    },
+    "scale_29m": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.81: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.8128544917895572
+     }
+    },
+    "scale_41m": {
+     "verdict": "E",
+     "why": "AUC(base margin \u2192 flip) = 0.83: order effect concentrates at verdict boundaries",
+     "evidence": {
+      "median_auc": 0.832406718924972
+     }
+    }
+   }
+  },
+  "H7": {
+   "name": "Prop 6.3 specimen: readouts coincide, revisions differ",
+   "rule": "some cell with Stuart\u2013Maxwell p>0.05 AND disagreement \u22652\u00d7 floor",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "power_treat": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "scale_110m": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "scale_11m": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "scale_29m": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    },
+    "scale_41m": {
+     "verdict": "U",
+     "why": "no cell shows coincident readouts with above-floor revision difference (not refutable by absence)",
+     "evidence": {
+      "n_specimen": 0,
+      "cells": []
+     }
+    }
+   }
+  },
+  "H8": {
+   "name": "Shared-fraction slider raises co-dependence",
+   "rule": "Spearman(\u03b1_shared, overlap ratio) \u2265 0.6",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    },
+    "power_treat": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    },
+    "scale_110m": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    },
+    "scale_11m": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    },
+    "scale_29m": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    },
+    "scale_41m": {
+     "verdict": "U",
+     "why": "needs the shared-fraction slider stage",
+     "evidence": {}
+    }
+   }
+  },
+  "H9": {
+   "name": "Negative control: one operator \u21d2 no order effect",
+   "rule": "weighted mode: disagreement \u2264 1.5\u00d7 floor",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    },
+    "power_treat": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    },
+    "scale_110m": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    },
+    "scale_11m": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    },
+    "scale_29m": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    },
+    "scale_41m": {
+     "verdict": "U",
+     "why": "needs the weighted-mode control stage",
+     "evidence": {}
+    }
+   }
+  },
+  "H10": {
+   "name": "The join destroys information",
+   "rule": "H(tuple) \u2212 H(join) \u2265 0.2 bit/item",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.40 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.3964028600089178
+     }
+    },
+    "power_treat": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.40 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.4001115216316009
+     }
+    },
+    "scale_110m": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.42 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.42212083684082247
+     }
+    },
+    "scale_11m": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.50 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.49945433354419366
+     }
+    },
+    "scale_29m": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.46 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.46126187537429164
+     }
+    },
+    "scale_41m": {
+     "verdict": "E",
+     "why": "publishing join(ST,TS) instead of the tuple destroys 0.46 bits/item (median)",
+     "evidence": {
+      "median_bits": 0.4561392043141925
+     }
+    }
+   }
+  },
+  "H11": {
+   "name": "Calibrated non-lumpability: exceeds the replicate-noise statistic",
+   "rule": "obs \u03c7\u00b2 \u2265 2\u00d7 median replicate-composite \u03c7\u00b2 in \u22652/3 of cells",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 1.1\u00d7)",
+     "evidence": {
+      "median_ratio": 1.1124430606244555,
+      "frac_ge2": 0.0,
+      "n": 3
+     }
+    },
+    "power_treat": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 0.9\u00d7)",
+     "evidence": {
+      "median_ratio": 0.9365929347846811,
+      "frac_ge2": 0.0,
+      "n": 3
+     }
+    },
+    "scale_110m": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 0.9\u00d7)",
+     "evidence": {
+      "median_ratio": 0.9251505592917689,
+      "frac_ge2": 0.0,
+      "n": 3
+     }
+    },
+    "scale_11m": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 0.9\u00d7)",
+     "evidence": {
+      "median_ratio": 0.9135706992571031,
+      "frac_ge2": 0.0,
+      "n": 3
+     }
+    },
+    "scale_29m": {
+     "verdict": "U",
+     "why": "median 1.3\u00d7 the noise statistic",
+     "evidence": {
+      "median_ratio": 1.2722147123500478,
+      "frac_ge2": 0.0,
+      "n": 3
+     }
+    },
+    "scale_41m": {
+     "verdict": "H",
+     "why": "observed non-lumpability \u2248 noise level (median 0.9\u00d7)",
+     "evidence": {
+      "median_ratio": 0.9088463429396503,
+      "frac_ge2": 0.0,
+      "n": 3
+     }
+    }
+   }
+  },
+  "H12": {
+   "name": "Calibrated localization: above-noise excess lies outside the overlap set",
+   "rule": "\u226590% of excess (obs \u2212 replicate-noise rate) outside, \u22653 cells with \u22650.5% excess",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "H",
+     "why": "above-noise excess mostly inside the overlap set (26% outside)",
+     "evidence": {
+      "median_frac_outside": 0.2644561898821443,
+      "n_eligible": 3
+     }
+    },
+    "power_treat": {
+     "verdict": "H",
+     "why": "above-noise excess mostly inside the overlap set (12% outside)",
+     "evidence": {
+      "median_frac_outside": 0.1196676360614873,
+      "n_eligible": 3
+     }
+    },
+    "scale_110m": {
+     "verdict": "U",
+     "why": "above-noise excess \u22650.5% in only 2 cell(s) \u2014 nothing to localize",
+     "evidence": {
+      "n_eligible": 2
+     }
+    },
+    "scale_11m": {
+     "verdict": "H",
+     "why": "above-noise excess mostly inside the overlap set (46% outside)",
+     "evidence": {
+      "median_frac_outside": 0.4617665748782038,
+      "n_eligible": 3
+     }
+    },
+    "scale_29m": {
+     "verdict": "U",
+     "why": "above-noise excess \u22650.5% in only 2 cell(s) \u2014 nothing to localize",
+     "evidence": {
+      "n_eligible": 2
+     }
+    },
+    "scale_41m": {
+     "verdict": "H",
+     "why": "above-noise excess mostly inside the overlap set (29% outside)",
+     "evidence": {
+      "median_frac_outside": 0.28651329444407997,
+      "n_eligible": 3
+     }
+    }
+   }
+  },
+  "H13": {
+   "name": "Sign consistency: order/floor ratio >1 almost everywhere",
+   "rule": "ratio >1\u00d7 floor in \u226590% of \u22656 cells",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "U",
+     "why": "fewer than 6 cells with floors",
+     "evidence": {}
+    },
+    "power_treat": {
+     "verdict": "U",
+     "why": "fewer than 6 cells with floors",
+     "evidence": {}
+    },
+    "scale_110m": {
+     "verdict": "U",
+     "why": "fewer than 6 cells with floors",
+     "evidence": {}
+    },
+    "scale_11m": {
+     "verdict": "U",
+     "why": "fewer than 6 cells with floors",
+     "evidence": {}
+    },
+    "scale_29m": {
+     "verdict": "U",
+     "why": "fewer than 6 cells with floors",
+     "evidence": {}
+    },
+    "scale_41m": {
+     "verdict": "U",
+     "why": "fewer than 6 cells with floors",
+     "evidence": {}
+    }
+   }
+  },
+  "H14": {
+   "name": "A systematic (non-noise) order component exists",
+   "rule": "cross-order minus within-order pairwise disagreement >0, bootstrap CI excluding 0, in \u22652/3 of cells",
+   "verdicts": {
+    "power_nullswap": {
+     "verdict": "E",
+     "why": "systematic component >0 (bootstrap CI excludes 0) in 100% of cells; 19% of cross-order disagreement is systematic (median ratio 1.23\u00d7)",
+     "evidence": {
+      "frac_ci_above_0": 1.0,
+      "median_sys_frac": 0.18968361073624232,
+      "median_ratio": 1.2340858623242044,
+      "n": 3
+     }
+    },
+    "power_treat": {
+     "verdict": "E",
+     "why": "systematic component >0 (bootstrap CI excludes 0) in 100% of cells; 17% of cross-order disagreement is systematic (median ratio 1.20\u00d7)",
+     "evidence": {
+      "frac_ci_above_0": 1.0,
+      "median_sys_frac": 0.16734417344173438,
+      "median_ratio": 1.2009764035801465,
+      "n": 3
+     }
+    },
+    "scale_110m": {
+     "verdict": "E",
+     "why": "systematic component >0 (bootstrap CI excludes 0) in 100% of cells; 21% of cross-order disagreement is systematic (median ratio 1.26\u00d7)",
+     "evidence": {
+      "frac_ci_above_0": 1.0,
+      "median_sys_frac": 0.20634920634920634,
+      "median_ratio": 1.26,
+      "n": 3
+     }
+    },
+    "scale_11m": {
+     "verdict": "E",
+     "why": "systematic component >0 (bootstrap CI excludes 0) in 100% of cells; 28% of cross-order disagreement is systematic (median ratio 1.39\u00d7)",
+     "evidence": {
+      "frac_ci_above_0": 1.0,
+      "median_sys_frac": 0.28145221325087316,
+      "median_ratio": 1.391695887790883,
+      "n": 3
+     }
+    },
+    "scale_29m": {
+     "verdict": "E",
+     "why": "systematic component >0 (bootstrap CI excludes 0) in 100% of cells; 18% of cross-order disagreement is systematic (median ratio 1.22\u00d7)",
+     "evidence": {
+      "frac_ci_above_0": 1.0,
+      "median_sys_frac": 0.17931459980929937,
+      "median_ratio": 1.2184937124111535,
+      "n": 3
+     }
+    },
+    "scale_41m": {
+     "verdict": "E",
+     "why": "systematic component >0 (bootstrap CI excludes 0) in 100% of cells; 19% of cross-order disagreement is systematic (median ratio 1.23\u00d7)",
+     "evidence": {
+      "frac_ci_above_0": 1.0,
+      "median_sys_frac": 0.1899749373433585,
+      "median_ratio": 1.2345297029702973,
+      "n": 3
+     }
+    }
+   }
+  }
+ },
+ "battery_hypotheses": {
+  "H15": {
+   "name": "Operator identity drives the order difference (matched null-swap control)",
+   "rule": "median systematic fraction in power_treat \u2265 2\u00d7 power_nullswap, with CI>0 in \u22652/3 of treat cells",
+   "verdict": "H",
+   "why": "null swap shows as much order effect as the two-operator arm (19% vs 17%)",
+   "evidence": {
+    "treat_sys_frac": 0.16734417344173438,
+    "nullswap_sys_frac": 0.18968361073624232,
+    "n_treat": 3,
+    "n_null": 3,
+    "treat_frac_ci_above_0": 1.0
+   }
+  },
+  "H16": {
+   "name": "Order/noise ratio rises with model scale",
+   "rule": "Spearman(log params, pairwise ratio) \u2265 0.6 over \u22654 scale stages",
+   "verdict": "H",
+   "why": "ratio does not rise with scale (\u03c1=-0.20)",
+   "evidence": {
+    "spearman": -0.19999999999999998,
+    "slope_per_e_fold": -0.05455239240847561,
+    "points": [
+     [
+      110.0,
+      1.26
+     ],
+     [
+      11.3,
+      1.391695887790883
+     ],
+     [
+      28.8,
+      1.2184937124111535
+     ],
+     [
+      41.4,
+      1.2345297029702973
+     ]
+    ],
+    "params_M_for_2x": Infinity
+   }
+  }
+ },
+ "bayes": {
+  "power_nullswap": {
+   "posterior_composite": {
+    "last_writer": 8.032728607591604e-11,
+    "first_writer": 0.9999980705214683,
+    "markov": 4.214072142583141e-26,
+    "tilt": 1.3447867513708138e-15,
+    "overlap": 1.9293982029365425e-06,
+    "base": 4.214072142583141e-26
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 3.0340072780553627e-145,
+    "tilt": 1.2940604150979596e-140,
+    "overlap": 7.869235807917827e-138,
+    "base": 3.0340072780553627e-145
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 1.0085817864557411e-05,
+     "first_writer": 0.9987888098123124,
+     "markov": 1.3916874924919759e-08,
+     "tilt": 4.487621132590738e-05,
+     "overlap": 0.00115620032474739,
+     "base": 1.3916874924919759e-08
+    },
+    {
+     "last_writer": 3.948853012672294e-09,
+     "first_writer": 0.9999532750237715,
+     "markov": 1.3221028225044562e-17,
+     "tilt": 5.512631731529483e-09,
+     "overlap": 4.671551474385812e-05,
+     "base": 1.3221028225044562e-17
+    },
+    {
+     "last_writer": 8.032728607591604e-11,
+     "first_writer": 0.9999980705214683,
+     "markov": 4.214072142583141e-26,
+     "tilt": 1.3447867513708138e-15,
+     "overlap": 1.9293982029365425e-06,
+     "base": 4.214072142583141e-26
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 9.264182460842347e-53,
+     "tilt": 3.512993744752294e-51,
+     "overlap": 1.5948438831419037e-50,
+     "base": 9.264182460842347e-53
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 7.167955972338382e-98,
+     "tilt": 4.694101708737992e-94,
+     "overlap": 1.2642499414559238e-92,
+     "base": 7.167955972338382e-98
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.0340072780553627e-145,
+     "tilt": 1.2940604150979596e-140,
+     "overlap": 7.869235807917827e-138,
+     "base": 3.0340072780553627e-145
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.05629166666666667,
+     "ll_per_item": {
+      "last_writer": -0.30249022039032625,
+      "first_writer": -0.24497437854810208,
+      "markov": -0.3354191374755691,
+      "tilt": -0.29502633251767124,
+      "overlap": -0.27878140008895136,
+      "base": -0.3354191374755691
+     },
+     "ll_order": {
+      "last_writer": -0.8719849147778982,
+      "first_writer": -0.8719849147778982,
+      "markov": -1.4675734504369031,
+      "tilt": -1.4493960346251695,
+      "overlap": -1.4418315728609175,
+      "base": -1.4675734504369031
+     },
+     "acc": {
+      "last_writer": 0.930375,
+      "first_writer": 0.94675,
+      "markov": 0.921,
+      "tilt": 0.9325,
+      "overlap": 0.937125,
+      "base": 0.921
+     },
+     "flip_f1": {
+      "last_writer": 0.4484629294755877,
+      "first_writer": 0.4484629294755877,
+      "markov": 0.0,
+      "tilt": 0.02877697841726619,
+      "overlap": 0.03663003663003663,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.07175,
+      "first_writer": 0.07175,
+      "markov": 0.0,
+      "tilt": 0.003,
+      "overlap": 0.00175,
+      "base": 0.0
+     },
+     "obs_dis": 0.0665
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.05347916666666667,
+     "ll_per_item": {
+      "last_writer": -0.3180025870617734,
+      "first_writer": -0.27876945915063966,
+      "markov": -0.3826480819153461,
+      "tilt": -0.32379839004864547,
+      "overlap": -0.2948193751142853,
+      "base": -0.3826480819153461
+     },
+     "ll_order": {
+      "last_writer": -0.9723483819999656,
+      "first_writer": -0.9723483819999656,
+      "markov": -1.491712703338234,
+      "tilt": -1.4659549861320358,
+      "overlap": -1.457052735718055,
+      "base": -1.491712703338234
+     },
+     "acc": {
+      "last_writer": 0.92625,
+      "first_writer": 0.9372499999999999,
+      "markov": 0.9081250000000001,
+      "tilt": 0.924625,
+      "overlap": 0.93275,
+      "base": 0.9081250000000001
+     },
+     "flip_f1": {
+      "last_writer": 0.3883495145631068,
+      "first_writer": 0.3883495145631068,
+      "markov": 0.0,
+      "tilt": 0.038461538461538464,
+      "overlap": 0.04743083003952569,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.06725,
+      "first_writer": 0.06725,
+      "markov": 0.0,
+      "tilt": 0.0035,
+      "overlap": 0.00175,
+      "base": 0.0
+     },
+     "obs_dis": 0.0615
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.05479166666666666,
+     "ll_per_item": {
+      "last_writer": -0.2701386633253044,
+      "first_writer": -0.2506630839710506,
+      "markov": -0.34848360754582536,
+      "tilt": -0.3267948941740427,
+      "overlap": -0.26659764889725823,
+      "base": -0.34848360754582536
+     },
+     "ll_order": {
+      "last_writer": -0.9348773628532834,
+      "first_writer": -0.9348773628532834,
+      "markov": -1.4802835409751183,
+      "tilt": -1.470914543648839,
+      "overlap": -1.455329524536276,
+      "base": -1.4802835409751183
+     },
+     "acc": {
+      "last_writer": 0.9396249999999999,
+      "first_writer": 0.945125,
+      "markov": 0.9175,
+      "tilt": 0.923625,
+      "overlap": 0.940625,
+      "base": 0.9175
+     },
+     "flip_f1": {
+      "last_writer": 0.4482758620689655,
+      "first_writer": 0.4482758620689655,
+      "markov": 0.0,
+      "tilt": 0.014035087719298246,
+      "overlap": 0.03484320557491289,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.06025,
+      "first_writer": 0.06025,
+      "markov": 0.0,
+      "tilt": 0.001,
+      "overlap": 0.0015,
+      "base": 0.0
+     },
+     "obs_dis": 0.07025
+    }
+   ]
+  },
+  "power_treat": {
+   "posterior_composite": {
+    "last_writer": 0.06248391116525552,
+    "first_writer": 0.9374279372463461,
+    "markov": 1.873951704985096e-09,
+    "tilt": 2.735575553301741e-09,
+    "overlap": 8.814510491973733e-05,
+    "base": 1.873951704985096e-09
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 5.829017821925128e-170,
+    "tilt": 2.6911113869227135e-164,
+    "overlap": 3.3713419104987784e-162,
+    "base": 5.829017821925128e-170
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 0.9701744598060964,
+     "first_writer": 0.018493162961085986,
+     "markov": 0.0002459368399707147,
+     "tilt": 6.375510435778363e-05,
+     "overlap": 0.010776748448518326,
+     "base": 0.0002459368399707147
+    },
+    {
+     "last_writer": 0.9661807304837207,
+     "first_writer": 0.018417035738363667,
+     "markov": 2.2346888717138273e-08,
+     "tilt": 5.292817669102527e-09,
+     "overlap": 0.015402183791320424,
+     "base": 2.2346888717138273e-08
+    },
+    {
+     "last_writer": 0.06248391116525552,
+     "first_writer": 0.9374279372463461,
+     "markov": 1.873951704985096e-09,
+     "tilt": 2.735575553301741e-09,
+     "overlap": 8.814510491973733e-05,
+     "base": 1.873951704985096e-09
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 1.927824963894454e-51,
+     "tilt": 2.6772791382185887e-49,
+     "overlap": 2.9392330327947054e-47,
+     "base": 1.927824963894454e-51
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 1.2129483132966586e-109,
+     "tilt": 1.079171137999246e-106,
+     "overlap": 3.6485677904918514e-104,
+     "base": 1.2129483132966586e-109
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 5.829017821925128e-170,
+     "tilt": 2.6911113869227135e-164,
+     "overlap": 3.3713419104987784e-162,
+     "base": 5.829017821925128e-170
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.0518125,
+     "ll_per_item": {
+      "last_writer": -0.263806990361431,
+      "first_writer": -0.28360736444488116,
+      "markov": -0.3052077725359176,
+      "tilt": -0.31195790006436647,
+      "overlap": -0.2863074154562607,
+      "base": -0.3052077725359176
+     },
+     "ll_order": {
+      "last_writer": -0.926251927998069,
+      "first_writer": -0.926251927998069,
+      "markov": -1.5066634287802247,
+      "tilt": -1.4819955347194247,
+      "overlap": -1.4585029455782792,
+      "base": -1.5066634287802247
+     },
+     "acc": {
+      "last_writer": 0.9415,
+      "first_writer": 0.9359999999999999,
+      "markov": 0.9299999999999999,
+      "tilt": 0.928125,
+      "overlap": 0.9352499999999999,
+      "base": 0.9299999999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.445993031358885,
+      "first_writer": 0.445993031358885,
+      "markov": 0.0,
+      "tilt": 0.033783783783783786,
+      "overlap": 0.06557377049180328,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.071,
+      "first_writer": 0.071,
+      "markov": 0.0,
+      "tilt": 0.0015,
+      "overlap": 0.00375,
+      "base": 0.0
+     },
+     "obs_dis": 0.0725
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.051208333333333335,
+     "ll_per_item": {
+      "last_writer": -0.26886052832445717,
+      "first_writer": -0.26886052832445717,
+      "markov": -0.3153706179609353,
+      "tilt": -0.31582217222925063,
+      "overlap": -0.26705431125119583,
+      "base": -0.3153706179609353
+     },
+     "ll_order": {
+      "last_writer": -0.8421431478780157,
+      "first_writer": -0.8421431478780157,
+      "markov": -1.5122095167827327,
+      "tilt": -1.502922938132361,
+      "overlap": -1.4972989692297887,
+      "base": -1.5122095167827327
+     },
+     "acc": {
+      "last_writer": 0.940125,
+      "first_writer": 0.940125,
+      "markov": 0.92725,
+      "tilt": 0.927125,
+      "overlap": 0.940625,
+      "base": 0.92725
+     },
+     "flip_f1": {
+      "last_writer": 0.4844290657439446,
+      "first_writer": 0.4844290657439446,
+      "markov": 0.0,
+      "tilt": 0.014084507042253521,
+      "overlap": 0.02112676056338028,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.07475,
+      "first_writer": 0.07475,
+      "markov": 0.0,
+      "tilt": 0.00125,
+      "overlap": 0.00125,
+      "base": 0.0
+     },
+     "obs_dis": 0.06975
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.05891666666666667,
+     "ll_per_item": {
+      "last_writer": -0.30320742513356025,
+      "first_writer": -0.26986589712158493,
+      "markov": -0.30190840456166507,
+      "tilt": -0.2928152605583991,
+      "overlap": -0.3153316171379149,
+      "base": -0.30190840456166507
+     },
+     "ll_order": {
+      "last_writer": -0.7517379430873344,
+      "first_writer": -0.7517379430873344,
+      "markov": -1.4461774239600156,
+      "tilt": -1.4149188151475587,
+      "overlap": -1.419882739287065,
+      "base": -1.4461774239600156
+     },
+     "acc": {
+      "last_writer": 0.93,
+      "first_writer": 0.9396249999999999,
+      "markov": 0.930375,
+      "tilt": 0.933,
+      "overlap": 0.9265,
+      "base": 0.930375
+     },
+     "flip_f1": {
+      "last_writer": 0.44552845528455287,
+      "first_writer": 0.44552845528455287,
+      "markov": 0.0,
+      "tilt": 0.04669260700389105,
+      "overlap": 0.03937007874015748,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.093,
+      "first_writer": 0.093,
+      "markov": 0.0,
+      "tilt": 0.0035,
+      "overlap": 0.00275,
+      "base": 0.0
+     },
+     "obs_dis": 0.06075
+    }
+   ]
+  },
+  "scale_110m": {
+   "posterior_composite": {
+    "last_writer": 3.0372847857516133e-09,
+    "first_writer": 0.999964680455534,
+    "markov": 1.694537950963597e-11,
+    "tilt": 3.531644797079429e-05,
+    "overlap": 2.531955075869533e-11,
+    "base": 1.694537950963597e-11
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 2.2796155986173833e-136,
+    "tilt": 3.863911436061364e-129,
+    "overlap": 8.483838669423001e-130,
+    "base": 2.2796155986173833e-136
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 0.0004367890591289257,
+     "first_writer": 0.6310288204044954,
+     "markov": 3.97035270571888e-09,
+     "tilt": 0.356063431893854,
+     "overlap": 0.012470950701816579,
+     "base": 3.97035270571888e-09
+    },
+    {
+     "last_writer": 2.2599793972853494e-06,
+     "first_writer": 0.9952843773121548,
+     "markov": 9.573348311371385e-10,
+     "tilt": 0.004711852778126623,
+     "overlap": 1.5080156517916797e-06,
+     "base": 9.573348311371385e-10
+    },
+    {
+     "last_writer": 3.0372847857516133e-09,
+     "first_writer": 0.999964680455534,
+     "markov": 1.694537950963597e-11,
+     "tilt": 3.531644797079429e-05,
+     "overlap": 2.531955075869533e-11,
+     "base": 1.694537950963597e-11
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 2.3341757171252017e-40,
+     "tilt": 6.739905238233051e-37,
+     "overlap": 4.845420219612323e-38,
+     "base": 2.3341757171252017e-40
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 2.395764025741324e-80,
+     "tilt": 7.254552714013186e-75,
+     "overlap": 2.2001170502199587e-76,
+     "base": 2.395764025741324e-80
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 2.2796155986173833e-136,
+     "tilt": 3.863911436061364e-129,
+     "overlap": 8.483838669423001e-130,
+     "base": 2.2796155986173833e-136
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.07064583333333334,
+     "ll_per_item": {
+      "last_writer": -0.35734297540698134,
+      "first_writer": -0.3209646932153804,
+      "markov": -0.4153847290160524,
+      "tilt": -0.3238259064214615,
+      "overlap": -0.34058444091422135,
+      "base": -0.4153847290160524
+     },
+     "ll_order": {
+      "last_writer": -0.9088577745292405,
+      "first_writer": -0.9088577745292405,
+      "markov": -1.3616707631409517,
+      "tilt": -1.3218300515042591,
+      "overlap": -1.3349930364242306,
+      "base": -1.3616707631409517
+     },
+     "acc": {
+      "last_writer": 0.913125,
+      "first_writer": 0.92425,
+      "markov": 0.895375,
+      "tilt": 0.9233750000000001,
+      "overlap": 0.91825,
+      "base": 0.895375
+     },
+     "flip_f1": {
+      "last_writer": 0.3551673944687045,
+      "first_writer": 0.3551673944687045,
+      "markov": 0.0,
+      "tilt": 0.06769230769230769,
+      "overlap": 0.04560260586319218,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.10025,
+      "first_writer": 0.10025,
+      "markov": 0.0,
+      "tilt": 0.00975,
+      "overlap": 0.00525,
+      "base": 0.0
+     },
+     "obs_dis": 0.0715
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.06170833333333334,
+     "ll_per_item": {
+      "last_writer": -0.37828187358402304,
+      "first_writer": -0.3496830153523613,
+      "markov": -0.3590736852194741,
+      "tilt": -0.37358653865046665,
+      "overlap": -0.3970632133182487,
+      "base": -0.3590736852194741
+     },
+     "ll_order": {
+      "last_writer": -0.9641285623091591,
+      "first_writer": -0.9641285623091591,
+      "markov": -1.4245153640490131,
+      "tilt": -1.4012518131424307,
+      "overlap": -1.4055673470311345,
+      "base": -1.4245153640490131
+     },
+     "acc": {
+      "last_writer": 0.907875,
+      "first_writer": 0.91625,
+      "markov": 0.9135,
+      "tilt": 0.90925,
+      "overlap": 0.9023749999999999,
+      "base": 0.9135
+     },
+     "flip_f1": {
+      "last_writer": 0.3902439024390244,
+      "first_writer": 0.3902439024390244,
+      "markov": 0.0,
+      "tilt": 0.04040404040404041,
+      "overlap": 0.031088082901554404,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.10175,
+      "first_writer": 0.10175,
+      "markov": 0.0,
+      "tilt": 0.006,
+      "overlap": 0.0035,
+      "base": 0.0
+     },
+     "obs_dis": 0.093
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.06041666666666667,
+     "ll_per_item": {
+      "last_writer": -0.332148281570236,
+      "first_writer": -0.299064089178253,
+      "markov": -0.31925833648245044,
+      "tilt": -0.32355498484504563,
+      "overlap": -0.3540611882194714,
+      "base": -0.31925833648245044
+     },
+     "ll_order": {
+      "last_writer": -0.7894322163340476,
+      "first_writer": -0.7894322163340476,
+      "markov": -1.4344045191573602,
+      "tilt": -1.4142799376250486,
+      "overlap": -1.4043819291571158,
+      "base": -1.4344045191573602
+     },
+     "acc": {
+      "last_writer": 0.9215,
+      "first_writer": 0.931125,
+      "markov": 0.92525,
+      "tilt": 0.9239999999999999,
+      "overlap": 0.915125,
+      "base": 0.92525
+     },
+     "flip_f1": {
+      "last_writer": 0.45161290322580644,
+      "first_writer": 0.45161290322580644,
+      "markov": 0.0,
+      "tilt": 0.033003300330033,
+      "overlap": 0.046052631578947366,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.0985,
+      "first_writer": 0.0985,
+      "markov": 0.0,
+      "tilt": 0.00375,
+      "overlap": 0.004,
+      "base": 0.0
+     },
+     "obs_dis": 0.072
+    }
+   ]
+  },
+  "scale_11m": {
+   "posterior_composite": {
+    "last_writer": 3.4121695313216297e-10,
+    "first_writer": 0.001345640979748845,
+    "markov": 6.812877335574887e-27,
+    "tilt": 0.9986542657124663,
+    "overlap": 9.296656806520723e-08,
+    "base": 6.812877335574887e-27
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 3.452415008413693e-146,
+    "tilt": 1.7236898843398905e-140,
+    "overlap": 1.217361345295795e-140,
+    "base": 3.452415008413693e-146
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 1.921314157253845e-06,
+     "first_writer": 5.023852354172613e-07,
+     "markov": 5.515671065054492e-18,
+     "tilt": 0.9999614393337117,
+     "overlap": 3.613696689555275e-05,
+     "base": 5.515671065054492e-18
+    },
+    {
+     "last_writer": 4.579149671856703e-16,
+     "first_writer": 0.00010504993336277957,
+     "markov": 6.071009248879638e-22,
+     "tilt": 0.9998949500656761,
+     "overlap": 9.605924008445583e-13,
+     "base": 6.071009248879638e-22
+    },
+    {
+     "last_writer": 3.4121695313216297e-10,
+     "first_writer": 0.001345640979748845,
+     "markov": 6.812877335574887e-27,
+     "tilt": 0.9986542657124663,
+     "overlap": 9.296656806520723e-08,
+     "base": 6.812877335574887e-27
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 1.959135707272932e-61,
+     "tilt": 7.671793535930815e-57,
+     "overlap": 1.596991462872649e-58,
+     "base": 1.959135707272932e-61
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 6.251747924206139e-114,
+     "tilt": 2.4481264434692142e-109,
+     "overlap": 1.3772732206004816e-108,
+     "base": 6.251747924206139e-114
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.452415008413693e-146,
+     "tilt": 1.7236898843398905e-140,
+     "overlap": 1.217361345295795e-140,
+     "base": 3.452415008413693e-146
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.06535416666666666,
+     "ll_per_item": {
+      "last_writer": -0.4113207087556906,
+      "first_writer": -0.4180276960615482,
+      "markov": -0.5442028947529947,
+      "tilt": -0.3455083958169628,
+      "overlap": -0.3966491740241271,
+      "base": -0.5442028947529947
+     },
+     "ll_order": {
+      "last_writer": -0.7023006451060914,
+      "first_writer": -0.7023006451060914,
+      "markov": -1.3977608455149186,
+      "tilt": -1.3448839085773747,
+      "overlap": -1.3642439785541112,
+      "base": -1.3977608455149186
+     },
+     "acc": {
+      "last_writer": 0.8975,
+      "first_writer": 0.8955,
+      "markov": 0.8578749999999999,
+      "tilt": 0.917125,
+      "overlap": 0.901875,
+      "base": 0.8578749999999999
+     },
+     "flip_f1": {
+      "last_writer": 0.4017094017094017,
+      "first_writer": 0.4017094017094017,
+      "markov": 0.0,
+      "tilt": 0.08333333333333333,
+      "overlap": 0.05970149253731343,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.16125,
+      "first_writer": 0.16125,
+      "markov": 0.0,
+      "tilt": 0.01125,
+      "overlap": 0.011,
+      "base": 0.0
+     },
+     "obs_dis": 0.07275
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.07945833333333333,
+     "ll_per_item": {
+      "last_writer": -0.4921527003739791,
+      "first_writer": -0.3546518460522674,
+      "markov": -0.4269380094671101,
+      "tilt": -0.38136629774905706,
+      "overlap": -0.4685811253474,
+      "base": -0.4269380094671101
+     },
+     "ll_order": {
+      "last_writer": -0.7032744976719876,
+      "first_writer": -0.7032744976719876,
+      "markov": -1.3076577589043592,
+      "tilt": -1.3076577589043592,
+      "overlap": -1.2796608504512095,
+      "base": -1.3076577589043592
+     },
+     "acc": {
+      "last_writer": 0.86975,
+      "first_writer": 0.9135,
+      "markov": 0.8905000000000001,
+      "tilt": 0.905,
+      "overlap": 0.87725,
+      "base": 0.8905000000000001
+     },
+     "flip_f1": {
+      "last_writer": 0.5266005410279531,
+      "first_writer": 0.5266005410279531,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.04961832061068702,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.15225,
+      "first_writer": 0.15225,
+      "markov": 0.0,
+      "tilt": 0.0,
+      "overlap": 0.006,
+      "base": 0.0
+     },
+     "obs_dis": 0.125
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.06245833333333334,
+     "ll_per_item": {
+      "last_writer": -0.35578251132613603,
+      "first_writer": -0.41063828934110624,
+      "markov": -0.4803774179802932,
+      "tilt": -0.4233954470190063,
+      "overlap": -0.3659882374684561,
+      "base": -0.4803774179802932
+     },
+     "ll_order": {
+      "last_writer": -1.0474922940554356,
+      "first_writer": -1.0474922940554356,
+      "markov": -1.418874844454118,
+      "tilt": -1.406147262171876,
+      "overlap": -1.4165230085976168,
+      "base": -1.418874844454118
+     },
+     "acc": {
+      "last_writer": 0.9143749999999999,
+      "first_writer": 0.89825,
+      "markov": 0.87775,
+      "tilt": 0.8945000000000001,
+      "overlap": 0.911375,
+      "base": 0.87775
+     },
+     "flip_f1": {
+      "last_writer": 0.37084398976982097,
+      "first_writer": 0.37084398976982097,
+      "markov": 0.0,
+      "tilt": 0.022123893805309734,
+      "overlap": 0.008849557522123894,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.0855,
+      "first_writer": 0.0855,
+      "markov": 0.0,
+      "tilt": 0.003,
+      "overlap": 0.003,
+      "base": 0.0
+     },
+     "obs_dis": 0.11
+    }
+   ]
+  },
+  "scale_29m": {
+   "posterior_composite": {
+    "last_writer": 0.7498967468048666,
+    "first_writer": 0.10211392579104407,
+    "markov": 1.536419053212799e-23,
+    "tilt": 1.5325957768062107e-11,
+    "overlap": 0.14798932738876328,
+    "base": 1.536419053212799e-23
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 5.414151873093187e-111,
+    "tilt": 4.112634404092564e-105,
+    "overlap": 1.3934562288007594e-104,
+    "base": 5.414151873093187e-111
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 0.06370507226097802,
+     "first_writer": 0.08762623861970024,
+     "markov": 2.492043401187192e-09,
+     "tilt": 0.0948962846042278,
+     "overlap": 0.753772399531007,
+     "base": 2.492043401187192e-09
+    },
+    {
+     "last_writer": 0.17869229502444614,
+     "first_writer": 0.07955363122578071,
+     "markov": 2.4599026594307457e-16,
+     "tilt": 1.002817725903713e-06,
+     "overlap": 0.7417530709320468,
+     "base": 2.4599026594307457e-16
+    },
+    {
+     "last_writer": 0.7498967468048666,
+     "first_writer": 0.10211392579104407,
+     "markov": 1.536419053212799e-23,
+     "tilt": 1.5325957768062107e-11,
+     "overlap": 0.14798932738876328,
+     "base": 1.536419053212799e-23
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.0344414449816305e-33,
+     "tilt": 2.2001739470639135e-29,
+     "overlap": 2.599963186965602e-30,
+     "base": 3.0344414449816305e-33
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 5.115815550028417e-62,
+     "tilt": 3.43332259193931e-58,
+     "overlap": 7.522174727720958e-58,
+     "base": 5.115815550028417e-62
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 5.414151873093187e-111,
+     "tilt": 4.112634404092564e-105,
+     "overlap": 1.3934562288007594e-104,
+     "base": 5.414151873093187e-111
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.07620833333333332,
+     "ll_per_item": {
+      "last_writer": -0.4267784621718533,
+      "first_writer": -0.4251843807019726,
+      "markov": -0.5120618208104678,
+      "tilt": -0.42478586033450244,
+      "overlap": -0.4144243307802783,
+      "base": -0.5120618208104678
+     },
+     "ll_order": {
+      "last_writer": -0.9558659137457128,
+      "first_writer": -0.9558659137457128,
+      "markov": -1.3267765813385453,
+      "tilt": -1.2823323342066204,
+      "overlap": -1.2930104553616808,
+      "base": -1.3267765813385453
+     },
+     "acc": {
+      "last_writer": 0.891,
+      "first_writer": 0.8915,
+      "markov": 0.86425,
+      "tilt": 0.891625,
+      "overlap": 0.894875,
+      "base": 0.86425
+     },
+     "flip_f1": {
+      "last_writer": 0.3047158403869408,
+      "first_writer": 0.3047158403869408,
+      "markov": 0.0,
+      "tilt": 0.07164179104477612,
+      "overlap": 0.05865102639296188,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.1285,
+      "first_writer": 0.1285,
+      "markov": 0.0,
+      "tilt": 0.0055,
+      "overlap": 0.007,
+      "base": 0.0
+     },
+     "obs_dis": 0.07825
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.07379166666666667,
+     "ll_per_item": {
+      "last_writer": -0.37840951548749147,
+      "first_writer": -0.3840497664753105,
+      "markov": -0.4642219055164525,
+      "tilt": -0.4408551514240594,
+      "overlap": -0.383646891404752,
+      "base": -0.4642219055164525
+     },
+     "ll_order": {
+      "last_writer": -1.010319488408263,
+      "first_writer": -1.010319488408263,
+      "markov": -1.341582779593211,
+      "tilt": -1.341969366622823,
+      "overlap": -1.3273696114144193,
+      "base": -1.341582779593211
+     },
+     "acc": {
+      "last_writer": 0.9063749999999999,
+      "first_writer": 0.904625,
+      "markov": 0.87975,
+      "tilt": 0.887,
+      "overlap": 0.9047499999999999,
+      "base": 0.87975
+     },
+     "flip_f1": {
+      "last_writer": 0.3396704689480355,
+      "first_writer": 0.3396704689480355,
+      "markov": 0.0,
+      "tilt": 0.004819277108433735,
+      "overlap": 0.028368794326241134,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.09625,
+      "first_writer": 0.09625,
+      "markov": 0.0,
+      "tilt": 0.00275,
+      "overlap": 0.00475,
+      "base": 0.0
+     },
+     "obs_dis": 0.101
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.06347916666666667,
+     "ll_per_item": {
+      "last_writer": -0.3164675186168884,
+      "first_writer": -0.322390581182011,
+      "markov": -0.40658268478625403,
+      "tilt": -0.37908275144818476,
+      "overlap": -0.33169825092720373,
+      "base": -0.40658268478625403
+     },
+     "ll_order": {
+      "last_writer": -0.847463560431733,
+      "first_writer": -0.847463560431733,
+      "markov": -1.411313511149256,
+      "tilt": -1.3876683806883214,
+      "overlap": -1.3854884724813747,
+      "base": -1.411313511149256
+     },
+     "acc": {
+      "last_writer": 0.925875,
+      "first_writer": 0.924125,
+      "markov": 0.89925,
+      "tilt": 0.907375,
+      "overlap": 0.921375,
+      "base": 0.89925
+     },
+     "flip_f1": {
+      "last_writer": 0.41739130434782606,
+      "first_writer": 0.41739130434782606,
+      "markov": 0.0,
+      "tilt": 0.038461538461538464,
+      "overlap": 0.0392156862745098,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.0985,
+      "first_writer": 0.0985,
+      "markov": 0.0,
+      "tilt": 0.004,
+      "overlap": 0.0025,
+      "base": 0.0
+     },
+     "obs_dis": 0.074
+    }
+   ]
+  },
+  "scale_41m": {
+   "posterior_composite": {
+    "last_writer": 7.384693566236115e-16,
+    "first_writer": 0.9999983890435896,
+    "markov": 3.0830972446320907e-28,
+    "tilt": 1.533083277285643e-10,
+    "overlap": 1.61080310148091e-06,
+    "base": 3.0830972446320907e-28
+   },
+   "posterior_order": {
+    "last_writer": 0.5,
+    "first_writer": 0.5,
+    "markov": 3.3256933865889695e-133,
+    "tilt": 2.681408135889283e-114,
+    "overlap": 2.7268979067666315e-125,
+    "base": 3.3256933865889695e-133
+   },
+   "trajectory_composite": [
+    {
+     "last_writer": 1.4196374813531506e-05,
+     "first_writer": 0.4861165775174522,
+     "markov": 2.927744084285971e-11,
+     "tilt": 0.4485999057066268,
+     "overlap": 0.06526932034255266,
+     "base": 2.927744084285971e-11
+    },
+    {
+     "last_writer": 1.4675960270129317e-14,
+     "first_writer": 0.9999991858034812,
+     "markov": 7.172000647702587e-20,
+     "tilt": 5.1284624629870645e-08,
+     "overlap": 7.629118795384345e-07,
+     "base": 7.172000647702587e-20
+    },
+    {
+     "last_writer": 7.384693566236115e-16,
+     "first_writer": 0.9999983890435896,
+     "markov": 3.0830972446320907e-28,
+     "tilt": 1.533083277285643e-10,
+     "overlap": 1.61080310148091e-06,
+     "base": 3.0830972446320907e-28
+    }
+   ],
+   "trajectory_order": [
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.750570726520148e-49,
+     "tilt": 1.5075020739543733e-39,
+     "overlap": 5.272593479190638e-45,
+     "base": 3.750570726520148e-49
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 2.907979314583557e-97,
+     "tilt": 2.081010190495367e-82,
+     "overlap": 1.7727258004026832e-91,
+     "base": 2.907979314583557e-97
+    },
+    {
+     "last_writer": 0.5,
+     "first_writer": 0.5,
+     "markov": 3.3256933865889695e-133,
+     "tilt": 2.681408135889283e-114,
+     "overlap": 2.7268979067666315e-125,
+     "base": 3.3256933865889695e-133
+    }
+   ],
+   "per_cell": [
+    {
+     "cell": "a1.0_s0",
+     "eps": 0.07450000000000001,
+     "ll_per_item": {
+      "last_writer": -0.41635911771691714,
+      "first_writer": -0.36415303217511247,
+      "markov": -0.48181751728087235,
+      "tilt": -0.364554617448511,
+      "overlap": -0.37419266401007484,
+      "base": -0.48181751728087235
+     },
+     "ll_order": {
+      "last_writer": -0.783130578512566,
+      "first_writer": -0.783130578512566,
+      "markov": -1.3371886502826038,
+      "tilt": -1.2266166656167266,
+      "overlap": -1.2894338767194773,
+      "base": -1.3371886502826038
+     },
+     "acc": {
+      "last_writer": 0.8945000000000001,
+      "first_writer": 0.91075,
+      "markov": 0.874125,
+      "tilt": 0.910625,
+      "overlap": 0.907625,
+      "base": 0.874125
+     },
+     "flip_f1": {
+      "last_writer": 0.40046296296296297,
+      "first_writer": 0.40046296296296297,
+      "markov": 0.0,
+      "tilt": 0.16120906801007556,
+      "overlap": 0.07580174927113703,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.136,
+      "first_writer": 0.136,
+      "markov": 0.0,
+      "tilt": 0.01925,
+      "overlap": 0.00575,
+      "base": 0.0
+     },
+     "obs_dis": 0.08
+    },
+    {
+     "cell": "a1.0_s1",
+     "eps": 0.07987499999999999,
+     "ll_per_item": {
+      "last_writer": -0.42559202183632894,
+      "first_writer": -0.3185352834713509,
+      "markov": -0.4212783803637474,
+      "tilt": -0.40206306834952055,
+      "overlap": -0.3789262640874923,
+      "base": -0.4212783803637474
+     },
+     "ll_order": {
+      "last_writer": -0.751376387246411,
+      "first_writer": -0.751376387246411,
+      "markov": -1.305269057443853,
+      "tilt": -1.2448201851454002,
+      "overlap": -1.2864209786378458,
+      "base": -1.305269057443853
+     },
+     "acc": {
+      "last_writer": 0.890875,
+      "first_writer": 0.925,
+      "markov": 0.89225,
+      "tilt": 0.8983749999999999,
+      "overlap": 0.90575,
+      "base": 0.89225
+     },
+     "flip_f1": {
+      "last_writer": 0.5236051502145923,
+      "first_writer": 0.5236051502145923,
+      "markov": 0.0,
+      "tilt": 0.10227272727272728,
+      "overlap": 0.03278688524590164,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.11425,
+      "first_writer": 0.11425,
+      "markov": 0.0,
+      "tilt": 0.01325,
+      "overlap": 0.00325,
+      "base": 0.0
+     },
+     "obs_dis": 0.11875
+    },
+    {
+     "cell": "a1.0_s2",
+     "eps": 0.06733333333333333,
+     "ll_per_item": {
+      "last_writer": -0.35494462887106065,
+      "first_writer": -0.339997700498332,
+      "markov": -0.43632235001147285,
+      "tilt": -0.36906117233419344,
+      "overlap": -0.3362609684051498,
+      "base": -0.43632235001147285
+     },
+     "ll_order": {
+      "last_writer": -0.9701094233146045,
+      "first_writer": -0.9701094233146045,
+      "markov": -1.3839036413369312,
+      "tilt": -1.3372555950133844,
+      "overlap": -1.3593956576085704,
+      "base": -1.3839036413369312
+     },
+     "acc": {
+      "last_writer": 0.914125,
+      "first_writer": 0.918625,
+      "markov": 0.889625,
+      "tilt": 0.909875,
+      "overlap": 0.9197500000000001,
+      "base": 0.889625
+     },
+     "flip_f1": {
+      "last_writer": 0.3480916030534351,
+      "first_writer": 0.3480916030534351,
+      "markov": 0.0,
+      "tilt": 0.07602339181286549,
+      "overlap": 0.03858520900321544,
+      "base": 0.0
+     },
+     "pred_dis": {
+      "last_writer": 0.08875,
+      "first_writer": 0.08875,
+      "markov": 0.0,
+      "tilt": 0.0105,
+      "overlap": 0.00275,
+      "base": 0.0
+     },
+     "obs_dis": 0.075
+    }
+   ]
+  }
+ }
+}
