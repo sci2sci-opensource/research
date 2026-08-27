@@ -1,8 +1,9 @@
 # Lab notes — the order-dependence experiments
 
-**Date:** 15 August 2026 · revised 17 August 2026 (re-runs, matched controls, contextual fraction)
-**Companion to:** *On Learning Languages* (OLL) v31 and *Perfect Theory* (PT) v21, drafts of 14 Aug 2026;
-*Universal Language Learning Machine* (ULLM) v5, 17 Aug 2026
+**Date:** 15 August 2026 · revised 27 August 2026 (re-runs, matched controls, contextual fraction,
+and reconciliation audit)
+**Companion to:** *On Learning Languages* (OLL) v32, 25 Aug 2026; *Perfect Theory* (PT) v22,
+26 Aug 2026; *Universal Language Learning Machine* (ULLM) v6, 27 Aug 2026
 **Archived:** Zenodo, *Universal Language Learning series* — DOI [10.5281/zenodo.21971310](https://doi.org/10.5281/zenodo.21971310) (concept, latest version)
 **Code:** `euh_pkg/` (experiment 1), `ner_enrich_pkg/` (experiment 2)
 **Data artifacts (17 Aug re-runs supersede the 15 Aug batteries):**
@@ -46,8 +47,9 @@ Both experiments follow the same discipline, which is the actual methodological 
 1. **Train the ingredients** (base model, intervention A alone, intervention B alone).
 2. **Predict the composites** (A→B and B→A) from the ingredients only, using several competing
    prediction rules ("nulls"), and **seal the predictions** — write them to disk with a SHA-256
-   hash *before* any composite exists. This is pre-registration enforced by code: we cannot
-   retroactively adjust what we "expected."
+   hash *before* any composite exists. The current pipeline makes seals append-only. One cell in
+   the first full battery predates that guard and was resealed during restart; it is disclosed and
+   excluded from sealed-prediction claims in §1.4.
 3. **Train both composites**, plus *replicates* — extra reruns of each composite from the same
    ingredients with different seeds. The disagreement between same-order replicates is the
    **noise floor**: the amount of disagreement you get from training stochasticity alone. Any
@@ -202,8 +204,10 @@ on a resume (18:13) after an aborted first attempt had already trained that cell
 (sealed 17:21, hash `63250a6b…`, surviving in `log.txt` with near-identical headline statistics).
 That cell is excluded from sealed-prediction claims; sweep.py now refuses to overwrite seals
 (append-only, cells marked `resealed`).
-- **The negative control reads zero.** One operator in two costumes produces order differences fully
-  explained by training noise. The instrument doesn't invent effects.
+- **The original negative control stays below the declared 2× magnitude threshold.** One operator
+  in two costumes produces 0.7× the replicate floor under H9. The more sensitive pairwise analysis
+  in §1.5 later resolves a small systematic component in a matched control, so this result supports
+  the threshold-specific H9 verdict rather than an absolute absence of order sensitivity.
 - **With the confound removed, sharing data *increases* order sensitivity** — the pilot's opposite
   trend was entirely the operator-degeneration artifact.
 - **The effect is a scale phenomenon.** At bert-tiny, replicate noise (7–13% disagreement between
@@ -222,7 +226,8 @@ of each), a matched control arm, and a scale curve at fixed settings. The pairwi
 m-independent in expectation, so more replicates sharpen it without inflating it — unlike ensemble
 averaging, which would have let us buy the threshold with compute.
 
-Three routes to the bar were tested and all three are closed:
+Three proposed routes to the bar failed over the tested learning-rate range, model scales, and
+estimators:
 
 - **Displacement doesn't work.** Across a 20× range in lr_T (α = 0.1 → 2.0), order disagreement
   grows 1.7× and the floor grows 2.0×, so the ratio *declines* (1.47× → 1.20×, fit −0.065/α).
@@ -240,8 +245,8 @@ Three routes to the bar were tested and all three are closed:
 What the sharper instrument *does* deliver is a definite verdict where the 2× rule returned U.
 Sealed **H14** ("a systematic, non-noise order component exists": cross-order minus within-order
 pairwise disagreement, bootstrap CI excluding 0, in ≥⅔ of cells) returns **E in 100% of cells in
-all six stages**, with 17–28% of cross-order disagreement systematic. So the effect is certain and
-small; the 2× bar was demanding a magnitude this phenomenon does not have.
+all six stages**, with 17–28% of cross-order disagreement classified as systematic. The effect is
+resolved under the sealed H14 criterion and remains small relative to the 2× magnitude bar.
 
 **The matched control (H15) is the informative negative.** `power_nullswap` replaces the second
 operator with a second instance of the first — same objective, different data draw, everything else
@@ -328,9 +333,10 @@ Reading:
 - **With the KL anchor in place, the old language does not clear the order-effect bar.** Retracted
   to Σ₀ and floored in the matched unit, the two acquisition paths differ at median 1.4× the
   replicate floor with **no cell reaching 2×** — "does not clear the 2× threshold," not "below the
-  noise floor." Whether the anchor *causes* this confinement is untested: the β=0 ablation has not
-  been run and is queued. (Implementation note: the penalty is KL(retract(current) ‖ reference) —
-  an earlier docstring stated the reverse direction.)
+  noise floor." The completed β=0 ablation raises the median retracted ratio only from 1.44× to
+  1.59×; sealed N5 remains U, while the conservativity verdict N2 falls from E to U. The ablation
+  therefore leaves the anchor's causal effect unresolved. (Implementation note: the penalty is
+  KL(retract(current) ‖ reference) — an earlier docstring stated the reverse direction.)
 - **The improvement-verdict flip is real, floored, and graded by capacity.** First the floor
   (proposed by V): could replicate jitter manufacture a flip? No — across 192 replicate pairs
   (same intervention, different seed), the flip signature occurs **zero** times. The reason is
@@ -341,10 +347,12 @@ Reading:
   while worsening the old one (typically −0.3pp new vs +0.8pp old). And a refinement the floor
   exposed at bert-base: the trade-off doesn't vanish with capacity, it shrinks an order of
   magnitude — 11/72 *small* flips (old-language cost ≲0.1pp) sit above base's much tighter jitter
-  scale. So the honest law is not "capacity buys monotonicity" but **"capacity buys down the price
-  of a new distinction"** — and "did this training help?" still has no readout-independent answer;
-  the readouts just disagree by less when the model is big enough. This is the paper's abstract
-  non-monotonicity result (Prop 6.4) wearing overalls, with an error bar.
+  scale. These 11 raw sign flips do not satisfy the sealed N4 decision rule, which returns H on
+  both base stages and E on tiny. Thus the table's 0/72 counts sealed, threshold-qualified flips,
+  while the 11/72 figure records smaller raw reversals resolved by the tighter exploratory jitter
+  analysis. Capacity buys down the measured price of a new distinction, and "did this training
+  help?" still requires a declared readout. This is the paper's abstract non-monotonicity result
+  (Prop 6.4) with an empirical error scale.
 
 ### 2.3 The matched control (2026-08-17): does the order effect need the distinctions to differ?
 
@@ -370,12 +378,13 @@ indistinguishable, so the model cannot tell which half an unseen entity belongs 
 contest very different amounts (sealed predicted conflict 0.036 vs 0.010, overlap ratios 19 vs 5.8;
 pool overlap 2770 vs 997 sentences). Both asymmetries bias toward H.
 
-The fair statistic is each arm against **its own** sealed conflict prediction, written before any
+The arm-normalized statistic compares each arm against **its own** sealed conflict prediction, written before any
 composite existed (`analysis/conflict_normalized.py`): treatment **0.61**, control **0.70**, ratio
 0.88. Both arms realise about two thirds of the order dependence their own conflict structure
-implies, and the treatment does not exceed its prediction by any more than the control exceeds its
-own. So the identity of the added distinctions adds nothing detectable beyond how much they contest,
-and the euh result replicates on the other task and the other intervention type.
+implies, and the treatment shows no detectable excess over the control after this normalization.
+Within this matched comparison, the identity of the added distinctions contributes no detected
+increment beyond contest volume; the euh control result thereby recurs on another task and
+intervention type.
 
 This also dissolves the enrichment-versus-reweighting asymmetry we had briefly treated as the
 headline. NER shows ~50% systematic against euh's ~20%, but NER's entity-matched population strips
@@ -384,9 +393,10 @@ comparable dead weight. The gap measures the population, not the intervention ty
 
 **The direction test, run symmetrically.** Per-label marginal drift C(AB) − C(BA), entity-matched:
 the treatment moves MISC +0.029 and ORG −0.046; the control moves ORG#2 +0.141 and ORG#1 −0.153.
-Both are stable across cells and both say the same thing — the category added **last** is
-over-represented. The control does it 3–5× more strongly. Last-writer-wins on contested items is
-the mechanism in both arms.
+Both are stable across cells and show the same signature: the category added **last** is
+over-represented. The control shows the signature 3–5× more strongly. This last-writer pattern is a
+descriptive candidate mechanism for both arms; the present intervention does not isolate it
+causally from the associated contest structure.
 
 ---
 
@@ -394,8 +404,9 @@ the mechanism in both arms.
 
 Some vocabulary first, because "quantum" earns instant suspicion. Nothing here claims models are
 quantum systems. The borrowed apparatus is the **operational theory of measurements that disturb
-what they measure** — developed for physics, applicable to *any* process where extracting/imprinting
-information changes the system, which sequential fine-tuning obviously is. Concretely: a
+what they measure** — developed for physics and usable as a source of candidate identities for
+processes in which extracting or imprinting information changes the system. Sequential fine-tuning
+has that intervention/readout structure. Concretely: a
 fine-tuning pass both *acts on* the model and *is read out through* benchmarks — the same structure
 (instrument + readout) that quantum measurement theory formalizes. The honest reading of that
 formalism (which the papers defend) is epistemic: the algebra describes what an observer can
@@ -404,7 +415,7 @@ legitimately transplantable, and — crucially — makes their *constraints* tes
 instruments obey identities that generic disturbing processes don't. Each identity is a free
 experiment.
 
-**QQ equality** — *what it is:* in survey research, asking two yes/no questions in both orders
+**QQ equality (exploratory)** — *what it is:* in survey research, asking two yes/no questions in both orders
 changes answer distributions (order effects). The quantum question-order model predicts, with zero
 free parameters, that one particular combination — P(yes,yes) + P(no,no), the "agreement rate" —
 must be the *same* in both orders. Remarkably, this held across ~70 national surveys. *Our
@@ -417,7 +428,7 @@ monotonically with operator strength α and **crosses zero** (at α≈0.45 for t
 quantum-shaped, but the QQ diagnostic sees an asymmetry structure the raw disagreement rate is
 blind to.
 
-**Contextual fraction (Contextuality-by-Default)** — *what it is:* PT §6.4 defines a graded
+**Contextual fraction (Contextuality-by-Default; added before the 17 August rerun, not sealed)** — *what it is:* PT §6.4 defines a graded
 quantity. An empirical model is a family of context-wise joint distributions; a **global model** is
 one distribution over all outcomes whose marginals reproduce every context. Failure of a global
 model is contextuality, and CF = 1 − NCF measures the residual obstruction. Crucially, PT states in
@@ -443,29 +454,29 @@ nothing left over. *Caveats:* rank 2 is the weakest scenario available (CHSH-sty
 which is a modelling choice; a per-item-across-seeds construction asks a different question and the
 replicates would support it.
 
-**Instrument context-independence ("deficiency")** — *what it is:* in a proper operator algebra,
+**Instrument context-independence ("deficiency"; exploratory)** — *what it is:* in a proper operator algebra,
 "the T operation" is one object regardless of what state it acts on. *Our test:* fit T's verdict
 table from base→T, fit it again from S→(S then T), compare, against a bootstrap estimate of pure
 fitting noise. *Result:* the two differ by **1.3–4.8× fit noise** across the grid. There is no
 single "T operation" at the verdict level — only a family indexed by context. This is the cleanest
 quantitative statement that the verdict-level algebra fails to close.
 
-**The commutator** — *what it is:* the textbook non-commutativity measure, ‖Φ_S Φ_T − Φ_T Φ_S‖ for
+**The commutator (exploratory)** — *what it is:* the textbook non-commutativity measure, ‖Φ_S Φ_T − Φ_T Φ_S‖ for
 the fitted verdict tables. *Result:* **pure estimation noise** (z between −0.2 and +0.1 against a
 bootstrap null). The most quantum-*looking* statistic carries nothing — because the real
 non-commutativity lives below the level the tables are fitted at. We keep this in the record as a
 deliberate null: the naive translation of the formalism measures nothing; the refined ones above do.
 
-**The geometry race (amplitudes)** — *what it is:* quantum states are amplitudes (square roots of
+**The geometry race (amplitudes; exploratory)** — *what it is:* quantum states are amplitudes (square roots of
 probabilities); the suspicion was that model-output dynamics might compose more linearly in
 amplitude space than in probability or log space. *Our test:* fit each pass as a linear map in
 three coordinate systems — raw probabilities, log-ratios, √p — compose both orders, see which
 predicts observed composites best. *Result:* **√p wins in 21 of 23 cells** (sign test p ≈ 3×10⁻⁵),
 by a small (+0.25pp) but near-unanimous margin. The amplitude embedding is measurably the most
-compositional of the three. No phases claimed — but "which geometry does training compose in?" now
-has an empirical answer, and it's the quantum-flavored one.
+compositional of the three candidates tested. No phases are claimed; the result nominates the
+square-root embedding for further comparison against a broader set of geometries.
 
-**The interference grid** — *what it is:* the one place a "superposition" of models is honestly
+**The interference grid (exploratory)** — *what it is:* the one place a "superposition" of models is honestly
 preparable: θ(a,b) = θ_base + a·τ_S + b·τ_T, where τ = weight-difference ("task vector") of each
 single pass. We evaluated a 6×6 grid of such mixtures, then projected the *actual* sequential
 composites onto that plane. *A correction with a lesson:* our first pass at this reported that the
@@ -484,16 +495,16 @@ compressed to its stable core; the rest of any single run is seed-specific.** Be
 naive merged model still agrees ~94% with either composite — and the residual few percent is the
 measured order effect.
 
-**BCH / curvature test** — *what it is:* a physicist's reflex — if training passes are flows, the
+**BCH / curvature test (failure pre-registered after the interference analysis)** — *what it is:* a physicist's reflex — if training passes are flows, the
 order gap should be predicted to second order by the commutator of the flows, computable via
 Hessian-vector products (the Baker–Campbell–Hausdorff correction). Given the interference result
 we pre-registered failure. *Result:* **cos(observed gap, BCH prediction) = +0.005.** Not small —
 orthogonal, with comparable norms. The observed gap is instead ~40% explained by first-order
 "survivor asymmetry" (whose task vector survived being trained over) and ~60% off-plane structure
-invisible to any low-order expansion. **SGD composition is non-perturbative in task vectors** at
-these training lengths.
+invisible to this second-order approximation. Under these models, tasks, and training lengths, the
+tested task-vector expansion does not describe SGD composition.
 
-**α\*-coincidence** — *the hypothesis:* the QQ zero-crossing and the point where order-asymmetry in
+**α\*-coincidence (exploratory)** — *the hypothesis:* the QQ zero-crossing and the point where order-asymmetry in
 aggregate verdict shares vanishes might be the same "balance point." *Result:* refuted — the
 aggregate asymmetry Γ never crosses zero in our range (it tracks persistent last-writer dominance),
 while the QQ diagonals cross at readout-dependent points. Order asymmetry is (at least)
@@ -529,21 +540,24 @@ typed. Sorted onto it:
    commuting-square condition of PT §6.6 fails, while the comparison itself remains available. That
    combination is exactly the **unsharp gap** PT §6.5 constructs: two observables that *are* jointly
    measurable — (√3+1)/2 < 2 — yet whose Lüders channels do not commute, so that "static gluing
-   without dynamic gluing" (Prop 6.3) is possible. Our batteries are an empirical instance of that
-   configuration, not evidence against it. Note the implication runs only one way outside the sharp
-   case: Theorem 6.1 makes commutation, joint measurability and order-independent revision coincide
-   for **sharp** observables, so with projective readouts order dependence would have forced
-   contextuality. A coarse-grained probabilistic verdict is about as unsharp as a readout gets,
-   which is why the naive inference fails and why the paper devotes a section to the gap.
+   without dynamic gluing" (Prop 6.3) is possible. Our batteries exhibit the same operational
+   separation between available static comparison and order-dependent revision. They do not
+   establish that the learned operators are jointly measurable observables or Lüders instruments,
+   so the unsharp construction is a formal analogue rather than an empirical model fitted here.
+   Theorem 6.1 makes commutation, joint measurability and order-independent revision coincide for
+   **sharp** observables. These coarse-grained probabilistic verdicts do not supply that sharp
+   measurement structure, so order dependence alone licenses no contextuality inference.
 
-Within rung 3, the order effect itself is **certain but small and unstructured by operator
-identity**: sealed H14 = E in 100% of cells across six stages (17–28% systematic); the 2× bar
-returns U and is unreachable by displacement (flat across 20× lr), by scale (ρ = −0.20 from 11M to
-110M), or by better estimation (which tightens 1.03–1.40 to 1.18–1.28). Matched controls on both
+Within rung 3, the order effect is **resolved by H14 as small, with no incremental operator-identity
+effect detected by the matched controls**: sealed H14 = E in 100% of cells across six stages
+(17–28% systematic); the 2× bar
+returns U and was not reached by displacement across the tested 20× learning-rate range, by the
+tested scale curve (ρ = −0.20 from 11M to 110M), or by better estimation (which tightens
+1.03–1.40 to 1.18–1.28). Matched controls on both
 tasks — euh's H15 (19% vs 17%) and NER's N6 (0.70 vs 0.61 against each arm's own sealed conflict
-prediction) — say the same thing: swapping *which* operators are used changes nothing. The
-mechanism visible in every arm is **last-writer-wins on contested items**, with magnitude tracking
-contest volume and direction tracking which pass went last. The strongest magnitude result remains
+prediction) — show no detected increment from swapping *which* operators are used. Every arm has a
+**last-writer signature on contested items**, with magnitude tracking contest volume and direction
+tracking which pass went last. The strongest magnitude result remains
 the **NER entity-matched effect (median 2.02×, 8/12 cells ≥2×, sealed N1 = E; 2.25× and 10/12 with
 the anchor removed)**, now with its own ported ledger.
 
@@ -589,25 +603,28 @@ the anchor removed)**, now with its own ported ledger.
 - Reproduce: `run.bat experiment` in each package (~2.5h euh, ~35min ner on an RTX 3070).
   Rebuild reports from ledgers without retraining: `rescore.py` / `report.py`.
 
-## 6. Postscript (16 Aug): the infrastructure turned out to be the third paper
+## 6. Postscript (16 Aug; revised 27 Aug): the infrastructure motivated the third paper
 
-The *Universal Language Learning Machine* draft formalizes, almost clause for clause, the
-infrastructure these experiments forced us to build — before the draft existed:
+The infrastructure built for these experiments motivated several constructions later formalized in
+*Universal Language Learning Machine*. The correspondences are architectural rather than claims
+that the experimental runner satisfies every hypothesis of the formal machine:
 
-- **Conservatization (ULLM Thm 4.1)** is what the checkpoint + append-only-ledger + deterministic-pool
-  design implements: every exogenous input to a training cell (seeds, configs, data selection) is
-  logged, so any cell state is reconstructible by re-simulation. The cell-level *resume* is
-  literally the Replay map — the dry-run that resumed a live battery's ledger and skipped three
-  finished cells without training a step was `Replay(c₀, E_t, k)` executing on real hardware.
-- **The Forgetting Theorem (ULLM Thm 2.1) was lived before it was read**: the first quick battery,
-  killed before resume logic existed, left four hours of states that no amount of further
-  computation could re-enter — the ledger retained too little. The same afternoon we implemented
-  the conservatization that makes the theorem's converse available. Cost of the lesson: ~2.5 GPU-hours.
+- **Conservatization (ULLM Thm 4.1)** is approximated by the checkpoint, append-only-ledger, and
+  deterministic-pool design. Seeds, configurations, and data selections record the declared
+  exogenous inputs, while checkpoints preserve completed cell states directly. Exact
+  reconstruction by re-simulation additionally depends on the software stack, numerical kernels,
+  and hardware determinism; the present archive does not certify those conditions. Cell-level
+  resume is therefore an engineering realization of retained-state re-entry, using checkpoints
+  together with the ledger rather than reconstructing every state from the ledger alone.
+- **The failure that motivates the Forgetting Theorem (ULLM Thm 2.1)** occurred in the first quick
+  battery: after termination before resume logic existed, its intermediate states were absent from
+  the retained interface and could not be resumed. Retraining might reproduce equivalent states
+  under sufficiently controlled conditions, but the run itself supplied no re-entry path. The
+  checkpoint-and-ledger design was implemented that afternoon. Cost of the lesson: ~2.5 GPU-hours.
 - **Fork** = every replicate (same prefix, fresh reply stream) and the interference grid (continuations
   θ(a,b) attached beneath a replayed node).
-- **"Itineraries, not endpoints" (ULLM §8.1)** now has numbers: ~75% of any single pass's
+- **Itinerary-indexed states (ULLM §8.1)** now have an empirical motivation: ~75% of any single pass's
   weight-direction is reply-stream-specific (the seed-cosine null), and in the NER experiment two
   acquisition paths that *retract to the same old language* remain different enriched states. The
-  node must be (P, h, E); the experiments measure how much of the state is h.
-
-*Results dashboard (private): claude.ai artifact "Order-Dependence Ledger."*
+  corresponding formal node is \((P,h,E_h)\). The experiments measure path-associated differences;
+  they do not identify a unique decomposition of model state into \(P\), \(h\), and \(E_h\).
