@@ -1,6 +1,6 @@
 ---
 title: "Universal Language Learning Machine"
-date: "27 August 2026 — Revised Draft v6"
+date: "27 August 2026 — Revised Draft v7"
 lang: en
 ---
 
@@ -12,7 +12,7 @@ This paper completes a trilogy about learning beyond a fixed hypothesis language
 
 I first ask whether this openness creates a genuine preservation problem. Can an update destroy a possible continuation rather than merely make it expensive to reach? Can it remove every route to a desired representation, including the only reachable Perfect one? Can a learner certify that no route remains? If such losses occur, what information must a universal learner retain to prevent them?
 
-I formalize forgetting as the collapse of learning-distinguishable states and prove that it irreversibly destroys at least one continuation tree. Relative to a declared input boundary, a single commit can remove every route to a Perfect presentation. Reaching a decidable target is \(\Sigma^0_1\)-complete, while establishing that no continuation reaches it is \(\Pi^0_1\)-complete. I then construct a replay-conservative machine that records the finite external inputs on which each learning state depends, reconstructs earlier states, and forks new continuations from them. Every effective learner has an equivalent replay-conservative realization, and one Universal Language Learning Machine embeds all such learners as branches of a dovetailed search tree. The cost of retaining a branch is governed by its weight under the proposal rule. Universality remains resource-relative: for every oracle base \(R\), an \(R'\)-effective learner lies beyond the reach of the \(R\)-relative machine.
+I formalize forgetting as the collapse of learning-distinguishable states and prove that it irreversibly destroys at least one continuation tree. Relative to a declared input boundary, a single commit can remove every route to a Perfect presentation or make an available refutation permanently inexpressible. Reaching a decidable target is \(\Sigma^0_1\)-complete, while establishing that no continuation reaches it is \(\Pi^0_1\)-complete. The extensional sufficiency of a computable ledger compression is \(\Pi^0_2\)-complete, so arbitrary lossless compression cannot be decided or identified in the limit. I then construct a replay-conservative machine that records the finite external inputs on which each learning state depends, reconstructs earlier states, and forks new continuations from them. Every effective learner has an equivalent replay-conservative realization, and one Universal Language Learning Machine embeds all such learners as branches of a dovetailed search tree. The cost of retaining a branch is governed by its weight under the proposal rule. Universality remains resource-relative: for every oracle base \(R\), an \(R'\)-effective learner lies beyond the reach of the \(R\)-relative machine.
 
 \tableofcontents
 
@@ -32,7 +32,7 @@ Replay reconstructs an earlier internal learning state on a universal Turing mac
 
 The model separates forgetting from computational difficulty. Computational difficulty concerns how long a retained distinction takes to use. Forgetting concerns whether the distinction remains present at all. Infinite time may overcome the first. It cannot invert a many-to-one erasure without information from outside the erased state.
 
-The argument first follows what is lost when learning histories are collapsed. Identifying two learning-distinguishable histories destroys at least one route of re-entry. When the declared boundary still separates those histories, the loss propagates forward to a counterfactual continuation tree and may remove every admissible route to a Perfect presentation. For a decidable target, finding an escape is the halting side of reachability, while establishing entrapment is the non-halting side. The construction then proceeds in the opposite direction. Retaining a finite learning history makes its states constructively re-enterable and forkable, and logging the finite causes of each transition gives every effective learner an equivalent replay-conservative realization. Dovetailing those realizations produces one machine whose branch tree contains every effective learner up to public behaviour.
+The argument first follows what is lost when learning histories are collapsed. Identifying two learning-distinguishable histories destroys at least one route of re-entry. When the declared boundary still separates those histories, the loss propagates forward to a counterfactual continuation tree and may remove every admissible route to a Perfect presentation. A nonconservative commit may also remove the linguistic distinction required to express a refutation, leaving a completion policy unretracted because its counterexample has become unreachable. For a decidable target, finding an escape is the halting side of reachability, while establishing entrapment is the non-halting side. Determining whether a compressed ledger preserves all learning-relevant behaviour lies one level higher at \(\Pi^0_2\). The construction then proceeds in the opposite direction. Retaining a finite learning history makes its states constructively re-enterable and forkable, and logging the finite causes of each transition gives every effective learner an equivalent replay-conservative realization. Dovetailing those realizations produces one machine whose branch tree contains every effective learner up to public behaviour.
 
 # 2. Learning trajectories and lost futures
 
@@ -203,7 +203,26 @@ Then \(P_1\) is uniquely Perfect for \(\mathfrak F\). The configurations carryin
 
 The distinction matters when this result is compared with [2, Thm. 7.5]. Existence of a Perfect member in a fixed effective contract is an extensional \(\Sigma^0_2\)-complete question. Availability among the candidates reachable by a particular learner is additionally path-dependent.
 
-**Theorem 2.6 (complexity of target entrapment).** Fix a distinguished public event \(\mathsf{escape}\), and let \(\mathcal T_\star\) be the decidable set of finite records containing it. Over instances \(\langle e,c,I\rangle\) with effectively enumerable boundary class \(I\), define
+**Theorem 2.6 (refutation dead ends).** There exist an effective learner, a nonconservative commit \(q\), a decidable boundary class \(I\), and a decidable target set \(\mathcal T_{\mathsf H}\) of records containing an accepted \(\mathsf H\)-refutation of a fixed theory such that
+
+$$
+\operatorname{Escape}_{\mathcal T_{\mathsf H}}(e,c,I)
+\quad\text{and}\quad
+\operatorname{Dead}_{\mathcal T_{\mathsf H}}(e,q(c),I).
+\tag{2.13}
+$$
+
+The refuting carrier remains available after the commit, but the committed presentation cannot form the expression required to classify it as a refutation. By contrast, an extension satisfying the decoder-preservation condition [1, Eq. (3.25)] preserves every previously available refutation route of this form when the corresponding verifier acceptance is also preserved.
+
+**Proof.** Let the initial presentation \(P_W\) have a carrier \(\tau^\star\in\operatorname{dom}(D_W)\) for which \(D_W(\tau^\star)=\varphi^\star\), and let the declared verifier accept \(\varphi^\star\) as an \(\mathsf H\)-refutation of the fixed theory. Let \(q\) install a presentation \(P_e\) with \(\tau^\star\notin\operatorname{dom}(D_e)\). Take \(I\) to contain finite continuations that repeatedly supply \(\tau^\star\) and no packet or operation that enlarges \(D_e\). Before the commit, the one-packet continuation containing \(\tau^\star\) produces a record in \(\mathcal T_{\mathsf H}\). After the commit, every occurrence of \(\tau^\star\) produces candidate-local silence, so no continuation in \(I\) produces such a record. This proves (2.13).
+
+If the extension is conservative in the sense of [1, Eq. (3.25)], then \(\operatorname{dom}(D_W)\subseteq\operatorname{dom}(D_e)\) and the retraction recovers \(D_W(\tau)\) for every old carrier \(\tau\). Hence the old expression \(\varphi^\star\), and therefore its accepted refutation route under the preserved verifier, remains available. \(\square\)
+
+The theorem is boundary-relative. A later enrichment, translation, backup, or external report may restore the missing expression. Within the declared boundary, however, the counterexample is present as a carrier and absent from the learner's refutation language.
+
+This sharpens the one-retraction policy of [2, §5.1]. Presuming completion until an accepted counterexample appears remains correct for the operational contract whose reachable verifier events define failure. A nonconservative commit can shrink that reachable refutation class without changing the fixed theory or the external counterexample. Continued non-refutation may then reflect linguistic erasure rather than survival against the intended extensional comparison class. Conservative enrichment preserves the old refutation interface; nonconservative change requires the contract to declare how lost refutations are detected or restored.
+
+**Theorem 2.7 (complexity of target entrapment).** Fix a distinguished public event \(\mathsf{escape}\), and let \(\mathcal T_\star\) be the decidable set of finite records containing it. Over instances \(\langle e,c,I\rangle\) with effectively enumerable boundary class \(I\), define
 
 $$
 \mathsf{ESCAPE}_{\star}
@@ -216,7 +235,7 @@ $$
 \mathsf{DEAD}_{\star}
 =
 \overline{\mathsf{ESCAPE}_{\star}}.
-\tag{2.13}
+\tag{2.14}
 $$
 
 Over any effective instance class containing the construction below,
@@ -227,7 +246,7 @@ $$
 \qquad
 \mathsf{DEAD}_{\star}
 \text{ is }\Pi^0_1\text{-complete}.
-\tag{2.14}
+\tag{2.15}
 $$
 
 Every non-dead instance therefore has a finite escape witness. No sound effective finite-certificate procedure is complete for all true instances of target entrapment, although particular instances and restricted subclasses may be certifiable.
@@ -240,7 +259,7 @@ $$
 I_{\mathsf{tick}}
 =
 \{\mathsf{tick}^n:n\in\mathbb N\}.
-\tag{2.15}
+\tag{2.16}
 $$
 
 This class is decidable and prefix-closed, and
@@ -251,7 +270,7 @@ $$
 \mathsf{ESCAPE}_\star
 \iff
 M(w)\downarrow.
-\tag{2.16}
+\tag{2.17}
 $$
 
 Thus \(\mathsf{ESCAPE}_\star\) is \(\Sigma^0_1\)-hard and its complement is \(\Pi^0_1\)-hard. A sound and complete finite-certificate procedure for \(\mathsf{DEAD}_\star\) would make that set c.e.; since its complement is already c.e., it would decide a \(\Pi^0_1\)-complete problem. \(\square\)
@@ -260,11 +279,11 @@ Escape and entrapment reproduce the halting boundary. Escape has a finite witnes
 
 This reverses the announcement asymmetry of [2, §5.2]. There, a discovered improvement refutes completion, while a true completion claim may lack a finite certificate. Here, reaching the declared target witnesses a way forward, while the absence of every route cannot be uniformly certified. Dovetailed exploration therefore semidecides escape; stopping requires additional structure or a contract-specific certificate.
 
-This is the preservation problem addressed by the universal learner. Because no effective procedure can certify every fatal deletion, a branch must be retained before its future importance is known. Section 2 has shown that a learner can erase a continuation tree, lose every admissible route to Perfection, and remain unable to certify the resulting entrapment. Section 3 introduces the retention discipline that preserves an exit before such a transition is taken.
+This is the preservation problem addressed by the universal learner. Because no effective procedure can certify every fatal deletion, a branch must be retained before its future importance is known. Section 2 has shown that a learner can erase a continuation tree, lose every admissible route to Perfection or refutation, and remain unable to certify the resulting entrapment. Section 3 introduces the retention discipline that preserves an exit before such a transition is taken.
 
 # 3. Retention and constructive re-entry
 
-Section 2 showed that an active trajectory may erase its only route to a declared target, while no uniform certificate identifies every fatal erasure. A universal learner therefore retains, before each transition, enough information to reconstruct the earlier learning state as a separate branch. The ledger stores this information outside the image \(q(c)\); reconstruction uses that retained record rather than attempting to invert \(q\) from the erased state. Replay then re-enters the reconstructed state and continues from it.
+Section 2 showed that an active trajectory may erase its only route to a declared target, including a Perfect presentation or an expressible refutation, while no uniform certificate identifies every fatal erasure. A universal learner therefore retains, before each transition, enough information to reconstruct the earlier learning state as a separate branch. The ledger stores this information outside the image \(q(c)\); reconstruction uses that retained record rather than attempting to invert \(q\) from the erased state. Replay then re-enters the reconstructed state and continues from it.
 
 ## 3.1 Ledgers
 
@@ -401,7 +420,45 @@ Condition (4.2) says that every fibre of \(\sigma\) lies inside one behavioural-
 
 **Proposition 4.2 (ledger sufficiency).** A computable retention map supports replay precisely when the behavioural state induced by every valid history is a computable function of the retained ledger. If (4.2) fails, the map performs learning erasure; if it holds but no reconstruction is computable, the information is retained extensionally but not operationally replayable by the learner.
 
-The last distinction parallels the separation between generative addressability and operational accessibility in [1]. A state may be determined by the ledger yet remain too costly for a bounded agent to reconstruct.
+The last distinction parallels the separation between generative addressability and operational accessibility in [1]. A state may be determined by the ledger yet remain too costly for a bounded agent to reconstruct. The next result classifies the extensional condition (4.2); it does not classify the stronger requirement that a uniform computable reconstructor exist.
+
+For an effective learner \(L_e\) and computable retention map \(\sigma\), define
+
+$$
+\mathsf{SUFFICIENT}
+=
+\left\{
+\langle e,\sigma\rangle:
+\forall h,h'
+\left[
+\sigma(h)=\sigma(h')
+\Longrightarrow
+c(h)\simeq_e c(h')
+\right]
+\right\},
+\tag{4.3}
+$$
+
+where \(h,h'\) range over valid finite histories of \(L_e\).
+
+**Proposition 4.3 (complexity of extensional ledger sufficiency).** Over effective instance classes with decidable finite-history validity and containing the construction below, \(\mathsf{SUFFICIENT}\) is \(\Pi^0_2\)-complete. Its complement, the set of retention maps that perform learning erasure, is \(\Sigma^0_2\)-complete. Consequently no computable binary approximation converges on every such instance to whether its retention map satisfies (4.2).
+
+**Proof.** Equality of the partial public behaviours induced by two configurations is a \(\Pi^0_2\) relation: for every finite continuation, each terminating computation on one side must eventually be matched by a terminating computation with the same public record and commit itinerary on the other. Universal quantification over the finite histories in (4.3) can be absorbed into the same universal block, so \(\mathsf{SUFFICIENT}\in\Pi^0_2\).
+
+For hardness, reduce the totality set \(\mathsf{TOT}\). Given an index \(n\), construct a learner with two finite histories \(h_0,h_1\) leading to configurations \(c_0,c_1\). On a packet encoding \(m\), configuration \(c_0\) immediately emits \(0\), while \(c_1\) simulates \(\varphi_n(m)\) and emits \(0\) exactly when that computation halts. Extend both configurations in the same way after each completed response. Define a computable \(\sigma_n\) that identifies \(h_0\) and \(h_1\) and is injective on every other history. Then
+
+$$
+\langle e_n,\sigma_n\rangle\in\mathsf{SUFFICIENT}
+\iff
+c_0\simeq_{e_n}c_1
+\iff
+\varphi_n\text{ is total}.
+\tag{4.4}
+$$
+
+Thus \(\mathsf{SUFFICIENT}\) is \(\Pi^0_2\)-hard, and complementation gives \(\Sigma^0_2\)-completeness of learning erasure. A predicate admitting a convergent computable binary approximation is \(\Delta^0_2\); \(\Pi^0_2\)-completeness therefore excludes such an approximation here. \(\square\)
+
+The behavioural quotient is the extensionally minimal identification licensed by (4.2), but Proposition 4.3 shows that this quotient is not computable uniformly over effective learners. The full execution ledger of Theorem 4.1 is therefore a canonical uniformly safe construction rather than the unique safe representation. Injective history encodings, retained checkpoints, and restricted-class compressions with separate sufficiency proofs may also preserve replay. An arbitrary semantic compression carries a risk that no bounded effective agent can uniformly diagnose.
 
 # 5. The Universal Language Learning Machine
 
@@ -451,7 +508,7 @@ Universality is branchwise: each learner's public behaviour is represented on it
 
 **Proof.** The universal interpreter enumerates branch addresses and dovetails their transition simulations. For any completed finite trajectory of \(L_e\), all of its finitely many computations eventually receive enough universal stages to halt, so the corresponding nodes enter the tree. Map a configuration of \(L_e^\dagger\) to its branch node, including the learner index and full ledger prefix. The retraction reads the simulated configuration from that node, giving (5.3). Because the ledger prefix and index are retained, Theorem 3.3 is available within the branch, and the universal scheduler can enumerate every effective continuation. Finally, the current universal stage and every exogenous input are retained. The complete finite master state is therefore computable by rerunning the fixed dovetail schedule to that stage, so \(\mathbb U\) is replay-conservative. Self-inclusion follows from the enumeration. \(\square\)
 
-The theorem covers nonconservative learners through their behaviourally equivalent conservatizations. It does not claim that the original lossy ledger becomes replayable. The universal branch retains the fuller ledger required to represent that learner without erasure.
+The theorem covers nonconservative learners through their behaviourally equivalent conservatizations. It does not claim that the original lossy ledger becomes replayable. The universal branch retains the fuller ledger required to represent that learner without erasure. Proposition 4.3 explains why the construction uses an explicit sufficient record rather than searching for a minimal semantic compression: extensional ledger sufficiency is \(\Pi^0_2\)-complete. Full histories are not uniquely safe, but their sufficiency follows syntactically without deciding behavioural equivalence.
 
 ## 5.3 Nonconservative hosts
 
@@ -614,7 +671,7 @@ $$
 
 where \(h\) is the branch itinerary and \(E_h\) is the ledger prefix retained along that itinerary. Together, \(h\) and \(E_h\) contain the learner index, public packets, commits, and branch-local exogenous replies required by the branch address in (5.1) and by replay. The node therefore records more than the terminal presentation \(P\). Two branches reaching extensionally equivalent presentations may still differ in their retained evidence, available retractions, or future proposal laws.
 
-Replay preserves separate access to these paths. A computable quotient may merge two nodes only when their retained states are equivalent over the declared continuation interface and the quotient satisfies the ledger-sufficiency condition of Proposition 4.2. In particular, the compressed record must still compute every learning-relevant state needed for future public behaviour, replay, and fork. Agreement of the terminal presentations, or agreement on the current task alone, is insufficient. Merging nodes without a sufficient computable quotient risks the erasure identified by Theorem 2.1.
+Replay preserves separate access to these paths. A computable quotient may merge two nodes only when their retained states are equivalent over the declared continuation interface and the quotient satisfies the ledger-sufficiency condition of Proposition 4.2. In particular, the compressed record must still compute every learning-relevant state needed for future public behaviour, replay, and fork. Agreement of the terminal presentations, or agreement on the current task alone, is insufficient. Proposition 4.3 shows that no computable or limit-computable classifier recognizes every safe quotient. The machine therefore compresses only under a separately supplied sufficiency proof for the declared learner class; otherwise it retains the explicit itinerary record.
 
 ## 8.2 Selection
 
@@ -635,6 +692,8 @@ A universal learner may certify contract-relative completion. An active branch c
 
 A completion certificate closes only its indexed contract. A branch that changes the candidate class, target domain, comparison structure, or resource base belongs to a new contract and leaves the earlier claim intact. By contrast, an accepted improvement from inside the original contract shows that a purported sound completion certificate failed to cover the declared comparison correctly.
 
+The reachable refutation interface belongs to that indexing as well. Theorem 2.6 shows that a nonconservative commit can leave a refuting carrier at the boundary while removing the expression required for an \(\mathsf H\)-verdict. A one-retraction policy may then remain at its presumptive value because the counterexample is unreachable through the committed presentation. Conservative preservation of the decoder and verifier retains old refutation routes; a nonconservative contract must instead record which refutations remain expressible or provide a restoration path. Without that clause, continued non-refutation supports only the narrower operational claim defined by the surviving interface.
+
 The local and global statements are therefore compatible: a branch may be Done under a fixed contract while the universal extension process remains open. Establishing global closure would require a further contract specifying which branches count as admissible successors, how they are compared with the incumbent, and which verifier accepts an improvement. Running the universal machine for a long time supplies no such completion certificate.
 
 For example, consider the cross-resource contract whose candidates are the machines \(\mathbb U^R\), whose successor relation admits the jump extension \(\mathbb U^R\leadsto\mathbb U^{R'}\), and whose comparison order strictly prefers simulation of a larger class of effective boundary behaviours. Corollary 7.2 then supplies, above every \(\mathbb U^R\), an admissible strictly better successor \(\mathbb U^{R'}\). No candidate is Final under that contract. Contracts that fix \(R\), restrict the candidate or target domain to a decidable finite core, or accept another sound completion certificate may instead close. The distinction is the contract-relativity that governs Perfection throughout [2].
@@ -653,6 +712,8 @@ Gold's model identifies languages from streams of data [6]. Iterative and bounde
 
 The Conservatization Theorem uses unbounded storage and time to establish an extensional result. It does not collapse the bounded-memory hierarchies. When storage is charged, forgetting may improve performance within one budget even though it destroys replay reachability. The choice is then economic rather than logical, and the erased path cannot later be recovered without another copy.
 
+Proposition 4.3 adds an identification boundary. Equality of partial future behaviours, including their divergence patterns, is \(\Pi^0_2\)-complete, and the same complexity governs whether every fibre of a proposed retention map stays within one behavioural class. Safe compression can be established for particular syntactic maps or restricted learner families, while arbitrary extensional sufficiency is neither decidable nor identifiable in the limit. This has the same arithmetical form as generic Finality in [2]: both quantify over an unbounded family of future computations, and a supplied local success does not discharge that universal claim.
+
 ## 9.3 Self-modifying machines
 
 Gödel machines perform self-rewrites after proving, relative to an initial axiomatic description of utility and hardware, that the rewrite is useful [9]. A Universal Language Learning Machine does not require every branch to be proof-gated. It records proof-gated learners, experimental learners, Bayesian selectors, and arbitrary effective self-modifiers as separate branches. Verification affects which branch a selector should trust; it does not determine which branches are representable.
@@ -668,19 +729,22 @@ The results depend on the following assumptions.
 3. Realized randomness and oracle replies needed for replay are recorded.
 4. Replay and fork concern the learner's internal configuration. External-world restoration requires a separate apparatus.
 5. Unbounded tape and time determine reachability. Finite budgets may make replay inaccessible and must charge logging, storage, and recomputation.
-6. Forgetting means the identification of learning-distinguishable configurations. Compression within one behavioural-equivalence class is not forgetting.
+6. Forgetting means the identification of learning-distinguishable configurations. Compression within one behavioural-equivalence class is extensionally safe, but recognizing all such compressions is \(\Pi^0_2\)-complete. Operational replay additionally requires a computable reconstructor.
 7. Universality is branchwise. A selector, not the universal tree itself, produces the active external action.
 8. Relative universality is indexed by an oracle or resource interface. No finite jump chain is claimed to be cofinal in all computational degrees.
 9. Local finality certificates remain valid under their contracts. They do not close undeclared extensions of those contracts.
 10. Target dead ends are relative to a declared boundary class and a decidable set of finite target records. A boundary that re-supplies the erased information may reopen the branch. The complexity theorem concerns effective instance classes containing its stated reduction; particular dead ends and restricted subclasses may still be certifiable.
+11. Refutation dead ends fix the theory and external carrier while varying the presentation through which a refuting expression must be formed. Conservative preservation of the decoder and verifier retains the old route; another reference resource may restore a route lost by nonconservative change.
 
 # 10. Conclusion
 
 Learning beyond a fixed hypothesis language requires a universal object indexed by histories as well as presentations. When language changes are path-dependent, an itinerary determines the evidence, meanings, retractions, and future continuations available from the resulting presentation. The Universal Language Learning Machine therefore represents learning as a replayable tree of itinerary-indexed states.
 
-The preservation requirement follows from the structure of forgetting. Collapsing two learning-distinguishable states erases the information needed to reconstruct at least one of them. Additional computation cannot recover a distinction absent from the retained state. Relative to an input boundary that does not supply the discarded information again, the same collapse removes at least one counterfactual continuation tree and may eliminate every reachable route to a Perfect presentation. Reaching a decidable target is \(\Sigma^0_1\)-complete, while target entrapment is \(\Pi^0_1\)-complete. Fatal branch deletion therefore admits no sound effective finite-certificate procedure complete for all instances.
+The preservation requirement follows from the structure of forgetting. Collapsing two learning-distinguishable states erases the information needed to reconstruct at least one of them. Additional computation cannot recover a distinction absent from the retained state. Relative to an input boundary that does not supply the discarded information again, the same collapse removes at least one counterfactual continuation tree and may eliminate every reachable route to a Perfect presentation. It may also leave a counterexample physically available while erasing the linguistic distinction required to express its \(\mathsf H\)-refutation. A completion policy can then remain unretracted because its reachable refutation class has silently contracted.
 
-Replay-conservativity addresses this preservation problem by recording the finite causes of each learning transition. Every retained finite state can then be reconstructed and used as the root of a new continuation. Every effective learner has an equivalent replay-conservative realization, and the Universal Language Learning Machine embeds these realizations as branches of a dovetailed tree. Selection determines which branch controls external action while the remaining branches retain their replay and fork structure. The cost of admitting a branch consists of its surprisal under the declared proposal law together with its simulation and replay costs.
+Reaching a decidable target is \(\Sigma^0_1\)-complete, while target entrapment is \(\Pi^0_1\)-complete. Fatal branch deletion therefore admits no sound effective finite-certificate procedure complete for all instances. The safety of a proposed compression lies higher: extensional ledger sufficiency is \(\Pi^0_2\)-complete and learning erasure is \(\Sigma^0_2\)-complete. An effective learner cannot decide or identify in the limit whether every arbitrary compression preserves its learning-relevant future behaviour.
+
+Replay-conservativity addresses this preservation problem by recording the finite causes of each learning transition. Every retained finite state can then be reconstructed and used as the root of a new continuation. The full execution ledger is a canonical uniformly safe record whose sufficiency follows directly from the transition interface; other compressions require syntactic guarantees or restricted-class proofs. Every effective learner has an equivalent replay-conservative realization, and the Universal Language Learning Machine embeds these realizations as branches of a dovetailed tree. Selection determines which branch controls external action while the remaining branches retain their replay and fork structure. The cost of admitting a branch consists of its surprisal under the declared proposal law together with its simulation and replay costs.
 
 This universality remains indexed by the machine's computational and reference resources. For every oracle base \(R\), the jump \(R'\) supports effective boundary behaviours outside the simulation class of \(\mathbb U^R\). Corollary 7.2 consequently yields a strict hierarchy of resource-relative universal learners. Under a cross-resource contract that admits jump extensions and rewards increased simulation coverage, every candidate has a strictly better successor. Contracts with fixed resources or certified finite reductions may instead support local completion.
 

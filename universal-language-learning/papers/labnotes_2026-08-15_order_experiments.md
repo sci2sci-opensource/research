@@ -3,7 +3,7 @@
 **Date:** 15 August 2026 · revised 27 August 2026 (re-runs, matched controls, contextual fraction,
 and reconciliation audit)
 **Companion to:** *On Learning Languages* (OLL) v32, 25 Aug 2026; *Perfect Theory* (PT) v22,
-26 Aug 2026; *Universal Language Learning Machine* (ULLM) v6, 27 Aug 2026
+26 Aug 2026; *Universal Language Learning Machine* (ULLM) v7, 27 Aug 2026
 **Archived:** Zenodo, *Universal Language Learning series* — DOI [10.5281/zenodo.21971310](https://doi.org/10.5281/zenodo.21971310) (concept, latest version)
 **Code:** `euh_pkg/` (experiment 1), `ner_enrich_pkg/` (experiment 2)
 **Data artifacts (17 Aug re-runs supersede the 15 Aug batteries):**
